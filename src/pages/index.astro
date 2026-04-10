@@ -18,6 +18,9 @@ import { SITE } from '../site';
       />
       <div class="hero__scrim" aria-hidden="true"></div>
     </div>
+    <div class="hero__waves">
+      <WaveDivider />
+    </div>
     <div class="hero__content u-container">
       <p class="u-eyebrow">Fort Lauderdale · South Florida</p>
       <h1 class="hero__title">
@@ -33,7 +36,6 @@ import { SITE } from '../site';
       </div>
     </div>
   </section>
-  <WaveDivider />
   <section class="u-section domains">
     <div class="u-container">
       <p class="u-eyebrow">Domains</p>
@@ -108,7 +110,23 @@ import { SITE } from '../site';
     min-height: min(92vh, 900px);
     display: flex;
     align-items: flex-end;
-    padding-bottom: var(--space-xl);
+    /* Extra bottom space so CTAs sit above the overlapping wave */
+    padding-bottom: calc(var(--space-xl) + 4.25rem);
+    overflow: hidden;
+  }
+
+  .hero__waves {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    pointer-events: none;
+    line-height: 0;
+  }
+
+  .hero__waves :global(.waves-wrap) {
+    margin-bottom: 0;
   }
 
   .hero__media {
@@ -137,7 +155,7 @@ import { SITE } from '../site';
 
   .hero__content {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     padding-top: calc(var(--header-h) + var(--space-lg));
     max-width: 40rem;
   }
