@@ -110,8 +110,8 @@ import { SITE } from '../site';
     min-height: min(92vh, 900px);
     display: flex;
     align-items: flex-end;
-    /* Extra bottom space so CTAs sit above the overlapping wave */
-    padding-bottom: calc(var(--space-xl) + 4.25rem);
+    /* Extra bottom space so CTAs sit above the overlapping wave (match wave height) */
+    padding-bottom: calc(var(--space-xl) + 6.5rem);
     overflow: hidden;
   }
 
@@ -123,10 +123,12 @@ import { SITE } from '../site';
     z-index: 2;
     pointer-events: none;
     line-height: 0;
+    /* Kill subpixel hairline between SVG and next section */
+    transform: translateZ(0);
   }
 
   .hero__waves :global(.waves-wrap) {
-    margin-bottom: 0;
+    display: block;
   }
 
   .hero__media {
@@ -183,6 +185,11 @@ import { SITE } from '../site';
 
   .domains {
     background: #0a1628;
+    /* Overlap hero by a few px so browser anti-aliasing can’t flash a gap under the wave */
+    margin-top: -3px;
+    padding-top: calc(var(--space-xl) + 3px);
+    position: relative;
+    z-index: 1;
   }
 
   .domains__intro {
