@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout
+  title="Service area"
+  description="Eagle Detailing serves South Florida mobile — Fort Lauderdale, Miami, Palm Beach, marinas, FBOs, and private locations."
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Coverage</p>
+    <h1>South Florida · Mobile</h1>
+    <p class="u-muted page-hero__lede">
+      Based in {SITE.locality}, we travel to marinas, private docks, FBOs, hangars, and residences across the
+      region. If you are unsure whether you fall within our route, call — we will be direct.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container prose">
+      <h2>Typical coverage</h2>
+      <p class="u-muted">
+        Greater Fort Lauderdale, Miami-Dade, and Palm Beach County — plus select trips by arrangement.
+      </p>
+      <h2>How we work on-site</h2>
+      <p class="u-muted">
+        We coordinate access, power, water, and environmental constraints up front so the job stays clean and
+        predictable — whether we are on a transom, a ramp, or in your garage.
+      </p>
+      <p><a class="u-btn" href="/contact">Contact</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .page-hero__lede {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+
+  .page-body {
+    background: #0a1628;
+  }
+
+  .prose h2 {
+    margin-top: var(--space-md);
+  }
+
+  .prose h2:first-of-type {
+    margin-top: 0;
+  }
+</style>

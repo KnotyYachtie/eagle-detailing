@@ -1,0 +1,264 @@
+---
+import { NAV, SITE } from '../site';
+
+interface Props {
+  currentPath?: string;
+  transparent?: boolean;
+}
+
+const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
+---
+
+<header
+  class:list={['site-header', transparent && 'site-header--transparent']}
+  data-transparent={transparent ? 'true' : 'false'}
+>
+  <div class="site-header__inner u-container">
+    <a class="site-header__brand" href="/" aria-label={`${SITE.shortName} home`}>
+      <img
+        class="site-header__logo"
+        src="/logo-light.png"
+        alt=""
+        width="40"
+        height="48"
+        loading="eager"
+        decoding="async"
+      />
+      <span class="site-header__wordmark">{SITE.shortName}</span>
+    </a>
+    <button
+      type="button"
+      class="site-header__menu-btn"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-nav-toggle
+    >
+      Menu
+    </button>
+    <nav class="site-header__nav" id="site-nav" aria-label="Primary">
+      <ul class="site-header__list">
+        {
+          NAV.map(({ href, label }) => (
+            <li>
+              <a href={href} class:list={['site-header__link', currentPath === href && 'is-active']} data-nav-link>
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="site-header__nav-extras">
+        <a href={`tel:${SITE.phoneTel}`}>Call {SITE.phoneDisplay}</a>
+        <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>
+      </div>
+    </nav>
+    <div class="site-header__actions">
+      <a class="site-header__icon-link" href={`tel:${SITE.phoneTel}`} aria-label={`Call ${SITE.phoneDisplay}`}>
+        Call
+      </a>
+      <a class="site-header__icon-link" href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">
+        Instagram
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector('[data-nav-toggle]');
+  const nav = document.getElementById('site-nav');
+  const links = document.querySelectorAll('[data-nav-link]');
+  if (btn && nav) {
+    btn.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    links.forEach((l) => l.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    background: rgba(16, 33, 53, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(239, 236, 231, 0.06);
+  }
+
+  .site-header--transparent {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgba(16, 33, 53, 0.75), transparent);
+    backdrop-filter: none;
+    border-bottom: none;
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+  }
+
+  .site-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--color-cream);
+    margin-right: auto;
+  }
+
+  .site-header__brand:hover {
+    color: #fff;
+  }
+
+  .site-header__logo {
+    width: 36px;
+    height: auto;
+  }
+
+  .site-header__wordmark {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .site-header__menu-btn {
+    display: none;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    background: transparent;
+    border: 1px solid rgba(239, 236, 231, 0.25);
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .site-header__nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-header__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    justify-content: center;
+  }
+
+  .site-header__link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-cream-muted);
+    white-space: nowrap;
+  }
+
+  .site-header__link:hover,
+  .site-header__link.is-active {
+    color: #fff;
+  }
+
+  .site-header__actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+  }
+
+  .site-header__icon-link {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+
+  .site-header__icon-link:hover {
+    color: #fff;
+  }
+
+  .site-header__nav-extras {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .site-header__menu-btn {
+      display: block;
+    }
+
+    .site-header__nav {
+      position: fixed;
+      inset: var(--header-h) 0 0;
+      background: rgba(16, 33, 53, 0.98);
+      padding: var(--space-lg);
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+
+    .site-header__nav.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .site-header__list {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+
+    .site-header__link {
+      font-size: 1rem;
+    }
+
+    .site-header__actions {
+      display: none;
+    }
+
+    .site-header__nav-extras {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid rgba(239, 236, 231, 0.1);
+    }
+
+    .site-header__nav-extras a {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-accent);
+    }
+  }
+</style>

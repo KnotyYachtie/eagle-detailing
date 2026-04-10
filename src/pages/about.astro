@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout
+  title="About"
+  description="Eagle Detailing LLC — luxury mobile detailing for marine, aviation, and automotive clients across South Florida."
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Craft</p>
+    <h1>About Eagle Detailing</h1>
+    <p class="u-muted page-hero__lede">
+      We are built for owners and operators who notice the small things — where finish quality signals care,
+      discipline, and respect for the asset.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container prose">
+      <p>
+        {SITE.name} is led by <strong style="color: var(--color-cream)">{SITE.owner}</strong>. We are not a
+        volume shop aesthetic: we carry a single standard across <strong style="color: var(--color-cream)"
+          >marine</strong
+        >,
+        <strong style="color: var(--color-cream)">aviation</strong>, and
+        <strong style="color: var(--color-cream)">high-end automotive</strong> — correction, protection, and
+        maintenance programs you can schedule with confidence.
+      </p>
+      <p class="u-muted">
+        Based in {SITE.locality}, we operate mobile throughout South Florida — fully insured, focused on
+        private clients who expect prompt communication and uncompromising execution.
+      </p>
+      <p><a class="u-btn" href="/contact">Contact</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .page-hero__lede {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+
+  .page-body {
+    background: #0a1628;
+  }
+
+  .prose p {
+    max-width: 40rem;
+  }
+</style>

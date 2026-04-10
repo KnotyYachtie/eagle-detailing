@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WaveDivider from '../components/WaveDivider.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout title={SITE.shortName} transparentHeader={true}>
+  <section class="hero">
+    <div class="hero__media">
+      <img
+        src="/jet-1.png"
+        alt="Private aircraft exterior — precision detailing and protection"
+        width="2400"
+        height="1600"
+        fetchpriority="high"
+        decoding="async"
+        class="hero__img"
+      />
+      <div class="hero__scrim" aria-hidden="true"></div>
+    </div>
+    <div class="hero__content u-container">
+      <p class="u-eyebrow">Fort Lauderdale · South Florida</p>
+      <h1 class="hero__title">
+        Precision detailing for <em>yachts</em>, <em>aircraft</em> &amp; <em>exceptional</em> automobiles
+      </h1>
+      <p class="hero__lede">
+        Correction, ceramic protection, and disciplined maintenance — delivered mobile to marinas, FBOs, and
+        private collections.
+      </p>
+      <div class="hero__actions">
+        <a class="u-btn" href="/contact">Request a quote</a>
+        <a class="u-btn u-btn--ghost" href={`tel:${SITE.phoneTel}`}>Call {SITE.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+  <WaveDivider />
+  <section class="u-section domains">
+    <div class="u-container">
+      <p class="u-eyebrow">Domains</p>
+      <h2>One standard across three worlds</h2>
+      <p class="u-muted domains__intro">
+        The same inspection-driven process — scaled to gelcoat, airframe finishes, and high-end automotive
+        paint systems.
+      </p>
+      <div class="u-grid-3 domains__grid">
+        <a class="card-domain" href="/marine">
+          <h3>Marine</h3>
+          <p>Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.</p>
+          <span class="card-domain__link">Explore</span>
+        </a>
+        <a class="card-domain" href="/aviation">
+          <h3>Aviation</h3>
+          <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+          <span class="card-domain__link">Explore</span>
+        </a>
+        <a class="card-domain" href="/automotive">
+          <h3>Automotive</h3>
+          <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
+          <span class="card-domain__link">Explore</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="u-section u-section--tight trust">
+    <div class="u-container trust__inner">
+      <p>Serving South Florida</p>
+      <p>Private clients</p>
+      <p>Fully insured</p>
+    </div>
+  </section>
+  <section class="u-section process-preview">
+    <div class="u-container process-preview__grid">
+      <div>
+        <p class="u-eyebrow">Process</p>
+        <h2>Inspection to longevity</h2>
+        <p class="u-muted">
+          Every engagement begins with surfaces, environment, and how you use the asset — then we build a
+          clear scope.
+        </p>
+      </div>
+      <ul class="process-list">
+        <li><strong>Inspect</strong> condition, defects, risks</li>
+        <li><strong>Correct</strong> paint, gelcoat, defects</li>
+        <li><strong>Protect</strong> ceramic &amp; film where appropriate</li>
+        <li><strong>Maintain</strong> programs you can schedule</li>
+      </ul>
+    </div>
+  </section>
+  <section class="u-section cta-band">
+    <div class="u-container cta-band__inner">
+      <div>
+        <h2>Discuss your vessel, aircraft, or collection</h2>
+        <p class="u-muted">Call, email, or message — we respond promptly.</p>
+      </div>
+      <div class="cta-band__actions">
+        <a class="u-btn" href="/contact">Contact</a>
+        <a class="u-btn u-btn--ghost" href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(92vh, 900px);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--space-xl);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(16, 33, 53, 0.35) 0%,
+      rgba(16, 33, 53, 0.2) 35%,
+      rgba(16, 33, 53, 0.75) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-top: calc(var(--header-h) + var(--space-lg));
+    max-width: 40rem;
+  }
+
+  .hero__title {
+    font-style: normal;
+  }
+
+  .hero__title em {
+    font-style: italic;
+    color: #fff;
+  }
+
+  .hero__lede {
+    font-size: 1.0625rem;
+    color: var(--color-cream-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .domains {
+    background: #0a1628;
+  }
+
+  .domains__intro {
+    max-width: 36rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .domains__grid {
+    margin-top: var(--space-md);
+  }
+
+  .trust {
+    background: var(--color-navy);
+    border-block: 1px solid rgba(239, 236, 231, 0.06);
+  }
+
+  .trust__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    justify-content: center;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-cream-muted);
+  }
+
+  .process-preview {
+    background: linear-gradient(180deg, var(--color-navy) 0%, #0d1f35 100%);
+  }
+
+  .process-preview__grid {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .process-preview__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cta-band {
+    background: #0a1628;
+    border-top: 1px solid rgba(239, 236, 231, 0.06);
+  }
+
+  .cta-band__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 720px) {
+    .cta-band__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+</style>

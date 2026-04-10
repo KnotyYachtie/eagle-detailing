@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Automotive"
+  description="High-end automotive detailing in South Florida — paint correction, ceramic coating, and maintenance for exceptional vehicles."
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Automotive</p>
+    <h1>Exceptional automobiles</h1>
+    <p class="u-muted page-hero__lede">
+      The same finish discipline we apply on water and in the hangar — for collections and daily drivers
+      where clarity, depth, and protection matter.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container prose">
+      <h2>Services</h2>
+      <ul>
+        <li>Wash and decontamination protocols for sensitive finishes</li>
+        <li>Single- and multi-stage paint correction</li>
+        <li>Ceramic coating and paint protection film (where appropriate)</li>
+        <li>Wheel, caliper, and glass treatments</li>
+        <li>Interior leather and cabin detailing</li>
+        <li>Maintenance plans for frequent-use vehicles</li>
+      </ul>
+      <p><a class="u-btn" href="/contact">Contact</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .page-hero__lede {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+
+  .page-body {
+    background: #0a1628;
+  }
+
+  .prose h2 {
+    margin-top: 0;
+  }
+
+  .prose ul {
+    margin: 0 0 var(--space-md);
+    padding-left: 1.25rem;
+    color: var(--color-cream-muted);
+  }
+
+  .prose li {
+    margin-bottom: 0.35rem;
+  }
+</style>

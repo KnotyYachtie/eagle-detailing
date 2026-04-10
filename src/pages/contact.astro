@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Eagle Detailing LLC — call, email, or message on Instagram. Mobile detailing across South Florida."
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Contact</p>
+    <h1>Start a conversation</h1>
+    <p class="u-muted page-hero__lede">
+      Tell us what you are protecting — we will respond with next steps. A web form for structured quotes
+      will be added later; for now, reach us directly.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container contact-grid">
+      <div class="contact-card">
+        <h2>Phone</h2>
+        <p>
+          <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
+        </p>
+        <p class="u-muted">Call or text when convenient.</p>
+      </div>
+      <div class="contact-card">
+        <h2>Email</h2>
+        <p>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </div>
+      <div class="contact-card">
+        <h2>Instagram</h2>
+        <p>
+          <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagramHandle}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .page-hero__lede {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+
+  .page-body {
+    background: #0a1628;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .contact-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .contact-card {
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(239, 236, 231, 0.08);
+    background: rgba(7, 43, 83, 0.25);
+  }
+
+  .contact-card h2 {
+    font-family: var(--font-ui);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .contact-card p {
+    margin: 0 0 0.35rem;
+  }
+
+  .contact-card a {
+    font-size: 1.125rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+</style>

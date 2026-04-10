@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Gallery"
+  description="Surface-focused results from Eagle Detailing — real work, tight crops, South Florida."
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Proof</p>
+    <h1>Gallery</h1>
+    <p class="u-muted page-hero__lede">
+      We publish <strong style="color: var(--color-cream)">real</strong> project photography — surface-focused,
+      tight crops, no stock masquerading as completed work. This section will grow as new shots are approved
+      for release.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container">
+      <p class="u-muted gallery-placeholder">
+        Gallery images coming soon. For references in the meantime, see our work on Instagram or reach out
+        directly.
+      </p>
+      <p><a class="u-btn" href="/contact">Contact</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .page-hero__lede {
+    max-width: 42rem;
+    font-size: 1.0625rem;
+  }
+
+  .page-body {
+    background: #0a1628;
+  }
+
+  .gallery-placeholder {
+    max-width: 36rem;
+    margin-bottom: var(--space-md);
+  }
+</style>
