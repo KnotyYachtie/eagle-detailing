@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" preserveAspectRatio="none">
+  <!-- Taller soft swell; dark neutral fill reads as mist with low opacity in CSS -->
+  <path fill="#25262c" d="M0,32 Q50,4 100,32 T200,32 L200,64 L0,64 Z" />
+</svg>

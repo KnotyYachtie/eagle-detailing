@@ -2,13 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaveDivider from '../components/WaveDivider.astro';
 import { SITE } from '../site';
+import aviationTn from '../../assets/aviation-tn.jpg';
 ---
 
 <BaseLayout title={SITE.shortName} transparentHeader={true}>
   <section class="hero">
     <div class="hero__media">
       <img
-        src="/jet-1.png"
+        src="/jet-2.png"
         alt="Private aircraft exterior — precision detailing and protection"
         width="2400"
         height="1600"
@@ -20,6 +21,34 @@ import { SITE } from '../site';
     </div>
     <div class="hero__waves">
       <WaveDivider />
+      <div class="hero__metrics" aria-label="Company highlights" role="region">
+        <div class="hero__metrics-inner u-container">
+          <div class="hero__metric" data-count-row>
+            <p class="hero__metric-value">
+              <span class="hero__metric-num" data-count-to="15">0</span><span class="hero__metric-suffix">+</span>
+            </p>
+            <p class="hero__metric-label">Years of excellence</p>
+          </div>
+          <div class="hero__metric" data-count-row>
+            <p class="hero__metric-value">
+              <span class="hero__metric-num" data-count-to="500">0</span><span class="hero__metric-suffix">+</span>
+            </p>
+            <p class="hero__metric-label">Details completed</p>
+          </div>
+          <div class="hero__metric" data-count-row>
+            <p class="hero__metric-value">
+              <span class="hero__metric-num" data-count-to="3">0</span>
+            </p>
+            <p class="hero__metric-label">Domains covered</p>
+          </div>
+          <div class="hero__metric" data-count-row>
+            <p class="hero__metric-value">
+              <span class="hero__metric-num" data-count-to="50">0</span><span class="hero__metric-suffix">+</span>
+            </p>
+            <p class="hero__metric-label">South Florida cities</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="hero__content u-container">
       <p class="u-eyebrow">Fort Lauderdale · South Florida</p>
@@ -27,7 +56,7 @@ import { SITE } from '../site';
         Precision detailing for <em>yachts</em>, <em>aircraft</em> &amp; <em>exceptional</em> automobiles
       </h1>
       <p class="hero__lede">
-        Correction, ceramic protection, and disciplined maintenance — delivered mobile to marinas, FBOs, and
+        Paint Correction, ceramic protection, and disciplined maintenance — delivered mobile to marinas, FBOs, and
         private collections.
       </p>
       <div class="hero__actions">
@@ -44,21 +73,57 @@ import { SITE } from '../site';
         The same inspection-driven process — scaled to gelcoat, airframe finishes, and high-end automotive
         paint systems.
       </p>
-      <div class="u-grid-3 domains__grid">
-        <a class="card-domain" href="/marine">
-          <h3>Marine</h3>
-          <p>Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.</p>
-          <span class="card-domain__link">Explore</span>
+      <div class="domains__grid">
+        <a
+          class="card-domain card-domain--marine"
+          href="/marine"
+          data-domain-card
+          data-domain-reveal
+        >
+          <h3 class="card-domain__title">Marine</h3>
+          <div class="card-domain__visual card-domain__visual--marine" aria-hidden="true"></div>
+          <div class="card-domain__body">
+            <p>
+              Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
+            </p>
+          </div>
+          <span class="card-domain__cta">Explore</span>
         </a>
-        <a class="card-domain" href="/aviation">
-          <h3>Aviation</h3>
-          <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
-          <span class="card-domain__link">Explore</span>
+        <a
+          class="card-domain card-domain--aviation"
+          href="/aviation"
+          data-domain-card
+          data-domain-reveal
+        >
+          <h3 class="card-domain__title">Aviation</h3>
+          <div class="card-domain__visual card-domain__visual--aviation" aria-hidden="true">
+            <img
+              class="card-domain__img"
+              src={aviationTn.src}
+              alt=""
+              width={aviationTn.width}
+              height={aviationTn.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div class="card-domain__body">
+            <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+          </div>
+          <span class="card-domain__cta">Explore</span>
         </a>
-        <a class="card-domain" href="/automotive">
-          <h3>Automotive</h3>
-          <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
-          <span class="card-domain__link">Explore</span>
+        <a
+          class="card-domain card-domain--automotive"
+          href="/automotive"
+          data-domain-card
+          data-domain-reveal
+        >
+          <h3 class="card-domain__title">Automotive</h3>
+          <div class="card-domain__visual card-domain__visual--automotive" aria-hidden="true"></div>
+          <div class="card-domain__body">
+            <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
+          </div>
+          <span class="card-domain__cta">Explore</span>
         </a>
       </div>
     </div>
@@ -104,17 +169,37 @@ import { SITE } from '../site';
   </section>
 </BaseLayout>
 
+<script>
+  import { initDomainCards } from '../scripts/domain-cards';
+  import { initDomainReveal } from '../scripts/domain-reveal';
+  import { initHeroMetrics } from '../scripts/hero-metrics';
+  initDomainCards();
+  initDomainReveal();
+  initHeroMetrics();
+</script>
+
 <style>
   .hero {
     position: relative;
-    min-height: min(92vh, 900px);
+    z-index: 2;
+    /*
+      Fill the visible viewport so the wave sits flush with the bottom edge on load
+      (92vh + 900px cap left a strip of .domains backdrop showing — scales wrong per display).
+      100vh fallback; 100dvh tracks dynamic browser chrome (mobile toolbars, etc.).
+    */
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
-    align-items: flex-end;
-    /* Extra bottom space so CTAs sit above the overlapping wave (match wave height) */
-    padding-bottom: calc(var(--space-xl) + 6.5rem);
-    overflow: hidden;
+    align-items: flex-start;
+    /* Copy lives in the upper “safe zone”; wave/metrics stay absolutely at the bottom */
+    padding-bottom: clamp(3rem, 8vw, 5rem);
+    overflow-x: hidden;
   }
 
+  /*
+    Wave strip = SVG height only (no extra min-height, no fill “banner” under the curve).
+    Metrics are absolutely stacked on that same box so they read as part of the wave, not a second bar.
+  */
   .hero__waves {
     position: absolute;
     left: 0;
@@ -122,44 +207,228 @@ import { SITE } from '../site';
     bottom: 0;
     z-index: 2;
     pointer-events: none;
-    line-height: 0;
-    /* Kill subpixel hairline between SVG and next section */
-    transform: translateZ(0);
+    line-height: normal;
+    box-sizing: border-box;
   }
 
   .hero__waves :global(.waves-wrap) {
     display: block;
+    line-height: 0;
+    overflow: hidden;
+  }
+
+  .hero__metrics {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    line-height: normal;
+    overflow: visible;
+    padding: 0 0 0.5rem;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .hero__metrics-inner {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+    max-width: 56rem;
+    padding-inline: var(--space-sm);
+    padding-bottom: 0.4rem;
+    line-height: normal;
+    overflow: visible;
+    transform: translateY(-2cm);
+  }
+
+  .hero__metric {
+    text-align: center;
+    padding: 0.35rem 0.4rem 0.45rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  .hero__metric:last-child {
+    border-right: none;
+  }
+
+  @media (max-width: 639px) {
+    .hero__metrics-inner {
+      padding-inline: 0.25rem;
+    }
+
+    .hero__metric {
+      padding-inline: 0.1rem;
+    }
+  }
+
+  .hero__metric-value {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  }
+
+  .hero__metric-suffix {
+    font-weight: 600;
+    font-size: 0.7em;
+    margin-inline-start: 0.02em;
+    opacity: 1;
+  }
+
+  .hero__metric-label {
+    margin: 0.28rem 0 0;
+    padding-bottom: 0.08rem;
+    font-family: var(--font-ui);
+    font-size: clamp(0.54rem, 1.15vw, 0.72rem);
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(239, 236, 231, 0.55);
+    line-height: 1.35;
+    overflow: visible;
   }
 
   .hero__media {
     position: absolute;
     inset: 0;
     z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+    /* Fills the strip above the photo when the image is nudged down */
+    background-color: #030303;
+  }
+
+  /*
+    Feather that extends past the gap and onto the photo so the image top edge dissolves instead of cutting off.
+    Taller band + slower alpha ramp = overlap well into the jet frame under the scrim.
+  */
+  .hero__media::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: clamp(7.5rem, 36vmin, 17rem);
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      #030303 0%,
+      #030303 10%,
+      rgba(3, 3, 3, 0.94) 20%,
+      rgba(5, 5, 6, 0.62) 38%,
+      rgba(8, 8, 9, 0.32) 58%,
+      rgba(12, 12, 13, 0.12) 76%,
+      rgba(16, 16, 17, 0.04) 90%,
+      transparent 100%
+    );
+  }
+
+  /*
+    Unified veil: light blur across the feather + photo, plus a gentle gradient tint so it reads as one surface.
+    Sits under .hero__scrim (text legibility stays on top).
+  */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    backdrop-filter: blur(3px) saturate(1.06);
+    -webkit-backdrop-filter: blur(3px) saturate(1.06);
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.32) 0%,
+      rgba(4, 4, 5, 0.14) 22%,
+      rgba(8, 8, 10, 0.06) 42%,
+      rgba(6, 6, 8, 0.04) 58%,
+      rgba(4, 4, 6, 0.1) 78%,
+      rgba(2, 2, 4, 0.2) 100%
+    );
   }
 
   .hero__img {
+    position: relative;
+    z-index: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 35%;
+    /* When cover crops only top/bottom, horizontal % does nothing — translateX always shifts the frame */
+    object-position: 58% top;
+    /* Slightly less X than before (“back” left a touch) + light zoom to tighten framing */
+    transform: translate3d(
+      clamp(0.72rem, 2.35vw, 2.05rem),
+      clamp(0.65rem, 2vmin, 1.75rem),
+      0
+    )
+      scale(1.055);
+    transform-origin: center top;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__media::after {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .hero__img {
+      transform: translate3d(clamp(0.72rem, 2.35vw, 2.05rem), 0, 0) scale(1.055);
+      object-position: 58% 10%;
+    }
+
+    .hero__metrics-inner {
+      transform: none;
+    }
   }
 
   .hero__scrim {
     position: absolute;
     inset: 0;
+    z-index: 3;
+    /*
+      Neutral top band (black / charcoal) — not navy — so type reads like the reference,
+      then fade for the aircraft and a soft lift at the bottom for the wave/metrics.
+    */
     background: linear-gradient(
       180deg,
-      rgba(16, 33, 53, 0.35) 0%,
-      rgba(16, 33, 53, 0.2) 35%,
-      rgba(16, 33, 53, 0.75) 100%
+      rgba(0, 0, 0, 0.97) 0%,
+      rgba(0, 0, 0, 0.94) 7%,
+      rgba(10, 10, 12, 0.82) 15%,
+      rgba(22, 22, 24, 0.52) 26%,
+      rgba(32, 32, 34, 0.22) 38%,
+      rgba(40, 40, 42, 0.06) 48%,
+      rgba(28, 28, 30, 0.1) 62%,
+      rgba(18, 18, 20, 0.35) 78%,
+      rgba(10, 10, 12, 0.72) 92%,
+      rgba(4, 4, 5, 0.88) 100%
     );
   }
 
   .hero__content {
     position: relative;
     z-index: 3;
-    padding-top: calc(var(--header-h) + var(--space-lg));
-    max-width: 40rem;
+    padding-top: calc(var(--header-h) + var(--space-md));
+    padding-bottom: var(--space-lg);
+    max-width: 42rem;
+  }
+
+  /* Eyebrow + type sit on the solid top band — keep legible without heavy drop-shadow */
+  .hero__content > .u-eyebrow {
+    color: rgba(239, 236, 231, 0.78);
+    letter-spacing: 0.2em;
   }
 
   .hero__title {
@@ -184,10 +453,23 @@ import { SITE } from '../site';
   }
 
   .domains {
-    background: #0a1628;
-    /* Overlap hero by a few px so browser anti-aliasing can’t flash a gap under the wave */
-    margin-top: -3px;
-    padding-top: calc(var(--space-xl) + 3px);
+    /* Vivid layered backdrop so glass cards read clearly (glassmorphism guide) */
+    background:
+      radial-gradient(ellipse 100% 70% at 14% 22%, rgba(56, 115, 195, 0.22) 0%, transparent 52%),
+      radial-gradient(ellipse 85% 55% at 88% 68%, rgba(48, 110, 95, 0.16) 0%, transparent 48%),
+      radial-gradient(circle at 72% 8%, rgba(196, 184, 150, 0.07) 0%, transparent 38%),
+      linear-gradient(168deg, #0c1a2f 0%, #0a1628 40%, #0e2136 100%);
+    /*
+      Slight upward overlap: closes the hairline gap under the wave. .hero stays z-index: 2 so this
+      doesn’t paint over the wave/metrics strip — only tucks under the hero’s bottom edge.
+    */
+    margin-top: -6px;
+    padding-top: calc(var(--space-xl) + 6px);
+    position: relative;
+    z-index: 1;
+  }
+
+  .domains > .u-container {
     position: relative;
     z-index: 1;
   }
@@ -199,6 +481,337 @@ import { SITE } from '../site';
 
   .domains__grid {
     margin-top: var(--space-md);
+    display: grid;
+    gap: clamp(0.35rem, 0.9vw, 0.65rem);
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  @media (min-width: 640px) {
+    .domains__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .card-domain {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: clamp(1.5rem, 3.2vw, 2.15rem);
+    text-decoration: none;
+    color: inherit;
+    /* Default = Automotive: sharp top-left, large top-right; Marine & Aviation override */
+    border-radius: 1rem clamp(3rem, 8.5vw, 4.75rem) 1.125rem 1.125rem;
+    border: 2px solid var(--glass-border, rgba(255, 255, 255, 0.22));
+    backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.42));
+    -webkit-backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.42));
+    box-shadow:
+      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
+      0 8px 40px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    aspect-ratio: 3 / 4;
+    max-height: min(34rem, 74vh);
+    min-height: 18rem;
+    transition:
+      transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease,
+      background 0.35s ease;
+  }
+
+  @media (max-width: 639px) {
+    .card-domain {
+      aspect-ratio: 4 / 3;
+      max-height: none;
+      min-height: 15rem;
+    }
+  }
+
+  .card-domain--marine {
+    background: linear-gradient(
+      155deg,
+      rgba(56, 120, 200, 0.22) 0%,
+      rgba(20, 45, 88, 0.18) 45%,
+      rgba(10, 22, 48, 0.24) 100%
+    );
+    border-color: rgba(180, 215, 255, 0.32);
+    border-radius: clamp(3rem, 8.5vw, 4.75rem) 1rem 1.125rem 1.125rem;
+  }
+
+  .card-domain--aviation {
+    background: linear-gradient(
+      165deg,
+      rgba(90, 160, 130, 0.2) 0%,
+      rgba(35, 72, 62, 0.18) 50%,
+      rgba(18, 42, 38, 0.22) 100%
+    );
+    border-color: rgba(195, 235, 210, 0.34);
+    border-radius: 1rem 1rem 1.125rem 1.125rem;
+    box-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(220, 245, 230, 0.22),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .card-domain--automotive {
+    background: linear-gradient(
+      168deg,
+      rgba(255, 252, 248, 0.28) 0%,
+      rgba(248, 238, 228, 0.22) 48%,
+      rgba(235, 224, 210, 0.26) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.42);
+    backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.25));
+    -webkit-backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.25));
+    box-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 0 rgba(16, 33, 53, 0.08);
+  }
+
+  /* Scroll-into-view reveal (IntersectionObserver adds `.active`) */
+  .card-domain[data-domain-reveal] {
+    opacity: 0.3;
+    transform: scale(0.95) translateY(30px);
+    filter: brightness(0.6);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease,
+      filter 0.6s ease,
+      box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease,
+      background 0.35s ease;
+  }
+
+  .card-domain[data-domain-reveal].active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+  }
+
+  .card-domain[data-domain-reveal]:not(.active):hover {
+    transform: scale(0.95) translateY(30px);
+    box-shadow:
+      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
+      0 8px 40px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .card-domain[data-domain-reveal].active:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
+      0 28px 60px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+
+  .card-domain[data-domain-reveal].active.card-domain--automotive:hover {
+    box-shadow:
+      0 26px 56px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      inset 0 -1px 0 rgba(16, 33, 53, 0.1);
+    border-color: rgba(255, 255, 255, 0.52);
+  }
+
+  .card-domain[data-domain-reveal].active:active {
+    transform: translateY(-4px);
+  }
+
+  .card-domain:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
+      0 28px 60px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+
+  .card-domain--automotive:hover {
+    box-shadow:
+      0 26px 56px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      inset 0 -1px 0 rgba(16, 33, 53, 0.1);
+    border-color: rgba(255, 255, 255, 0.52);
+  }
+
+  .card-domain:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  .card-domain:active {
+    transform: translateY(-4px);
+  }
+
+  .card-domain__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.8vw, 1.85rem);
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-domain--automotive .card-domain__title {
+    color: var(--color-navy);
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.45);
+  }
+
+  .card-domain__visual {
+    flex: 1;
+    min-height: clamp(5.5rem, 20vw, 8.5rem);
+    border-radius: clamp(0.75rem, 2vw, 1.125rem);
+    margin-block: 0.25rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 0 2.5rem rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -12px 32px rgba(0, 0, 0, 0.25);
+    backdrop-filter: var(--glass-blur-pane, blur(18px) saturate(1.2));
+    -webkit-backdrop-filter: var(--glass-blur-pane, blur(18px) saturate(1.2));
+    overflow: hidden;
+  }
+
+  /* Inner “panes”: translucent tint only — blur comes from parent card + local backdrop */
+  .card-domain__visual--marine {
+    background: linear-gradient(
+      180deg,
+      rgba(80, 130, 200, 0.28) 0%,
+      rgba(25, 45, 78, 0.35) 55%,
+      rgba(8, 16, 32, 0.42) 100%
+    );
+  }
+
+  .card-domain__visual--aviation {
+    position: relative;
+    padding: 0;
+    background: rgba(12, 28, 24, 0.2);
+    box-shadow:
+      inset 0 0 0 1px rgba(200, 235, 215, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .card-domain__visual--aviation::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(60, 120, 95, 0.18) 0%,
+      rgba(12, 32, 28, 0.42) 100%
+    );
+  }
+
+  .card-domain__visual--aviation .card-domain__img {
+    z-index: 0;
+  }
+
+  .card-domain__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .card-domain__visual--automotive {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.38) 0%,
+      rgba(210, 215, 225, 0.32) 45%,
+      rgba(150, 158, 175, 0.4) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -10px 24px rgba(16, 33, 53, 0.12);
+  }
+
+  .card-domain__body {
+    flex-shrink: 0;
+  }
+
+  .card-domain__body p {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: rgba(239, 236, 231, 0.88);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-domain--automotive .card-domain__body p {
+    color: rgba(16, 33, 53, 0.78);
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.4);
+  }
+
+  .card-domain__cta {
+    margin-top: auto;
+    padding-top: 1.1rem;
+    font-family: var(--font-ui);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .card-domain--automotive .card-domain__cta {
+    color: var(--color-navy);
+    letter-spacing: 0.24em;
+    opacity: 0.85;
+  }
+
+  .card-domain--automotive:hover .card-domain__cta {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-domain {
+      transition: none;
+    }
+
+    .card-domain[data-domain-reveal] {
+      opacity: 1;
+      transform: none;
+      filter: brightness(1);
+    }
+
+    .card-domain:hover,
+    .card-domain:active {
+      transform: none;
+    }
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .card-domain,
+    .card-domain__visual {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .card-domain--marine {
+      background: rgba(18, 28, 48, 0.96);
+    }
+
+    .card-domain--aviation {
+      background: rgba(22, 38, 34, 0.96);
+    }
+
+    .card-domain--automotive {
+      background: rgba(245, 240, 232, 0.96);
+    }
   }
 
   .trust {
@@ -259,5 +872,283 @@ import { SITE } from '../site';
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
+  }
+</style>
+
+<style is:global>
+  .domain-expand[hidden] {
+    display: none !important;
+  }
+
+  .domain-expand:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: block;
+    pointer-events: none;
+  }
+
+  .domain-expand.domain-expand--open {
+    pointer-events: auto;
+  }
+
+  .domain-expand__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(4, 8, 16, 0.52);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    opacity: 0;
+  }
+
+  .domain-expand__panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    isolation: isolate;
+    box-sizing: border-box;
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    border: 2px solid rgba(255, 255, 255, 0.24);
+    backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.38));
+    -webkit-backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.38));
+    box-shadow:
+      var(--glass-shadow-diffuse, 0 0 5rem rgba(0, 0, 0, 0.3)),
+      0 28px 90px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    will-change: transform;
+    pointer-events: auto;
+  }
+
+  .domain-expand__panel--marine {
+    background: linear-gradient(
+      155deg,
+      rgba(50, 110, 185, 0.32) 0%,
+      rgba(15, 35, 72, 0.28) 50%,
+      rgba(8, 20, 45, 0.34) 100%
+    );
+    border-color: rgba(160, 200, 255, 0.28);
+  }
+
+  .domain-expand__panel--aviation {
+    background: linear-gradient(
+      165deg,
+      rgba(85, 155, 125, 0.3) 0%,
+      rgba(28, 62, 54, 0.28) 50%,
+      rgba(14, 38, 34, 0.32) 100%
+    );
+    border-color: rgba(175, 230, 200, 0.28);
+  }
+
+  .domain-expand__panel--automotive {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 252, 248, 0.34) 0%,
+      rgba(242, 232, 222, 0.28) 55%,
+      rgba(228, 216, 200, 0.32) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.25));
+    -webkit-backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.25));
+  }
+
+  .domain-expand__panel--automotive .domain-expand__close {
+    border-color: rgba(16, 33, 53, 0.18);
+    background: rgba(16, 33, 53, 0.06);
+    color: var(--color-navy, #102135);
+  }
+
+  .domain-expand__panel--automotive .domain-expand__close:hover {
+    background: rgba(16, 33, 53, 0.1);
+    border-color: rgba(16, 33, 53, 0.28);
+  }
+
+  .domain-expand__panel--automotive .domain-expand__title {
+    color: var(--color-navy, #102135);
+  }
+
+  .domain-expand__panel--automotive .domain-expand__desc {
+    color: rgba(16, 33, 53, 0.72);
+  }
+
+  .domain-expand__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(239, 236, 231, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-cream, #efece7);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .domain-expand__close:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(239, 236, 231, 0.35);
+  }
+
+  .domain-expand__content {
+    padding: 3.25rem clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vw, 3.5rem);
+    max-width: 38rem;
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .domain-expand--open .domain-expand__content {
+    opacity: 1;
+    transform: none;
+  }
+
+  .domain-expand--open:not(.domain-expand--instant) .domain-expand__content {
+    transition-delay: 0.24s;
+  }
+
+  .domain-expand--open.domain-expand--instant .domain-expand__content {
+    transition-delay: 0s;
+  }
+
+  .domain-expand__title {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    margin: 0 0 var(--space-sm, 1rem);
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1.12;
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .domain-expand__panel--automotive .domain-expand__title {
+    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.45);
+  }
+
+  .domain-expand__visual {
+    width: 100%;
+    height: min(30vh, 13rem);
+    border-radius: clamp(0.875rem, 2vw, 1.125rem);
+    margin: 0.5rem 0 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 0 2rem rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -20px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: var(--glass-blur-pane, blur(18px) saturate(1.15));
+    -webkit-backdrop-filter: var(--glass-blur-pane, blur(18px) saturate(1.15));
+  }
+
+  .domain-expand__visual--photo {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .domain-expand__visual-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .domain-expand__visual--marine {
+    background: linear-gradient(
+      180deg,
+      rgba(85, 125, 175, 0.35) 0%,
+      rgba(28, 42, 68, 0.4) 52%,
+      rgba(10, 18, 36, 0.45) 100%
+    );
+  }
+
+  .domain-expand__visual--aviation {
+    background: linear-gradient(
+      180deg,
+      rgba(95, 145, 120, 0.32) 0%,
+      rgba(32, 55, 48, 0.38) 50%,
+      rgba(14, 28, 24, 0.42) 100%
+    );
+  }
+
+  .domain-expand__visual--automotive {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(200, 208, 220, 0.35) 48%,
+      rgba(140, 150, 168, 0.42) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -14px 32px rgba(16, 33, 53, 0.12);
+  }
+
+  .domain-expand__desc {
+    margin: 0 0 1.75rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: rgba(239, 236, 231, 0.9);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .domain-expand__panel--automotive .domain-expand__desc {
+    color: rgba(16, 33, 53, 0.78);
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.35);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .domain-expand__backdrop {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: rgba(4, 8, 16, 0.9);
+    }
+
+    .domain-expand__panel {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .domain-expand__panel--marine {
+      background: rgba(14, 26, 44, 0.98);
+    }
+
+    .domain-expand__panel--aviation {
+      background: rgba(16, 34, 30, 0.98);
+    }
+
+    .domain-expand__panel--automotive {
+      background: rgba(250, 246, 240, 0.98);
+    }
+
+    .domain-expand__visual:not(.domain-expand__visual--photo) {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .domain-expand__content {
+      transition: none;
+    }
   }
 </style>

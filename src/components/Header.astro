@@ -1,5 +1,6 @@
 ---
 import { NAV, SITE } from '../site';
+import eagleSvgRaw from '../../assets/eagle.svg?raw';
 
 interface Props {
   currentPath?: string;
@@ -7,6 +8,12 @@ interface Props {
 }
 
 const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
+
+/* Inline mark so paths use currentColor; strip root sizing so header CSS controls width */
+const eagleForHeader = eagleSvgRaw.replace(
+  /<svg[\s\S]*?>/,
+  '<svg class="site-header__eagle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503 408" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+);
 ---
 
 <header
@@ -15,15 +22,21 @@ const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
 >
   <div class="site-header__inner u-container">
     <a class="site-header__brand" href="/" aria-label={`${SITE.shortName} home`}>
-      <img
-        class="site-header__logo"
-        src="/logo-light.png"
-        alt=""
-        width="56"
-        height="67"
-        loading="eager"
-        decoding="async"
-      />
+      {
+        transparent ? (
+          <span class="site-header__logo site-header__logo--eagle" set:html={eagleForHeader} />
+        ) : (
+          <img
+            class="site-header__logo"
+            src="/logo-light.png"
+            alt=""
+            width="56"
+            height="67"
+            loading="eager"
+            decoding="async"
+          />
+        )
+      }
       <span class="site-header__wordmark">{SITE.shortName}</span>
     </a>
     <button
@@ -87,18 +100,44 @@ const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
     height: var(--header-h);
     display: flex;
     align-items: center;
-    background: rgba(16, 33, 53, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(239, 236, 231, 0.06);
+    background: rgba(16, 33, 53, 0.78);
+    backdrop-filter: var(--glass-blur-header);
+    -webkit-backdrop-filter: var(--glass-blur-header);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .site-header--transparent {
     position: absolute;
     left: 0;
     right: 0;
-    background: linear-gradient(to bottom, rgba(16, 33, 53, 0.75), transparent);
+    background: transparent;
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-bottom: none;
+    box-shadow: none;
+  }
+
+  /* Keep chrome readable over the hero without a tinted “banner” bar */
+  .site-header--transparent .site-header__logo,
+  .site-header--transparent .site-header__logo--eagle .site-header__eagle-svg {
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
+  }
+
+  .site-header--transparent .site-header__wordmark {
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45);
+  }
+
+  .site-header--transparent .site-header__link {
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .site-header--transparent .site-header__icon-link {
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .site-header--transparent .site-header__menu-btn {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
   }
 
   .site-header__inner {
@@ -125,6 +164,19 @@ const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
 
   .site-header__logo {
     width: clamp(44px, 5.5vw, 56px);
+    height: auto;
+  }
+
+  .site-header__logo--eagle {
+    display: block;
+    flex-shrink: 0;
+    color: #fff;
+    line-height: 0;
+  }
+
+  .site-header__eagle-svg {
+    display: block;
+    width: 100%;
     height: auto;
   }
 
