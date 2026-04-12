@@ -54,8 +54,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
         private collections.
       </p>
       <div class="hero__actions">
-        <a class="u-btn" href="/contact">Request a quote</a>
-        <a class="u-btn u-btn--ghost" href={`tel:${SITE.phoneTel}`}>Call {SITE.phoneDisplay}</a>
+        <a class="u-btn hero__cta" href="/contact">Request a quote</a>
       </div>
     </div>
   </section>
@@ -320,8 +319,9 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   .hero__metric-value--text {
+    font-family: var(--font-hero);
     font-size: clamp(1rem, 2.6vw, 1.5rem);
-    font-weight: 500;
+    font-weight: 200;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     font-variant-numeric: normal;
@@ -486,6 +486,18 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
+  }
+
+  .hero__actions .hero__cta {
+    background: rgba(239, 236, 231, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .hero__actions .hero__cta:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-navy);
   }
 
   .domains {
