@@ -1,28 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import WaveDivider from '../components/WaveDivider.astro';
+// import WaveDivider from '../components/WaveDivider.astro';
 import { SITE } from '../site';
 import aviationTn from '../../assets/aviation-tn.jpg';
+import heroImage from '../../assets/inspo2.png';
+import yacht1 from '../../assets/yacht1.png';
 ---
 
 <BaseLayout title={SITE.shortName} transparentHeader={true}>
   <section class="hero">
     <div class="hero__media">
       <img
-        src="/jet-2.png"
+        src={heroImage.src}
         alt="Private aircraft exterior — precision detailing and protection"
-        width="2400"
-        height="1600"
+        width={heroImage.width}
+        height={heroImage.height}
         fetchpriority="high"
         decoding="async"
         class="hero__img"
       />
       <div class="hero__scrim" aria-hidden="true"></div>
     </div>
+    <!-- Wave strip paused
     <div class="hero__waves">
       <WaveDivider />
     </div>
-    <div class="hero__blue-veil" aria-hidden="true"></div>
+    -->
     <div class="hero__metrics" aria-label="Company highlights" role="region">
       <div class="hero__metrics-inner u-container">
         <div class="hero__metric" data-count-row>
@@ -63,14 +66,16 @@ import aviationTn from '../../assets/aviation-tn.jpg';
       </div>
     </div>
   </section>
-  <section class="u-section domains">
+  <section class="u-section domains index-atmos">
     <div class="u-container">
-      <p class="u-eyebrow">Domains</p>
-      <h2>One standard across three worlds</h2>
-      <p class="u-muted domains__intro">
-        The same inspection-driven process — scaled to gelcoat, airframe finishes, and high-end automotive
-        paint systems.
-      </p>
+      <div class="domains__header">
+        <p class="u-eyebrow" data-domains-abyss>Domains</p>
+        <h2 data-domains-abyss>One standard across three worlds</h2>
+        <p class="u-muted domains__intro" data-domains-abyss>
+          The same inspection-driven process — scaled to gelcoat, airframe finishes, and high-end automotive
+          paint systems.
+        </p>
+      </div>
       <div class="domains__grid">
         <a
           class="card-domain card-domain--marine"
@@ -78,14 +83,40 @@ import aviationTn from '../../assets/aviation-tn.jpg';
           data-domain-card
           data-domain-reveal
         >
-          <h3 class="card-domain__title">Marine</h3>
-          <div class="card-domain__visual card-domain__visual--marine" aria-hidden="true"></div>
-          <div class="card-domain__body">
-            <p>
-              Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
-            </p>
+          <div class="card-domain__light" aria-hidden="true">
+            <div class="card-domain__slit"></div>
+            <div class="card-domain__lumen">
+              <div class="card-domain__lumen-min"></div>
+              <div class="card-domain__lumen-mid"></div>
+              <div class="card-domain__lumen-hi"></div>
+            </div>
+            <div class="card-domain__darken">
+              <div class="card-domain__darken-sl"></div>
+              <div class="card-domain__darken-ll"></div>
+              <div class="card-domain__darken-slt"></div>
+              <div class="card-domain__darken-srt"></div>
+            </div>
           </div>
-          <span class="card-domain__cta">Explore</span>
+          <div class="card-domain__content">
+            <h3 class="card-domain__title">Marine</h3>
+            <div class="card-domain__visual card-domain__visual--marine" aria-hidden="true">
+              <img
+                class="card-domain__img"
+                src={yacht1.src}
+                alt=""
+                width={yacht1.width}
+                height={yacht1.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="card-domain__body">
+              <p>
+                Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
+              </p>
+            </div>
+            <span class="card-domain__cta">Explore</span>
+          </div>
         </a>
         <a
           class="card-domain card-domain--aviation"
@@ -93,22 +124,38 @@ import aviationTn from '../../assets/aviation-tn.jpg';
           data-domain-card
           data-domain-reveal
         >
-          <h3 class="card-domain__title">Aviation</h3>
-          <div class="card-domain__visual card-domain__visual--aviation" aria-hidden="true">
-            <img
-              class="card-domain__img"
-              src={aviationTn.src}
-              alt=""
-              width={aviationTn.width}
-              height={aviationTn.height}
-              loading="lazy"
-              decoding="async"
-            />
+          <div class="card-domain__light" aria-hidden="true">
+            <div class="card-domain__slit"></div>
+            <div class="card-domain__lumen">
+              <div class="card-domain__lumen-min"></div>
+              <div class="card-domain__lumen-mid"></div>
+              <div class="card-domain__lumen-hi"></div>
+            </div>
+            <div class="card-domain__darken">
+              <div class="card-domain__darken-sl"></div>
+              <div class="card-domain__darken-ll"></div>
+              <div class="card-domain__darken-slt"></div>
+              <div class="card-domain__darken-srt"></div>
+            </div>
           </div>
-          <div class="card-domain__body">
-            <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+          <div class="card-domain__content">
+            <h3 class="card-domain__title">Aviation</h3>
+            <div class="card-domain__visual card-domain__visual--aviation" aria-hidden="true">
+              <img
+                class="card-domain__img"
+                src={aviationTn.src}
+                alt=""
+                width={aviationTn.width}
+                height={aviationTn.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="card-domain__body">
+              <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+            </div>
+            <span class="card-domain__cta">Explore</span>
           </div>
-          <span class="card-domain__cta">Explore</span>
         </a>
         <a
           class="card-domain card-domain--automotive"
@@ -116,24 +163,40 @@ import aviationTn from '../../assets/aviation-tn.jpg';
           data-domain-card
           data-domain-reveal
         >
-          <h3 class="card-domain__title">Automotive</h3>
-          <div class="card-domain__visual card-domain__visual--automotive" aria-hidden="true"></div>
-          <div class="card-domain__body">
-            <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
+          <div class="card-domain__light" aria-hidden="true">
+            <div class="card-domain__slit"></div>
+            <div class="card-domain__lumen">
+              <div class="card-domain__lumen-min"></div>
+              <div class="card-domain__lumen-mid"></div>
+              <div class="card-domain__lumen-hi"></div>
+            </div>
+            <div class="card-domain__darken">
+              <div class="card-domain__darken-sl"></div>
+              <div class="card-domain__darken-ll"></div>
+              <div class="card-domain__darken-slt"></div>
+              <div class="card-domain__darken-srt"></div>
+            </div>
           </div>
-          <span class="card-domain__cta">Explore</span>
+          <div class="card-domain__content">
+            <h3 class="card-domain__title">Automotive</h3>
+            <div class="card-domain__visual card-domain__visual--automotive" aria-hidden="true"></div>
+            <div class="card-domain__body">
+              <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
+            </div>
+            <span class="card-domain__cta">Explore</span>
+          </div>
         </a>
       </div>
     </div>
   </section>
-  <section class="u-section u-section--tight trust">
+  <section class="u-section u-section--tight trust index-atmos">
     <div class="u-container trust__inner">
       <p>Serving South Florida</p>
       <p>Private clients</p>
       <p>Licensed & insured</p>
     </div>
   </section>
-  <section class="u-section process-preview">
+  <section class="u-section process-preview index-atmos">
     <div class="u-container process-preview__grid">
       <div>
         <p class="u-eyebrow">Process</p>
@@ -151,7 +214,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
       </ul>
     </div>
   </section>
-  <section class="u-section cta-band">
+  <section class="u-section cta-band index-atmos">
     <div class="u-container cta-band__inner">
       <div>
         <h2>Discuss your vessel, aircraft, or collection</h2>
@@ -203,7 +266,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   /*
-    Wave strip = CSS wave layers only; metrics sit above .hero__blue-veil (sibling) so stats stay legible.
+    Wave strip = CSS wave layers only; metrics sit above it (higher z-index) so stats stay legible.
   */
   .hero__waves {
     position: absolute;
@@ -214,15 +277,6 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     pointer-events: none;
     line-height: normal;
     box-sizing: border-box;
-  }
-
-  /* Very light brand navy over photo + waves; under headline/metrics/buttons */
-  .hero__blue-veil {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    background: rgba(16, 33, 53, 0.16);
   }
 
   .hero__waves :global(.waves-wrap) {
@@ -382,16 +436,17 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    backdrop-filter: blur(52px) saturate(1.06);
-    -webkit-backdrop-filter: blur(52px) saturate(1.06);
+    backdrop-filter: blur(52px) saturate(0.98);
+    -webkit-backdrop-filter: blur(52px) saturate(0.98);
+    /* Cool charcoal veil (subtle navy hint — less chroma than pure brand hex overlays) */
     background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.58) 0%,
-      rgba(1, 1, 2, 0.36) 22%,
-      rgba(3, 3, 5, 0.22) 42%,
-      rgba(2, 2, 4, 0.16) 58%,
-      rgba(1, 1, 3, 0.26) 78%,
-      rgba(0, 0, 1, 0.45) 100%
+      rgba(18, 22, 30, 0.58) 0%,
+      rgba(16, 20, 28, 0.38) 22%,
+      rgba(14, 18, 26, 0.26) 42%,
+      rgba(12, 16, 24, 0.2) 58%,
+      rgba(12, 16, 26, 0.3) 78%,
+      rgba(8, 12, 20, 0.46) 100%
     );
     /* Tight “window” + non-zero center alpha so the whole frame softens, not just the rim */
     -webkit-mask-image: radial-gradient(
@@ -425,14 +480,14 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     height: 100%;
     object-fit: cover;
     /* When cover crops only top/bottom, horizontal % does nothing — translateX always shifts the frame */
-    object-position: 58% top;
-    /* Slightly less X than before (“back” left a touch) + light zoom to tighten framing */
+    object-position: 46% top;
+    /* Nudge frame + zoom for hero crop (tune per asset). */
     transform: translate3d(
-      clamp(0.72rem, 2.35vw, 2.05rem),
+      clamp(-0.35rem, -0.85vw, 0.85rem),
       clamp(0.65rem, 2vmin, 1.75rem),
       0
     )
-      scale(1.055);
+      scale(1.075);
     transform-origin: center top;
   }
 
@@ -445,8 +500,8 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     }
 
     .hero__img {
-      transform: translate3d(clamp(0.72rem, 2.35vw, 2.05rem), 0, 0) scale(1.055);
-      object-position: 58% 10%;
+      transform: translate3d(clamp(-0.35rem, -0.85vw, 0.85rem), 0, 0) scale(1.075);
+      object-position: 46% 10%;
     }
 
     .hero__metrics-inner {
@@ -474,21 +529,21 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     inset: 0;
     z-index: 3;
     /*
-      Neutral top band (black / charcoal) — not navy — so type reads like the reference,
-      then fade for the aircraft and a soft lift at the bottom for the wave/metrics.
+      Readability gradient: avoid a near-transparent “window” mid-frame (old ~48% stop read as a
+      lighter patch over the jet). Keep mid-band in low-opacity navy so type stays clean without a second glow.
     */
     background: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0.97) 0%,
-      rgba(0, 0, 0, 0.94) 7%,
-      rgba(10, 10, 12, 0.82) 15%,
-      rgba(22, 22, 24, 0.52) 26%,
-      rgba(32, 32, 34, 0.22) 38%,
-      rgba(40, 40, 42, 0.06) 48%,
-      rgba(28, 28, 30, 0.1) 62%,
-      rgba(18, 18, 20, 0.35) 78%,
-      rgba(10, 10, 12, 0.72) 92%,
-      rgba(4, 4, 5, 0.88) 100%
+      rgba(0, 0, 0, 0.92) 7%,
+      rgba(6, 8, 12, 0.86) 15%,
+      rgba(10, 12, 18, 0.68) 26%,
+      rgba(10, 12, 18, 0.48) 38%,
+      rgba(8, 10, 16, 0.4) 50%,
+      rgba(10, 12, 18, 0.44) 60%,
+      rgba(8, 10, 15, 0.58) 72%,
+      rgba(4, 6, 10, 0.82) 88%,
+      rgba(2, 4, 8, 0.92) 100%
     );
   }
 
@@ -640,39 +695,141 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
-  .domains {
-    /* Vivid layered backdrop so glass cards read clearly (glassmorphism guide) */
-    background:
-      radial-gradient(ellipse 100% 70% at 14% 22%, rgba(56, 115, 195, 0.22) 0%, transparent 52%),
-      radial-gradient(ellipse 85% 55% at 88% 68%, rgba(48, 110, 95, 0.16) 0%, transparent 48%),
-      radial-gradient(circle at 72% 8%, rgba(196, 184, 150, 0.07) 0%, transparent 38%),
-      linear-gradient(168deg, #0c1a2f 0%, #0a1628 40%, #0e2136 100%);
+  /*
+    Cinematic “below hero” atmosphere (inspired ref): film grain, top spotlight, heavy vignette,
+    near-black midnight base. Domain cards use Camden-style chrome below.
+  */
+  .index-atmos {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .index-atmos::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index-atmos::before {
+      opacity: 0.05;
+    }
+  }
+
+  .index-atmos > .u-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .domains.index-atmos {
     /*
-      Slight upward overlap: closes the hairline gap under the wave. .hero stays z-index: 2 so this
-      doesn’t paint over the wave/metrics strip — only tucks under the hero’s bottom edge.
+      Top spotlight (paused — restore as extra layer after the 108% radial):
+      radial-gradient(ellipse 92% 58% at 50% -8%, rgba(110, 150, 210, 0.22) 0%, transparent 54%),
     */
+    background:
+      /* Soft join: gentle darkening into section (avoid lifting luminance at 0 — that reads as a band). */
+      linear-gradient(
+        180deg,
+        rgba(5, 9, 16, 0.28) 0%,
+        rgba(6, 11, 20, 0.11) 18%,
+        rgba(8, 14, 24, 0.03) 38%,
+        transparent 58%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(3, 6, 12, 0.08) 0%,
+        rgba(4, 8, 15, 0.03) 12%,
+        transparent 28%,
+        transparent 58%,
+        rgba(18, 36, 62, 0.28) 82%,
+        rgba(28, 52, 88, 0.38) 100%
+      ),
+      radial-gradient(ellipse 125% 52% at 50% 108%, rgba(42, 72, 118, 0.32) 0%, transparent 48%),
+      /* Ease upper vignette slightly so the strip above “DOMAINS” isn’t a flat step from metrics */
+      radial-gradient(ellipse 98% 78% at 50% 42%, transparent 32%, rgba(0, 0, 0, 0.36) 76%, rgba(0, 0, 0, 0.72) 100%),
+      linear-gradient(172deg, #03050a 0%, #060b14 32%, #0a121f 68%, #05080e 100%);
+    /* Hairline tuck under hero bottom */
     margin-top: -6px;
     padding-top: calc(var(--space-xl) + 6px);
-    position: relative;
-    z-index: 1;
+    /* Extra floor space so bottom flares read before Trust */
+    padding-bottom: calc(var(--space-xl) + clamp(1.75rem, 4vw, 2.75rem));
+    z-index: 3;
   }
 
-  .domains > .u-container {
-    position: relative;
-    z-index: 1;
+  /* Grain above section backdrop; content above grain */
+  .domains.index-atmos::before {
+    z-index: 3;
   }
 
-  .domains__intro {
+  .domains.index-atmos > .u-container {
+    z-index: 4;
+  }
+
+  .domains__header {
+    text-align: center;
+    max-width: 44rem;
+    margin-inline: auto;
+    margin-bottom: clamp(2.25rem, 5.5vw, 3.75rem);
+  }
+
+  /* Each `[data-domains-abyss]` line is observed separately in domain-reveal.ts */
+  .domains__header [data-domains-abyss] {
+    opacity: 0;
+    transform: translate3d(0, 3.25rem, 0);
+    transition:
+      opacity 1.88s cubic-bezier(0.18, 1, 0.28, 1),
+      transform 1.88s cubic-bezier(0.18, 1, 0.28, 1);
+    will-change: opacity, transform;
+  }
+
+  .domains__header [data-domains-abyss].domains-abyss-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+  }
+
+  .domains.index-atmos .domains__header .u-eyebrow {
+    color: rgba(248, 250, 255, 0.72);
+    letter-spacing: 0.28em;
+    margin-bottom: var(--space-md);
+  }
+
+  /* Match hero .hero__title-rest: Butler ultra-light, same scale + tracking as home h1 */
+  .domains.index-atmos .domains__header h2 {
+    font-family: var(--font-hero);
+    font-weight: 200;
+    font-style: normal;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    letter-spacing: 0;
+    word-spacing: normal;
+    line-height: 1.15;
+    color: var(--color-cream);
+    margin-bottom: var(--space-md);
+    text-shadow: none;
+  }
+
+  .domains.index-atmos .domains__header .domains__intro {
     max-width: 36rem;
-    margin-bottom: var(--space-lg);
+    margin-inline: auto;
+    margin-bottom: 0;
+    color: rgba(175, 192, 218, 0.82);
+    font-size: 1.015rem;
+    line-height: 1.7;
   }
 
   .domains__grid {
-    margin-top: var(--space-md);
+    margin-top: 0;
     display: grid;
-    gap: clamp(0.35rem, 0.9vw, 0.65rem);
+    gap: clamp(0.75rem, 2vw, 1.25rem);
     grid-template-columns: 1fr;
     align-items: stretch;
+    overflow: visible;
   }
 
   @media (min-width: 640px) {
@@ -681,31 +838,94 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     }
   }
 
+  /*
+    Camden-style domain cards (inspo HTML/CSS): radial shell, stacked inset shadows, clip-path frame,
+    3D slit + lumen + darken. Same shell color as inspo snippet on all variants. Lumen on when section is lit or card hover/focus.
+  */
   .card-domain {
+    --camden-offset: 0.65rem;
+    --camden-ax: min(3.25rem, 9vw);
     display: flex;
     flex-direction: column;
     position: relative;
-    padding: clamp(1.5rem, 3.2vw, 2.15rem);
+    isolation: isolate;
+    overflow: visible;
+    padding: clamp(1.15rem, 2.6vw, 1.65rem);
     text-decoration: none;
     color: inherit;
-    /* Default = Automotive: sharp top-left, large top-right; Marine & Aviation override */
-    border-radius: 1rem clamp(3rem, 8.5vw, 4.75rem) 1.125rem 1.125rem;
-    border: 2px solid var(--glass-border, rgba(255, 255, 255, 0.22));
-    backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.42));
-    -webkit-backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.42));
+    border: none;
+    border-radius: 1.75rem;
+    font-size: clamp(9px, min(1.05vw, 1.35vh), 12px);
     box-shadow:
-      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
-      0 8px 40px rgba(0, 0, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.28),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+      inset 0 1rem 0.2rem -1rem rgba(255, 255, 255, 0),
+      inset 0 -1rem 0.2rem -1rem rgba(0, 0, 0, 0),
+      0 -1rem 0.2rem -1rem rgba(255, 255, 255, 0),
+      0 1rem 0.2rem -1rem rgba(0, 0, 0, 0),
+      0 0 0 1px rgba(255, 255, 255, 0.18),
+      0 4px 4px 0 rgba(0, 0, 0, 0.22),
+      0 0 0 1px rgba(40, 48, 58, 0.85);
+    background: radial-gradient(circle at 50% 0%, #3a3a3a 0%, #1a1a1a 64%);
+    backdrop-filter: blur(14px) saturate(1.05);
+    -webkit-backdrop-filter: blur(14px) saturate(1.05);
     aspect-ratio: 3 / 4;
     max-height: min(34rem, 74vh);
     min-height: 18rem;
     transition:
-      transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.35s ease,
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
       background 0.35s ease;
+  }
+
+  .card-domain::before {
+    content: '';
+    display: block;
+    width: calc(100% + 2 * var(--camden-offset));
+    height: calc(100% + 2 * var(--camden-offset));
+    position: absolute;
+    left: calc(-1 * var(--camden-offset));
+    top: calc(-1 * var(--camden-offset));
+    margin: auto;
+    z-index: 1;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 0.06rem rgba(255, 255, 255, 0.12);
+    border-radius: 2.35rem;
+    clip-path: polygon(
+      var(--camden-ax) 0,
+      0 0,
+      0 var(--camden-ax),
+      var(--camden-ax) var(--camden-ax),
+      var(--camden-ax) calc(100% - var(--camden-ax)),
+      0 calc(100% - var(--camden-ax)),
+      0 100%,
+      var(--camden-ax) 100%,
+      var(--camden-ax) calc(100% - var(--camden-ax)),
+      calc(100% - var(--camden-ax)) calc(100% - var(--camden-ax)),
+      calc(100% - var(--camden-ax)) 100%,
+      100% 100%,
+      100% calc(100% - var(--camden-ax)),
+      calc(100% - var(--camden-ax)) calc(100% - var(--camden-ax)),
+      calc(100% - var(--camden-ax)) var(--camden-ax),
+      100% var(--camden-ax),
+      100% 0,
+      calc(100% - var(--camden-ax)) 0,
+      calc(100% - var(--camden-ax)) var(--camden-ax),
+      var(--camden-ax) var(--camden-ax)
+    );
+    transition:
+      width 0.4s ease-in-out,
+      height 0.4s ease-in-out,
+      left 0.4s ease-in-out,
+      top 0.4s ease-in-out,
+      border-radius 0.4s ease-in-out,
+      box-shadow 0.4s ease-in-out,
+      clip-path 0.4s ease-in-out;
+  }
+
+  .card-domain:hover::before {
+    --camden-offset: 0.4rem;
+    --camden-ax: min(4.5rem, 14vw);
+    border-radius: 2rem;
+    box-shadow: inset 0 0 0 0.08rem rgba(255, 255, 255, 0.08);
   }
 
   @media (max-width: 639px) {
@@ -716,115 +936,274 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     }
   }
 
-  .card-domain--marine {
-    background: linear-gradient(
-      155deg,
-      rgba(56, 120, 200, 0.22) 0%,
-      rgba(20, 45, 88, 0.18) 45%,
-      rgba(10, 22, 48, 0.24) 100%
-    );
-    border-color: rgba(180, 215, 255, 0.32);
-    border-radius: clamp(3rem, 8.5vw, 4.75rem) 1rem 1.125rem 1.125rem;
+  .card-domain__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
-  .card-domain--aviation {
-    background: linear-gradient(
-      165deg,
-      rgba(90, 160, 130, 0.2) 0%,
-      rgba(35, 72, 62, 0.18) 50%,
-      rgba(18, 42, 38, 0.22) 100%
-    );
-    border-color: rgba(195, 235, 210, 0.34);
-    border-radius: 1rem 1rem 1.125rem 1.125rem;
-    box-shadow:
-      0 8px 40px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(220, 245, 230, 0.22),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  .card-domain__light {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    perspective: 400px;
   }
 
-  .card-domain--automotive {
-    background: linear-gradient(
-      168deg,
-      rgba(255, 252, 248, 0.28) 0%,
-      rgba(248, 238, 228, 0.22) 48%,
-      rgba(235, 224, 210, 0.26) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.42);
-    backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.25));
-    -webkit-backdrop-filter: var(--glass-blur-card, blur(40px) saturate(1.25));
-    box-shadow:
-      0 8px 40px rgba(0, 0, 0, 0.18),
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      inset 0 -1px 0 rgba(16, 33, 53, 0.08);
+  .card-domain__slit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 64%;
+    height: 1.2rem;
+    transform: rotateX(-76deg);
+    background: #121212;
+    box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0);
+    transition: background 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  }
+
+  .card-domain__lumen {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    perspective: 400px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.45s ease-in-out;
+  }
+
+  .card-domain__lumen-min {
+    width: 70%;
+    height: 3rem;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.67));
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 2.5rem;
+    margin: auto;
+    transform: rotateX(-42deg);
+    opacity: 0.4;
+  }
+
+  .card-domain__lumen-mid {
+    width: 74%;
+    height: 13rem;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.67));
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 10em;
+    margin: auto;
+    transform: rotateX(-42deg);
+    filter: blur(1rem);
+    opacity: 0.8;
+    border-radius: 100% 100% 0 0;
+  }
+
+  .card-domain__lumen-hi {
+    width: 50%;
+    height: 13rem;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.67));
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 12em;
+    margin: auto;
+    transform: rotateX(22deg);
+    filter: blur(1rem);
+    opacity: 0.6;
+    border-radius: 100% 100% 0 0;
+  }
+
+  .card-domain__darken {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    perspective: 400px;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.45s ease-in-out;
+  }
+
+  .card-domain__darken-sl,
+  .card-domain__darken-ll,
+  .card-domain__darken-slt,
+  .card-domain__darken-srt {
+    transition: opacity 0.45s ease-in-out;
+  }
+
+  .card-domain__darken-sl {
+    width: 64%;
+    height: 10rem;
+    background: linear-gradient(#000, transparent);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 9.6em;
+    bottom: 0;
+    margin: auto;
+    filter: blur(0.2rem);
+    opacity: 0.1;
+    border-radius: 0 0 100% 100%;
+    transform: rotateX(-22deg);
+  }
+
+  .card-domain__darken-ll {
+    width: 62%;
+    height: 10rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.67), transparent);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 11em;
+    bottom: 0;
+    margin: auto;
+    filter: blur(0.8rem);
+    opacity: 0.4;
+    border-radius: 0 0 100% 100%;
+    transform: rotateX(22deg);
+  }
+
+  .card-domain__darken-slt {
+    width: 0.5rem;
+    height: 4rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.33), transparent);
+    position: absolute;
+    left: min(8%, 2.5rem);
+    right: auto;
+    top: 3.9em;
+    bottom: 0;
+    margin: auto;
+    opacity: 0.6;
+    border-radius: 0 0 100% 100%;
+    transform: skewY(42deg);
+  }
+
+  .card-domain__darken-srt {
+    width: 0.5rem;
+    height: 4rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.33), transparent);
+    position: absolute;
+    right: min(8%, 2.5rem);
+    left: auto;
+    top: 3.9em;
+    bottom: 0;
+    margin: auto;
+    opacity: 0.6;
+    border-radius: 0 0 100% 100%;
+    transform: skewY(-42deg);
+  }
+
+  .card-domain:hover .card-domain__slit,
+  .card-domain:focus-visible .card-domain__slit {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.45);
+  }
+
+  .card-domain:hover .card-domain__lumen,
+  .card-domain:focus-visible .card-domain__lumen {
+    opacity: 0.48;
+  }
+
+  .card-domain:hover .card-domain__darken,
+  .card-domain:focus-visible .card-domain__darken {
+    opacity: 0.8;
+  }
+
+  .card-domain:hover .card-domain__darken-sl,
+  .card-domain:focus-visible .card-domain__darken-sl {
+    opacity: 0.2;
+  }
+
+  .card-domain:hover .card-domain__darken-ll,
+  .card-domain:hover .card-domain__darken-slt,
+  .card-domain:hover .card-domain__darken-srt,
+  .card-domain:focus-visible .card-domain__darken-ll,
+  .card-domain:focus-visible .card-domain__darken-slt,
+  .card-domain:focus-visible .card-domain__darken-srt {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-domain::before,
+    .card-domain__slit,
+    .card-domain__lumen,
+    .card-domain__darken,
+    .card-domain__darken-sl,
+    .card-domain__darken-ll,
+    .card-domain__darken-slt,
+    .card-domain__darken-srt {
+      transition: none;
+    }
   }
 
   /* Scroll-into-view reveal (IntersectionObserver adds `.active`) */
   .card-domain[data-domain-reveal] {
-    opacity: 0.3;
-    transform: scale(0.95) translateY(30px);
-    filter: brightness(0.6);
+    opacity: 0;
+    transform: scale(0.97) translate3d(0, 3.25rem, 0);
+    filter: brightness(0.55);
+    pointer-events: none;
     transition:
-      opacity 0.6s ease,
-      transform 0.6s ease,
-      filter 0.6s ease,
-      box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.35s ease,
+      opacity 1.48s cubic-bezier(0.18, 1, 0.26, 1),
+      transform 1.48s cubic-bezier(0.18, 1, 0.26, 1),
+      filter 1.48s cubic-bezier(0.18, 1, 0.26, 1),
+      box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
       background 0.35s ease;
   }
 
   .card-domain[data-domain-reveal].active {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1) translate3d(0, 0, 0);
     filter: brightness(1);
+    pointer-events: auto;
   }
 
   .card-domain[data-domain-reveal]:not(.active):hover {
-    transform: scale(0.95) translateY(30px);
-    box-shadow:
-      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
-      0 8px 40px rgba(0, 0, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.28),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    transform: scale(0.97) translate3d(0, 3.25rem, 0);
   }
 
   .card-domain[data-domain-reveal].active:hover {
-    transform: translateY(-10px);
+    transform: translateY(-0.35rem);
     box-shadow:
-      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
-      0 28px 60px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
-    border-color: rgba(255, 255, 255, 0.42);
-  }
-
-  .card-domain[data-domain-reveal].active.card-domain--automotive:hover {
-    box-shadow:
-      0 26px 56px rgba(0, 0, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.65),
-      inset 0 -1px 0 rgba(16, 33, 53, 0.1);
-    border-color: rgba(255, 255, 255, 0.52);
+      inset 0 1rem 0.12rem -1rem rgba(255, 255, 255, 0.35),
+      inset 0 -3.5rem 2.5rem -2.5rem rgba(0, 0, 0, 0.35),
+      0 -1rem 0.2rem -1rem rgba(255, 255, 255, 0.2),
+      0 1rem 0.2rem -1rem rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.22),
+      0 12px 28px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(32, 40, 52, 0.9);
   }
 
   .card-domain[data-domain-reveal].active:active {
-    transform: translateY(-4px);
+    transform: translateY(-0.12rem);
   }
 
   .card-domain:hover {
-    transform: translateY(-10px);
+    transform: translateY(-0.35rem);
     box-shadow:
-      var(--glass-shadow-diffuse, 0 0 4rem rgba(0, 0, 0, 0.3)),
-      0 28px 60px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
-    border-color: rgba(255, 255, 255, 0.42);
-  }
-
-  .card-domain--automotive:hover {
-    box-shadow:
-      0 26px 56px rgba(0, 0, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.65),
-      inset 0 -1px 0 rgba(16, 33, 53, 0.1);
-    border-color: rgba(255, 255, 255, 0.52);
+      inset 0 1rem 0.12rem -1rem rgba(255, 255, 255, 0.28),
+      inset 0 -3.5rem 2.5rem -2.5rem rgba(0, 0, 0, 0.32),
+      0 -1rem 0.2rem -1rem rgba(255, 255, 255, 0.18),
+      0 1rem 0.2rem -1rem rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 12px 28px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(32, 40, 52, 0.88);
   }
 
   .card-domain:focus-visible {
@@ -833,7 +1212,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   .card-domain:active {
-    transform: translateY(-4px);
+    transform: translateY(-0.12rem);
   }
 
   .card-domain__title {
@@ -844,11 +1223,6 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     letter-spacing: -0.02em;
     color: #fff;
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
-  }
-
-  .card-domain--automotive .card-domain__title {
-    color: var(--color-navy);
-    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.45);
   }
 
   .card-domain__visual {
@@ -866,25 +1240,18 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     overflow: hidden;
   }
 
-  /* Inner “panes”: translucent tint only — blur comes from parent card + local backdrop */
-  .card-domain__visual--marine {
-    background: linear-gradient(
-      180deg,
-      rgba(80, 130, 200, 0.28) 0%,
-      rgba(25, 45, 78, 0.35) 55%,
-      rgba(8, 16, 32, 0.42) 100%
-    );
-  }
-
+  /* Photo panes: same neutral chrome on all three (matches Camden card, not per-vertical tint) */
+  .card-domain__visual--marine,
   .card-domain__visual--aviation {
     position: relative;
     padding: 0;
-    background: rgba(12, 28, 24, 0.2);
+    background: rgba(24, 24, 26, 0.55);
     box-shadow:
-      inset 0 0 0 1px rgba(200, 235, 215, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
+  .card-domain__visual--marine::after,
   .card-domain__visual--aviation::after {
     content: '';
     position: absolute;
@@ -894,11 +1261,12 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(60, 120, 95, 0.18) 0%,
-      rgba(12, 32, 28, 0.42) 100%
+      rgba(48, 48, 52, 0.35) 0%,
+      rgba(18, 18, 20, 0.5) 100%
     );
   }
 
+  .card-domain__visual--marine .card-domain__img,
   .card-domain__visual--aviation .card-domain__img {
     z-index: 0;
   }
@@ -914,16 +1282,26 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   .card-domain__visual--automotive {
+    position: relative;
+    padding: 0;
+    background: rgba(24, 24, 26, 0.55);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .card-domain__visual--automotive::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.38) 0%,
-      rgba(210, 215, 225, 0.32) 45%,
-      rgba(150, 158, 175, 0.4) 100%
+      rgba(48, 48, 52, 0.35) 0%,
+      rgba(18, 18, 20, 0.5) 100%
     );
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -10px 24px rgba(16, 33, 53, 0.12);
   }
 
   .card-domain__body {
@@ -939,11 +1317,6 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   }
 
-  .card-domain--automotive .card-domain__body p {
-    color: rgba(16, 33, 53, 0.78);
-    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.4);
-  }
-
   .card-domain__cta {
     margin-top: auto;
     padding-top: 1.1rem;
@@ -955,30 +1328,41 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     color: var(--color-accent);
   }
 
-  .card-domain--automotive .card-domain__cta {
-    color: var(--color-navy);
-    letter-spacing: 0.24em;
-    opacity: 0.85;
-  }
-
-  .card-domain--automotive:hover .card-domain__cta {
-    opacity: 1;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .card-domain {
       transition: none;
+    }
+
+    .domains__header [data-domains-abyss] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      will-change: auto;
     }
 
     .card-domain[data-domain-reveal] {
       opacity: 1;
       transform: none;
       filter: brightness(1);
+      pointer-events: auto;
     }
 
     .card-domain:hover,
     .card-domain:active {
       transform: none;
+    }
+
+    .card-domain__lumen {
+      opacity: 0.38;
+    }
+
+    .card-domain__slit {
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .card-domain__darken {
+      opacity: 0.75;
     }
   }
 
@@ -989,22 +1373,17 @@ import aviationTn from '../../assets/aviation-tn.jpg';
       -webkit-backdrop-filter: none !important;
     }
 
-    .card-domain--marine {
-      background: rgba(18, 28, 48, 0.96);
-    }
-
-    .card-domain--aviation {
-      background: rgba(22, 38, 34, 0.96);
-    }
-
-    .card-domain--automotive {
-      background: rgba(245, 240, 232, 0.96);
+    .card-domain {
+      background: #2a2a2a;
     }
   }
 
-  .trust {
-    background: var(--color-navy);
-    border-block: 1px solid rgba(239, 236, 231, 0.06);
+  .trust.index-atmos {
+    background:
+      radial-gradient(ellipse 100% 80% at 50% 0%, rgba(60, 92, 138, 0.1) 0%, transparent 42%),
+      radial-gradient(ellipse 95% 90% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.35) 100%),
+      linear-gradient(180deg, #05080e 0%, #080f18 45%, #060a10 100%);
+    border-block: 1px solid rgba(239, 236, 231, 0.05);
   }
 
   .trust__inner {
@@ -1015,13 +1394,45 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     text-align: center;
     font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-cream-muted);
+    color: rgba(198, 206, 220, 0.42);
   }
 
-  .process-preview {
-    background: linear-gradient(180deg, var(--color-navy) 0%, #0d1f35 100%);
+  .process-preview.index-atmos {
+    background:
+      radial-gradient(ellipse 90% 55% at 18% 12%, rgba(52, 88, 138, 0.12) 0%, transparent 48%),
+      radial-gradient(ellipse 80% 60% at 88% 88%, rgba(38, 72, 62, 0.08) 0%, transparent 45%),
+      radial-gradient(ellipse 100% 85% at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.32) 100%),
+      linear-gradient(178deg, #05080e 0%, #08121c 42%, #0a1828 100%);
+  }
+
+  .process-preview.index-atmos .u-eyebrow {
+    color: rgba(232, 236, 245, 0.48);
+    letter-spacing: 0.26em;
+  }
+
+  .process-preview.index-atmos > .u-container > div > h2 {
+    color: #f2f5fa;
+    font-weight: 500;
+    font-size: clamp(1.85rem, 3.6vw, 2.55rem);
+    letter-spacing: -0.025em;
+    text-shadow:
+      0 2px 28px rgba(0, 0, 0, 0.5),
+      0 0 64px rgba(88, 128, 188, 0.1);
+  }
+
+  .process-preview.index-atmos > .u-container > div > .u-muted {
+    color: rgba(168, 186, 214, 0.78);
+    line-height: 1.65;
+  }
+
+  .process-preview.index-atmos .process-list li {
+    color: rgba(168, 186, 214, 0.72);
+  }
+
+  .process-preview.index-atmos .process-list strong {
+    color: rgba(236, 240, 248, 0.92);
   }
 
   .process-preview__grid {
@@ -1036,9 +1447,25 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     }
   }
 
-  .cta-band {
-    background: #0a1628;
-    border-top: 1px solid rgba(239, 236, 231, 0.06);
+  .cta-band.index-atmos {
+    background:
+      radial-gradient(ellipse 95% 70% at 50% -10%, rgba(72, 108, 158, 0.12) 0%, transparent 46%),
+      radial-gradient(ellipse 100% 90% at 50% 120%, rgba(32, 52, 88, 0.2) 0%, transparent 42%),
+      radial-gradient(ellipse 98% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.45) 100%),
+      linear-gradient(172deg, #04060c 0%, #070d16 55%, #050810 100%);
+    border-top: 1px solid rgba(239, 236, 231, 0.05);
+  }
+
+  .cta-band.index-atmos > .u-container > div > h2 {
+    color: #f2f5fa;
+    font-weight: 500;
+    font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .cta-band.index-atmos > .u-container > div > .u-muted {
+    color: rgba(168, 186, 214, 0.76);
   }
 
   .cta-band__inner {

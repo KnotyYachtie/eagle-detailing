@@ -18,6 +18,18 @@
     height: var(--hero-wave-strip-height, clamp(12.5rem, 21vw, 17rem));
     min-height: 9rem;
     max-height: 18rem;
+    /* Subtle navy cast over the strip (replaces old full-hero blue veil in this band only) */
+    --wave-navy-tint-a: rgba(16, 33, 53, 0.1);
+    --wave-navy-tint-b: rgba(8, 26, 52, 0.14);
+  }
+
+  .waves-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(180deg, var(--wave-navy-tint-a) 0%, var(--wave-navy-tint-b) 100%);
   }
 
   .wave {
@@ -33,8 +45,8 @@
     opacity: var(--opacity, 0.16);
     animation: wave-roll calc(var(--speed, 22) * 1s) linear infinite;
     backface-visibility: hidden;
-    /* Slight soften so stacked dark layers read as haze, not hard ribbons */
-    filter: blur(0.45px);
+    /* Slight soften + hair of cool shift so motion reads navy-adjacent, not flat neutral */
+    filter: blur(0.45px) saturate(1.08) hue-rotate(6deg);
   }
 
   .wave--1 {
@@ -73,7 +85,7 @@
   @media (max-width: 480px) {
     .wave {
       height: calc(var(--height, 18) * 0.82vh);
-      filter: blur(0.35px);
+      filter: blur(0.35px) saturate(1.08) hue-rotate(6deg);
     }
   }
 
