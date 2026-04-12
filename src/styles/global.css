@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
+@font-face {
+  font-family: 'Butler';
+  src: url('../../assets/fonts/Butler_Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Butler';
+  src: url('../../assets/fonts/Butler_Ultra_Light.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-navy: #102135;
   --color-navy-ink: #072b53;
@@ -7,6 +23,7 @@
   --color-cream-muted: rgba(239, 236, 231, 0.72);
   --color-accent: #c4b896;
   --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-hero: 'Butler', var(--font-display);
   --font-ui: 'DM Sans', system-ui, sans-serif;
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -95,6 +112,21 @@ h3 {
 h1 {
   font-size: clamp(2.25rem, 5vw, 3.75rem);
   margin: 0 0 var(--space-sm);
+}
+
+/* Home hero: Butler (weights on spans). Letter/word spacing lives in index.astro so it isn’t lost to CSS chunk order. */
+section.hero .hero__content > h1.hero__title {
+  font-family: var(--font-hero);
+}
+
+section.hero .hero__content > h1.hero__title .hero__title-lead {
+  display: block;
+  font-weight: 400;
+}
+
+section.hero .hero__content > h1.hero__title .hero__title-rest {
+  display: block;
+  font-weight: 200;
 }
 
 h2 {

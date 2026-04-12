@@ -1,5 +1,5 @@
 ---
-import { NAV, SITE } from '../site';
+import { NAV_ABOUT_CHILDREN, NAV_MAIN, NAV_SERVICES, SITE } from '../site';
 import eagleSvgRaw from '../../assets/eagle.svg?raw';
 
 interface Props {
@@ -8,6 +8,10 @@ interface Props {
 }
 
 const { currentPath = Astro.url.pathname, transparent = false } = Astro.props;
+
+const servicesOpen = NAV_SERVICES.some(({ href }) => currentPath === href);
+const aboutOpen =
+  NAV_ABOUT_CHILDREN.some(({ href }) => currentPath === href) || currentPath === '/about';
 
 /* Inline mark so paths use currentColor; strip root sizing so header CSS controls width */
 const eagleForHeader = eagleSvgRaw.replace(
@@ -50,8 +54,40 @@ const eagleForHeader = eagleSvgRaw.replace(
     </button>
     <nav class="site-header__nav" id="site-nav" aria-label="Primary">
       <ul class="site-header__list">
+        <li class="site-header__group" data-nav-group="services" data-services-current={servicesOpen ? 'true' : 'false'}>
+          <button
+            type="button"
+            class:list={[
+              'site-header__link',
+              'site-header__subtrigger',
+              servicesOpen && 'is-active',
+            ]}
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="nav-services-sub"
+            id="nav-services-trigger"
+            data-services-toggle
+          >
+            Services
+          </button>
+          <ul class="site-header__sublist" id="nav-services-sub" role="list">
+            {
+              NAV_SERVICES.map(({ href, label }) => (
+                <li>
+                  <a
+                    href={href}
+                    class:list={['site-header__link', 'site-header__sublink', currentPath === href && 'is-active']}
+                    data-nav-link
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
         {
-          NAV.map(({ href, label }) => (
+          NAV_MAIN.map(({ href, label }) => (
             <li>
               <a href={href} class:list={['site-header__link', currentPath === href && 'is-active']} data-nav-link>
                 {label}
@@ -59,6 +95,34 @@ const eagleForHeader = eagleSvgRaw.replace(
             </li>
           ))
         }
+        <li class="site-header__group" data-nav-group="about" data-about-current={aboutOpen ? 'true' : 'false'}>
+          <button
+            type="button"
+            class:list={['site-header__link', 'site-header__subtrigger', aboutOpen && 'is-active']}
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="nav-about-sub"
+            id="nav-about-trigger"
+            data-about-toggle
+          >
+            About
+          </button>
+          <ul class="site-header__sublist" id="nav-about-sub" role="list">
+            {
+              NAV_ABOUT_CHILDREN.map(({ href, label }) => (
+                <li>
+                  <a
+                    href={href}
+                    class:list={['site-header__link', 'site-header__sublink', currentPath === href && 'is-active']}
+                    data-nav-link
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
       </ul>
       <div class="site-header__nav-extras">
         <a href={`tel:${SITE.phoneTel}`}>Call {SITE.phoneDisplay}</a>
@@ -77,19 +141,88 @@ const eagleForHeader = eagleSvgRaw.replace(
 </header>
 
 <script>
+  const mq = window.matchMedia('(max-width: 960px)');
+
   const btn = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('site-nav');
   const links = document.querySelectorAll('[data-nav-link]');
+  const servicesGroup = document.querySelector('[data-nav-group="services"]');
+  const aboutGroup = document.querySelector('[data-nav-group="about"]');
+  const servicesBtn = document.querySelector('[data-services-toggle]');
+  const aboutBtn = document.querySelector('[data-about-toggle]');
+
+  function setServicesExpanded(open: boolean) {
+    if (!servicesGroup || !servicesBtn) return;
+    servicesGroup.classList.toggle('is-services-open', open);
+    servicesBtn.setAttribute('aria-expanded', String(open));
+    if (open && aboutGroup && aboutBtn) {
+      aboutGroup.classList.remove('is-about-open');
+      aboutBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function setAboutExpanded(open: boolean) {
+    if (!aboutGroup || !aboutBtn) return;
+    aboutGroup.classList.toggle('is-about-open', open);
+    aboutBtn.setAttribute('aria-expanded', String(open));
+    if (open && servicesGroup && servicesBtn) {
+      servicesGroup.classList.remove('is-services-open');
+      servicesBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function collapseSubmenusIfMobile() {
+    if (!mq.matches) return;
+    setServicesExpanded(false);
+    setAboutExpanded(false);
+  }
+
   if (btn && nav) {
     btn.addEventListener('click', () => {
       const open = nav.classList.toggle('is-open');
       btn.setAttribute('aria-expanded', String(open));
+      if (!open) {
+        collapseSubmenusIfMobile();
+      } else if (mq.matches) {
+        if (servicesGroup?.dataset.servicesCurrent === 'true') {
+          setServicesExpanded(true);
+        }
+        if (aboutGroup?.dataset.aboutCurrent === 'true') {
+          setAboutExpanded(true);
+        }
+      }
     });
-    links.forEach((l) => l.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      btn.setAttribute('aria-expanded', 'false');
-    }));
+    links.forEach((l) =>
+      l.addEventListener('click', () => {
+        nav.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        collapseSubmenusIfMobile();
+      })
+    );
   }
+
+  if (servicesGroup && servicesBtn) {
+    servicesBtn.addEventListener('click', () => {
+      if (!mq.matches) return;
+      const next = !servicesGroup.classList.contains('is-services-open');
+      setServicesExpanded(next);
+    });
+  }
+
+  if (aboutGroup && aboutBtn) {
+    aboutBtn.addEventListener('click', () => {
+      if (!mq.matches) return;
+      const next = !aboutGroup.classList.contains('is-about-open');
+      setAboutExpanded(next);
+    });
+  }
+
+  mq.addEventListener('change', (e) => {
+    if (!e.matches) {
+      setServicesExpanded(false);
+      setAboutExpanded(false);
+    }
+  });
 </script>
 
 <style>
@@ -234,6 +367,149 @@ const eagleForHeader = eagleSvgRaw.replace(
     color: #fff;
   }
 
+  .site-header__group {
+    position: relative;
+  }
+
+  /* Reset button chrome only — do not use `font: inherit` or it overrides .site-header__link sizing */
+  .site-header__subtrigger {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-ui);
+    text-align: inherit;
+    line-height: inherit;
+  }
+
+  .site-header__sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 961px) {
+    /* Floating submenu: no card, text only, drops in under Services */
+    .site-header__sublist {
+      position: absolute;
+      top: calc(100% + 0.25rem);
+      left: 0;
+      transform: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      padding: 0;
+      margin: 0;
+      min-width: max-content;
+      background: none;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      visibility: hidden;
+      pointer-events: none;
+      /* Stay “visible” until row fades so exit motion can play (mirror of enter) */
+      transition: visibility 0s linear 0.38s;
+      z-index: 60;
+    }
+
+    /* Invisible hover bridge Services ↔ links */
+    .site-header__sublist::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -0.65rem;
+      height: 0.65rem;
+    }
+
+    .site-header__group:hover .site-header__sublist,
+    .site-header__group:focus-within .site-header__sublist {
+      visibility: visible;
+      pointer-events: auto;
+      transition: visibility 0s;
+    }
+
+    .site-header__sublist > li {
+      margin: 0;
+      opacity: 0;
+      transform: translateY(-0.45rem);
+      transition:
+        opacity 0.22s var(--ease-out),
+        transform 0.26s var(--ease-out);
+      transition-delay: 0s;
+    }
+
+    /* Enter: top → bottom */
+    .site-header__group:hover .site-header__sublist > li,
+    .site-header__group:focus-within .site-header__sublist > li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .site-header__group:hover .site-header__sublist > li:nth-child(1),
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(1) {
+      transition-delay: 0.04s;
+    }
+
+    .site-header__group:hover .site-header__sublist > li:nth-child(2),
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(2) {
+      transition-delay: 0.1s;
+    }
+
+    .site-header__group:hover .site-header__sublist > li:nth-child(3),
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(3) {
+      transition-delay: 0.16s;
+    }
+
+    /* Exit: bottom → top (reverse stagger) */
+    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(1) {
+      transition-delay: 0.16s;
+    }
+
+    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(2) {
+      transition-delay: 0.08s;
+    }
+
+    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(3) {
+      transition-delay: 0s;
+    }
+
+    .site-header__sublist .site-header__sublink {
+      display: block;
+      padding: 0.15rem 0;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      line-height: 1.25;
+      white-space: nowrap;
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
+    }
+
+    .site-header--transparent .site-header__sublist .site-header__sublink {
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  @media (min-width: 961px) and (prefers-reduced-motion: reduce) {
+    .site-header__sublist {
+      transition: none;
+    }
+
+    .site-header__sublist > li {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li {
+      transition-delay: 0s;
+    }
+  }
+
   .site-header__actions {
     display: flex;
     gap: var(--space-sm);
@@ -287,6 +563,33 @@ const eagleForHeader = eagleSvgRaw.replace(
       flex-direction: column;
       align-items: flex-start;
       gap: var(--space-md);
+    }
+
+    .site-header__group {
+      width: 100%;
+    }
+
+    .site-header__sublist {
+      display: none;
+      margin-top: 0.5rem;
+      padding-left: 0;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .site-header__group.is-services-open .site-header__sublist,
+    .site-header__group.is-about-open .site-header__sublist {
+      display: block;
+    }
+
+    .site-header__sublist .site-header__sublink {
+      display: block;
+      padding: 0.35rem 0;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      line-height: 1.25;
     }
 
     .site-header__link {

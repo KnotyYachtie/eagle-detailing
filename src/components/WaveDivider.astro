@@ -15,7 +15,7 @@
     line-height: 0;
     margin-bottom: -1px;
     overflow: hidden;
-    height: clamp(12.5rem, 21vw, 17rem);
+    height: var(--hero-wave-strip-height, clamp(12.5rem, 21vw, 17rem));
     min-height: 9rem;
     max-height: 18rem;
   }
@@ -71,10 +71,6 @@
   }
 
   @media (max-width: 480px) {
-    .waves-wrap {
-      height: clamp(10.5rem, 26vw, 14rem);
-    }
-
     .wave {
       height: calc(var(--height, 18) * 0.82vh);
       filter: blur(0.35px);

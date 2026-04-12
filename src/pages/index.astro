@@ -21,39 +21,33 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     </div>
     <div class="hero__waves">
       <WaveDivider />
-      <div class="hero__metrics" aria-label="Company highlights" role="region">
-        <div class="hero__metrics-inner u-container">
-          <div class="hero__metric" data-count-row>
-            <p class="hero__metric-value">
-              <span class="hero__metric-num" data-count-to="15">0</span><span class="hero__metric-suffix">+</span>
-            </p>
-            <p class="hero__metric-label">Years of excellence</p>
-          </div>
-          <div class="hero__metric" data-count-row>
-            <p class="hero__metric-value">
-              <span class="hero__metric-num" data-count-to="500">0</span><span class="hero__metric-suffix">+</span>
-            </p>
-            <p class="hero__metric-label">Details completed</p>
-          </div>
-          <div class="hero__metric" data-count-row>
-            <p class="hero__metric-value">
-              <span class="hero__metric-num" data-count-to="3">0</span>
-            </p>
-            <p class="hero__metric-label">Domains covered</p>
-          </div>
-          <div class="hero__metric" data-count-row>
-            <p class="hero__metric-value">
-              <span class="hero__metric-num" data-count-to="50">0</span><span class="hero__metric-suffix">+</span>
-            </p>
-            <p class="hero__metric-label">South Florida cities</p>
-          </div>
+    </div>
+    <div class="hero__blue-veil" aria-hidden="true"></div>
+    <div class="hero__metrics" aria-label="Company highlights" role="region">
+      <div class="hero__metrics-inner u-container">
+        <div class="hero__metric" data-count-row>
+          <p class="hero__metric-value">
+            <span class="hero__metric-num" data-count-to="5">0</span><span class="hero__metric-suffix">+</span>
+          </p>
+          <p class="hero__metric-label">Years of excellence</p>
+        </div>
+        <div class="hero__metric hero__metric--text">
+          <p class="hero__metric-value hero__metric-value--text">Fully insured</p>
+          <p class="hero__metric-label" aria-hidden="true">&nbsp;</p>
+        </div>
+        <div class="hero__metric" data-count-row>
+          <p class="hero__metric-value">
+            <span class="hero__metric-num" data-count-to="100">0</span><span class="hero__metric-suffix">+</span>
+          </p>
+          <p class="hero__metric-label">Projects completed</p>
         </div>
       </div>
     </div>
     <div class="hero__content u-container">
       <p class="u-eyebrow">Fort Lauderdale · South Florida</p>
       <h1 class="hero__title">
-        Precision detailing for <em>yachts</em>, <em>aircraft</em> &amp; <em>exceptional</em> automobiles
+        <span class="hero__title-lead">Expert care for</span>
+        <span class="hero__title-rest">private vessels, aircraft and collector automobiles.</span>
       </h1>
       <p class="hero__lede">
         Paint Correction, ceramic protection, and disciplined maintenance — delivered mobile to marinas, FBOs, and
@@ -182,6 +176,8 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   .hero {
     position: relative;
     z-index: 2;
+    /* Shared with WaveDivider strip + metrics band height */
+    --hero-wave-strip-height: clamp(12.5rem, 21vw, 17rem);
     /*
       Fill the visible viewport so the wave sits flush with the bottom edge on load
       (92vh + 900px cap left a strip of .domains backdrop showing — scales wrong per display).
@@ -196,9 +192,14 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     overflow-x: hidden;
   }
 
+  @media (max-width: 480px) {
+    .hero {
+      --hero-wave-strip-height: clamp(10.5rem, 26vw, 14rem);
+    }
+  }
+
   /*
-    Wave strip = SVG height only (no extra min-height, no fill “banner” under the curve).
-    Metrics are absolutely stacked on that same box so they read as part of the wave, not a second bar.
+    Wave strip = CSS wave layers only; metrics sit above .hero__blue-veil (sibling) so stats stay legible.
   */
   .hero__waves {
     position: absolute;
@@ -211,6 +212,15 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     box-sizing: border-box;
   }
 
+  /* Very light brand navy over photo + waves; under headline/metrics/buttons */
+  .hero__blue-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: rgba(16, 33, 53, 0.11);
+  }
+
   .hero__waves :global(.waves-wrap) {
     display: block;
     line-height: 0;
@@ -221,9 +231,9 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
     bottom: 0;
-    z-index: 1;
+    height: var(--hero-wave-strip-height);
+    z-index: 4;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -236,7 +246,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
 
   .hero__metrics-inner {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
     width: 100%;
     max-width: 56rem;
@@ -244,7 +254,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     padding-bottom: 0.4rem;
     line-height: normal;
     overflow: visible;
-    transform: translateY(-2cm);
+    transform: translateY(-1cm);
   }
 
   .hero__metric {
@@ -299,6 +309,22 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     color: rgba(239, 236, 231, 0.55);
     line-height: 1.35;
     overflow: visible;
+  }
+
+  .hero__metric--text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.25rem;
+  }
+
+  .hero__metric-value--text {
+    font-size: clamp(1rem, 2.6vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-variant-numeric: normal;
   }
 
   .hero__media {
@@ -419,20 +445,30 @@ import aviationTn from '../../assets/aviation-tn.jpg';
 
   .hero__content {
     position: relative;
-    z-index: 3;
+    z-index: 5;
+    align-self: flex-start;
+    box-sizing: border-box;
+    /* margin-top shifts the whole cluster in the flex layout (padding alone was easy to miss) */
+    margin-top: clamp(1.5rem, 5vw, 3.25rem);
     padding-top: calc(var(--header-h) + var(--space-md));
     padding-bottom: var(--space-lg);
     max-width: 42rem;
   }
 
-  /* Eyebrow + type sit on the solid top band — keep legible without heavy drop-shadow */
+  /* Match header Instagram / accent chrome */
   .hero__content > .u-eyebrow {
-    color: rgba(239, 236, 231, 0.78);
+    color: var(--color-accent);
     letter-spacing: 0.2em;
   }
 
   .hero__title {
     font-style: normal;
+  }
+
+  /* Same specificity as global, but in this page’s CSS so it always applies after the reset bundle */
+  :global(section.hero .hero__content > h1.hero__title) {
+    letter-spacing: 0;
+    word-spacing: normal;
   }
 
   .hero__title em {
