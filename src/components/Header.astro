@@ -86,15 +86,6 @@ const eagleForHeader = eagleSvgRaw.replace(
             }
           </ul>
         </li>
-        {
-          NAV_MAIN.map(({ href, label }) => (
-            <li>
-              <a href={href} class:list={['site-header__link', currentPath === href && 'is-active']} data-nav-link>
-                {label}
-              </a>
-            </li>
-          ))
-        }
         <li class="site-header__group" data-nav-group="about" data-about-current={aboutOpen ? 'true' : 'false'}>
           <button
             type="button"
@@ -123,20 +114,17 @@ const eagleForHeader = eagleSvgRaw.replace(
             }
           </ul>
         </li>
+        {
+          NAV_MAIN.map(({ href, label }) => (
+            <li>
+              <a href={href} class:list={['site-header__link', currentPath === href && 'is-active']} data-nav-link>
+                {label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
-      <div class="site-header__nav-extras">
-        <a href={`tel:${SITE.phoneTel}`}>Call {SITE.phoneDisplay}</a>
-        <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a>
-      </div>
     </nav>
-    <div class="site-header__actions">
-      <a class="site-header__icon-link" href={`tel:${SITE.phoneTel}`} aria-label={`Call ${SITE.phoneDisplay}`}>
-        Call
-      </a>
-      <a class="site-header__icon-link" href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">
-        Instagram
-      </a>
-    </div>
   </div>
 </header>
 
@@ -265,10 +253,6 @@ const eagleForHeader = eagleSvgRaw.replace(
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
   }
 
-  .site-header--transparent .site-header__icon-link {
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
-  }
-
   .site-header--transparent .site-header__menu-btn {
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
   }
@@ -289,10 +273,13 @@ const eagleForHeader = eagleSvgRaw.replace(
     text-decoration: none;
     color: var(--color-cream);
     margin-right: auto;
+    opacity: 0.82;
+    transition: opacity 0.2s var(--ease-out), color 0.2s var(--ease-out);
   }
 
   .site-header__brand:hover {
     color: #fff;
+    opacity: 1;
   }
 
   .site-header__logo {
@@ -337,9 +324,10 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   .site-header__nav {
-    flex: 1;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    margin-left: auto;
   }
 
   .site-header__list {
@@ -349,7 +337,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem 1.25rem;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   .site-header__link {
@@ -510,29 +498,6 @@ const eagleForHeader = eagleSvgRaw.replace(
     }
   }
 
-  .site-header__actions {
-    display: flex;
-    gap: var(--space-sm);
-    flex-shrink: 0;
-  }
-
-  .site-header__icon-link {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--color-accent);
-  }
-
-  .site-header__icon-link:hover {
-    color: #fff;
-  }
-
-  .site-header__nav-extras {
-    display: none;
-  }
-
   @media (max-width: 960px) {
     .site-header__menu-btn {
       display: block;
@@ -551,6 +516,8 @@ const eagleForHeader = eagleSvgRaw.replace(
       align-items: flex-start;
       justify-content: flex-start;
       overflow-y: auto;
+      margin-left: 0;
+      flex: none;
     }
 
     .site-header__nav.is-open {
@@ -562,6 +529,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     .site-header__list {
       flex-direction: column;
       align-items: flex-start;
+      justify-content: flex-start;
       gap: var(--space-md);
     }
 
@@ -596,26 +564,5 @@ const eagleForHeader = eagleSvgRaw.replace(
       font-size: 1rem;
     }
 
-    .site-header__actions {
-      display: none;
-    }
-
-    .site-header__nav-extras {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-      margin-top: var(--space-lg);
-      padding-top: var(--space-lg);
-      border-top: 1px solid rgba(239, 236, 231, 0.1);
-    }
-
-    .site-header__nav-extras a {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--color-accent);
-    }
   }
 </style>

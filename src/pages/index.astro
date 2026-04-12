@@ -27,13 +27,12 @@ import aviationTn from '../../assets/aviation-tn.jpg';
       <div class="hero__metrics-inner u-container">
         <div class="hero__metric" data-count-row>
           <p class="hero__metric-value">
-            <span class="hero__metric-num" data-count-to="5">0</span><span class="hero__metric-suffix">+</span>
+            <span class="hero__metric-num" data-count-to="5">0</span>
           </p>
           <p class="hero__metric-label">Years of excellence</p>
         </div>
-        <div class="hero__metric hero__metric--text">
-          <p class="hero__metric-value hero__metric-value--text">Fully insured</p>
-          <p class="hero__metric-label" aria-hidden="true">&nbsp;</p>
+        <div class="hero__metric">
+          <p class="hero__metric-value hero__metric-value--text">Licensed & insured</p>
         </div>
         <div class="hero__metric" data-count-row>
           <p class="hero__metric-value">
@@ -54,7 +53,13 @@ import aviationTn from '../../assets/aviation-tn.jpg';
         private collections.
       </p>
       <div class="hero__actions">
-        <a class="u-btn hero__cta" href="/contact">Request a quote</a>
+        <a class="u-btn hero__cta" href="/contact">
+          <!-- SVG frame: David Conner btn-1 (stroke-dash) — https://codepen.io/karimbalaa/pen/qERbBY -->
+          <svg class="hero__cta-border" aria-hidden="true" focusable="false">
+            <rect x="0" y="0" width="100%" height="100%" rx="6" ry="6" fill="none"></rect>
+          </svg>
+          <span class="hero__cta-label">Request a quote</span>
+        </a>
       </div>
     </div>
   </section>
@@ -125,7 +130,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     <div class="u-container trust__inner">
       <p>Serving South Florida</p>
       <p>Private clients</p>
-      <p>Fully insured</p>
+      <p>Licensed & insured</p>
     </div>
   </section>
   <section class="u-section process-preview">
@@ -217,7 +222,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     inset: 0;
     z-index: 3;
     pointer-events: none;
-    background: rgba(16, 33, 53, 0.11);
+    background: rgba(16, 33, 53, 0.16);
   }
 
   .hero__waves :global(.waves-wrap) {
@@ -246,6 +251,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   .hero__metrics-inner {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
     gap: 0;
     width: 100%;
     max-width: 56rem;
@@ -257,11 +263,19 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   .hero__metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 0.35rem 0.4rem 0.45rem;
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     box-sizing: border-box;
     overflow: visible;
+  }
+
+  .hero__metric[data-count-row] {
+    gap: 0.28rem;
   }
 
   .hero__metric:last-child {
@@ -298,7 +312,7 @@ import aviationTn from '../../assets/aviation-tn.jpg';
   }
 
   .hero__metric-label {
-    margin: 0.28rem 0 0;
+    margin: 0;
     padding-bottom: 0.08rem;
     font-family: var(--font-ui);
     font-size: clamp(0.54rem, 1.15vw, 0.72rem);
@@ -310,21 +324,16 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     overflow: visible;
   }
 
-  .hero__metric--text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 3.25rem;
-  }
-
   .hero__metric-value--text {
-    font-family: var(--font-hero);
-    font-size: clamp(1rem, 2.6vw, 1.5rem);
-    font-weight: 200;
-    letter-spacing: 0.04em;
+    font-family: var(--font-ui);
+    font-size: clamp(0.54rem, 1.15vw, 0.72rem);
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    line-height: 1.35;
     text-transform: uppercase;
     font-variant-numeric: normal;
+    color: rgba(239, 236, 231, 0.55);
+    text-shadow: none;
   }
 
   .hero__media {
@@ -418,6 +427,21 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     .hero__metrics-inner {
       transform: none;
     }
+
+    .hero__actions .hero__cta-border rect {
+      transition: none !important;
+      stroke: var(--color-accent) !important;
+      stroke-width: 1.5 !important;
+      stroke-dasharray: 422, 0 !important;
+      stroke-dashoffset: 0 !important;
+    }
+
+    .hero__actions .hero__cta:hover .hero__cta-border rect,
+    .hero__actions .hero__cta:focus-visible .hero__cta-border rect {
+      stroke-width: 5 !important;
+      stroke-dasharray: 15, 310 !important;
+      stroke-dashoffset: 48 !important;
+    }
   }
 
   .hero__scrim {
@@ -488,16 +512,105 @@ import aviationTn from '../../assets/aviation-tn.jpg';
     gap: var(--space-sm);
   }
 
+  /*
+    Hero CTA SVG: rounded rect rx/ry = --radius-sm so stroke corners match .u-btn; btn-1 stroke rest vs hover.
+  */
   .hero__actions .hero__cta {
-    background: rgba(239, 236, 231, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.32);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    position: relative;
+    z-index: 0;
+    overflow: visible;
+    border-radius: var(--radius-sm);
+    border: none;
+    color: var(--color-cream-muted);
+    font-size: 0.8125rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: none;
+    background:
+      linear-gradient(
+        152deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.03) 32%,
+        transparent 52%,
+        transparent 68%,
+        rgba(140, 165, 210, 0.08) 100%
+      ),
+      rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 0 1px rgba(196, 184, 150, 0.35),
+      0 0 22px rgba(196, 184, 150, 0.2),
+      0 0 44px rgba(239, 236, 231, 0.08),
+      inset 0 0 18px rgba(255, 255, 255, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-decoration: none;
+    transition:
+      background 0.35s linear,
+      color 0.35s linear,
+      text-shadow 0.35s linear,
+      box-shadow 0.35s linear;
   }
 
-  .hero__actions .hero__cta:hover {
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--color-navy);
+  /* .btn-1 svg */
+  .hero__actions .hero__cta-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero__actions .hero__cta-border rect {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 422, 0;
+    stroke-dashoffset: 0;
+    transition: all 0.35s linear;
+  }
+
+  .hero__actions .hero__cta-label {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* .btn-1:hover (+ outer glow; type metrics match default) */
+  .hero__actions .hero__cta:hover,
+  .hero__actions .hero__cta:focus-visible {
+    color: var(--color-cream-muted);
+    background:
+      linear-gradient(
+        152deg,
+        rgba(255, 255, 255, 0.13) 0%,
+        rgba(255, 255, 255, 0.04) 30%,
+        transparent 50%,
+        transparent 65%,
+        rgba(150, 175, 218, 0.1) 100%
+      ),
+      rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 0 1px rgba(196, 184, 150, 0.45),
+      0 0 28px rgba(196, 184, 150, 0.26),
+      0 0 52px rgba(239, 236, 231, 0.1),
+      inset 0 0 18px rgba(255, 255, 255, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition:
+      background 0.35s linear,
+      color 0.35s linear,
+      text-shadow 0.35s linear,
+      box-shadow 0.35s linear;
+  }
+
+  /* .btn-1:hover rect */
+  .hero__actions .hero__cta:hover .hero__cta-border rect,
+  .hero__actions .hero__cta:focus-visible .hero__cta-border rect {
+    stroke-width: 5;
+    stroke-dasharray: 15, 310;
+    stroke-dashoffset: 48;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   .domains {
