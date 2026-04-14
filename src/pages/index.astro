@@ -9,7 +9,7 @@ import yacht1 from '../../assets/yacht1.png';
 
 <BaseLayout title={SITE.shortName} transparentHeader={true} dataHomeLoadIntro={true}>
   <section class="hero">
-    <div class="hero__media">
+    <div class="hero__media" style={`--hero-media-fallback-image: url('${heroImage.src}')`}>
       <img
         src={heroImage.src}
         alt="Luxury yacht exterior — precision detailing and protection"
@@ -459,10 +459,15 @@ import yacht1 from '../../assets/yacht1.png';
     overflow: hidden;
     isolation: isolate;
     /*
-      Gap above the photo: dark neutral fill (no sky-blue cast). Slightly lighter at top than
-      pure #030303 so it never reads as a solid black bar when stacked with translucent scrims.
+      Fallback photo layer sits behind the PNG. If the source image has any alpha at the top edge,
+      this prevents the navy base from showing through as a visible strip.
     */
-    background: linear-gradient(180deg, #1c1e22 0%, #141518 14%, #101114 38%, #0b0c0e 100%);
+    background-image:
+      var(--hero-media-fallback-image),
+      linear-gradient(180deg, #1c1e22 0%, #141518 14%, #101114 38%, #0b0c0e 100%);
+    background-size: cover, auto;
+    background-position: 46% top, 0 0;
+    background-repeat: no-repeat, no-repeat;
   }
 
   /* No dedicated header feather overlay. */
@@ -495,14 +500,17 @@ import yacht1 from '../../assets/yacht1.png';
   @media (max-width: 1200px) {
     .hero__img {
       object-position: 48% top;
-      transform: translate3d(clamp(-0.2rem, -0.5vw, 0.3rem), -0.45rem, 0) scale(1.03);
+      /*
+        iPad/tablet overscan: push the frame upward so the top edge always stays photo-filled.
+      */
+      transform: translate3d(clamp(-0.2rem, -0.5vw, 0.3rem), -1.15rem, 0) scale(1.05);
     }
   }
 
   @media (max-width: 820px) {
     .hero__img {
       object-position: 50% top;
-      transform: translate3d(0, -0.55rem, 0) scale(1.01);
+      transform: translate3d(0, -1.05rem, 0) scale(1.04);
     }
   }
 
