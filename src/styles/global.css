@@ -50,11 +50,12 @@
 }
 
 html {
-  /* `auto` avoids a persistent scroll track when the document is exactly viewport-tall on first paint; scrollbar stays hidden below. */
-  overflow-y: auto;
+  /* Stable vertical scrollbox + hidden bar; matches critical `<style>` in `BaseLayout.astro`. */
+  overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   scroll-behavior: smooth;
+  background: var(--color-navy);
 }
 
 html::-webkit-scrollbar {
@@ -78,7 +79,7 @@ html::-webkit-scrollbar {
 body {
   margin: 0;
   min-height: 100vh;
-  overflow-x: hidden;
+  /* Horizontal clipping lives on `.page` so `body` never pairs `overflow-x` with root scroll (fewer layout jumps). */
   font-family: var(--font-ui);
   font-size: 1rem;
   line-height: 1.6;

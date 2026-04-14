@@ -46,12 +46,17 @@ const jsonLd = {
 <html lang="en" data-home-load-intro={dataHomeLoadIntro ? true : undefined}>
   <head>
     <meta charset="UTF-8" />
-    <!-- Apply before external CSS so first paint matches final scrollbar behavior (no `@import`-blocked stylesheet). -->
+    <!--
+      First-paint scroll + chrome: must match `global.css` so external CSS does not re-resolve overflow
+      (avoids a one-frame “stutter”). `overflow-y: scroll` keeps a stable vertical scrollbox while the
+      scrollbar is hidden; avoid `overflow-x` on `body` — it can pair with `overflow-y` and fight `html`.
+    -->
     <style is:inline>
       html {
-        overflow-y: auto;
+        overflow-y: scroll;
         overflow-x: hidden;
         scrollbar-width: none;
+        background: #102135;
       }
       html::-webkit-scrollbar {
         display: none;
@@ -60,6 +65,9 @@ const jsonLd = {
         background: transparent;
       }
       body {
+        margin: 0;
+        min-height: 100vh;
+        background: #102135;
         scrollbar-width: none;
       }
       body::-webkit-scrollbar {
@@ -67,6 +75,9 @@ const jsonLd = {
         width: 0;
         height: 0;
         background: transparent;
+      }
+      .page {
+        overflow-x: hidden;
       }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -108,6 +119,7 @@ const jsonLd = {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
 
   .page__main {
