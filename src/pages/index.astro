@@ -16,7 +16,7 @@ import yacht1 from '../../assets/yacht1.png';
         width={heroImage.width}
         height={heroImage.height}
         fetchpriority="high"
-        decoding="async"
+        decoding="sync"
         class="hero__img"
       />
       <div class="hero__scrim" aria-hidden="true"></div>
@@ -208,15 +208,23 @@ import yacht1 from '../../assets/yacht1.png';
     /*
       Fill the visible viewport so the wave sits flush with the bottom edge on load
       (92vh + 900px cap left a strip of .domains backdrop showing — scales wrong per display).
-      100vh fallback; 100dvh tracks dynamic browser chrome (mobile toolbars, etc.).
+      100vh fallback; 100svh avoids a second layout pass when dynamic viewport units settle (felt like a “double load” on reload).
     */
     min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100svh;
     display: flex;
     align-items: flex-start;
     /* Copy lives in the upper “safe zone”; wave/metrics stay absolutely at the bottom */
     padding-bottom: clamp(3rem, 8vw, 5rem);
     overflow-x: hidden;
+    /* Intro scales `.hero__media`; without vertical clipping that paint can widen root overflow and flash a second scrollbar (Safari). */
+    overflow-y: hidden;
+  }
+
+  @supports (overflow: clip) {
+    .hero {
+      overflow-y: clip;
+    }
   }
 
   @media (max-width: 480px) {

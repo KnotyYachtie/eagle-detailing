@@ -60,19 +60,22 @@ function buildOverlay(): HTMLElement {
   return root;
 }
 
+type OverlayEls = {
+  root: HTMLElement;
+  panel: HTMLElement;
+  backdrop: HTMLElement;
+  titleEl: HTMLElement;
+  descEl: HTMLElement;
+  ctaEl: HTMLAnchorElement;
+  visualEl: HTMLElement;
+};
+
 export function initDomainCards(): void {
   const cards = document.querySelectorAll<HTMLElement>(CARD_SEL);
   if (!cards.length) return;
 
-  let root = document.querySelector<HTMLElement>('.domain-expand');
-  if (!root) root = buildOverlay();
-
-  const panel = root.querySelector<HTMLElement>('.domain-expand__panel')!;
-  const backdrop = root.querySelector<HTMLElement>('.domain-expand__backdrop')!;
-  const titleEl = root.querySelector<HTMLElement>('.domain-expand__title')!;
-  const descEl = root.querySelector<HTMLElement>('.domain-expand__desc')!;
-  const ctaEl = root.querySelector<HTMLAnchorElement>('.domain-expand__cta')!;
-  const visualEl = root.querySelector<HTMLElement>('.domain-expand__visual')!;
+  /** Built on first open so init does not mutate the document after first paint (avoids a “double load” hitch). */
+  let overlay: OverlayEls | null = null;
 
   let openCard: HTMLElement | null = null;
   let closing = false;
@@ -80,7 +83,8 @@ export function initDomainCards(): void {
   const vw = () => window.innerWidth;
   const vh = () => window.innerHeight;
 
-  function populateFromCard(card: HTMLElement): void {
+  function populateFromCard(card: HTMLElement, els: OverlayEls): void {
+    const { panel, titleEl, descEl, ctaEl, visualEl } = els;
     const h3 = card.querySelector('h3');
     const p = card.querySelector('.card-domain__body p');
     const href = card.getAttribute('href') ?? '/';
@@ -123,58 +127,9 @@ export function initDomainCards(): void {
     document.body.style.overflow = lock ? 'hidden' : '';
   }
 
-  function open(card: HTMLElement): void {
-    if (closing) return;
-    openCard = card;
-    populateFromCard(card);
-    root.hidden = false;
-
-    const reduced = prefersReducedMotion();
-    const first = card.getBoundingClientRect();
-    const w = vw();
-    const h = vh();
-
-    const br = getComputedStyle(card).borderRadius;
-    panel.style.borderRadius = br;
-    panel.style.transition = reduced ? 'none' : '';
-
-    if (reduced) {
-      panel.style.transformOrigin = '';
-      panel.style.transform = 'none';
-      panel.style.width = '100%';
-      panel.style.height = '100%';
-      root.classList.add('domain-expand--open', 'domain-expand--instant');
-      backdrop.style.opacity = '1';
-      setBodyScroll(true);
-      root.querySelector<HTMLElement>('.domain-expand__close')?.focus();
-      return;
-    }
-
-    panel.style.width = '100vw';
-    panel.style.height = '100vh';
-    panel.style.transformOrigin = '0 0';
-    panel.style.transform = flipInvertFromCardCenter(first, w, h);
-
-    root.classList.remove('domain-expand--instant');
-    root.classList.add('domain-expand--open');
-    backdrop.style.opacity = '0';
-    void panel.offsetHeight;
-
-    requestAnimationFrame(() => {
-      backdrop.style.transition = 'opacity 0.45s ease';
-      backdrop.style.opacity = '1';
-      panel.style.transition =
-        'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
-      panel.style.transform = 'none';
-      panel.style.borderRadius = '1.25rem';
-    });
-
-    setBodyScroll(true);
-    root.querySelector<HTMLElement>('.domain-expand__close')?.focus();
-  }
-
   function close(): void {
-    if (!openCard || closing) return;
+    if (!openCard || closing || !overlay) return;
+    const { root, panel, backdrop } = overlay;
     const card = openCard;
     closing = true;
 
@@ -241,23 +196,92 @@ export function initDomainCards(): void {
     panel.addEventListener('transitionend', onEnd);
   }
 
+  function ensureOverlay(): OverlayEls {
+    if (overlay) return overlay;
+    const root = document.querySelector<HTMLElement>('.domain-expand') ?? buildOverlay();
+    overlay = {
+      root,
+      panel: root.querySelector<HTMLElement>('.domain-expand__panel')!,
+      backdrop: root.querySelector<HTMLElement>('.domain-expand__backdrop')!,
+      titleEl: root.querySelector<HTMLElement>('.domain-expand__title')!,
+      descEl: root.querySelector<HTMLElement>('.domain-expand__desc')!,
+      ctaEl: root.querySelector<HTMLAnchorElement>('.domain-expand__cta')!,
+      visualEl: root.querySelector<HTMLElement>('.domain-expand__visual')!,
+    };
+
+    const { root: r } = overlay;
+    r.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      if (t.closest('[data-domain-expand-dismiss]')) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && r.classList.contains('domain-expand--open')) {
+        e.preventDefault();
+        close();
+      }
+    });
+
+    return overlay;
+  }
+
+  function open(card: HTMLElement): void {
+    if (closing) return;
+    const els = ensureOverlay();
+    const { root, panel, backdrop } = els;
+    openCard = card;
+    populateFromCard(card, els);
+    root.hidden = false;
+
+    const reduced = prefersReducedMotion();
+    const first = card.getBoundingClientRect();
+    const w = vw();
+    const h = vh();
+
+    const br = getComputedStyle(card).borderRadius;
+    panel.style.borderRadius = br;
+    panel.style.transition = reduced ? 'none' : '';
+
+    if (reduced) {
+      panel.style.transformOrigin = '';
+      panel.style.transform = 'none';
+      panel.style.width = '100%';
+      panel.style.height = '100%';
+      root.classList.add('domain-expand--open', 'domain-expand--instant');
+      backdrop.style.opacity = '1';
+      setBodyScroll(true);
+      root.querySelector<HTMLElement>('.domain-expand__close')?.focus();
+      return;
+    }
+
+    panel.style.width = '100vw';
+    panel.style.height = '100vh';
+    panel.style.transformOrigin = '0 0';
+    panel.style.transform = flipInvertFromCardCenter(first, w, h);
+
+    root.classList.remove('domain-expand--instant');
+    root.classList.add('domain-expand--open');
+    backdrop.style.opacity = '0';
+    void panel.offsetHeight;
+
+    requestAnimationFrame(() => {
+      backdrop.style.transition = 'opacity 0.45s ease';
+      backdrop.style.opacity = '1';
+      panel.style.transition =
+        'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+      panel.style.transform = 'none';
+      panel.style.borderRadius = '1.25rem';
+    });
+
+    setBodyScroll(true);
+    root.querySelector<HTMLElement>('.domain-expand__close')?.focus();
+  }
+
   cards.forEach((card) => {
     card.addEventListener('click', (e) => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();
       open(card);
     });
-  });
-
-  root.addEventListener('click', (e) => {
-    const t = e.target as HTMLElement;
-    if (t.closest('[data-domain-expand-dismiss]')) close();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && root.classList.contains('domain-expand--open')) {
-      e.preventDefault();
-      close();
-    }
   });
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+/* Google Fonts are loaded via `<link>` in `BaseLayout.astro` so this file is not blocked by `@import`. */
 
 @font-face {
   font-family: 'Butler';
@@ -50,7 +50,15 @@
 }
 
 html {
+  /* `auto` avoids a persistent scroll track when the document is exactly viewport-tall on first paint; scrollbar stays hidden below. */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
   scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge (Blink) */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -70,6 +78,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   font-family: var(--font-ui);
   font-size: 1rem;
   line-height: 1.6;
