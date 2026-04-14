@@ -223,6 +223,20 @@ import yacht1 from '../../assets/yacht1.png';
     overflow-y: hidden;
   }
 
+  /*
+    iOS safe-area fill: extend hero/media into the top inset so the status-bar region paints
+    with the hero image instead of the page background.
+  */
+  @supports (padding-top: env(safe-area-inset-top)) {
+    .hero {
+      min-height: calc(100svh + env(safe-area-inset-top));
+    }
+
+    .hero__media {
+      inset: calc(-1 * env(safe-area-inset-top)) 0 0 0;
+    }
+  }
+
   @supports (overflow: clip) {
     .hero {
       overflow-y: clip;
@@ -462,7 +476,7 @@ import yacht1 from '../../assets/yacht1.png';
     margin: 0;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    font-size: clamp(1.4rem, 3.6vw, 2.05rem);
     letter-spacing: -0.03em;
     color: #fff;
     line-height: 1.05;
@@ -481,7 +495,7 @@ import yacht1 from '../../assets/yacht1.png';
     margin: 0;
     padding-bottom: 0.08rem;
     font-family: var(--font-ui);
-    font-size: clamp(0.54rem, 1.15vw, 0.72rem);
+    font-size: clamp(0.8rem, 1.6vw, 1.03rem);
     font-weight: 500;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -492,7 +506,7 @@ import yacht1 from '../../assets/yacht1.png';
 
   .hero__metric-value--text {
     font-family: var(--font-hero);
-    font-size: clamp(0.88rem, 2.2vw, 1.2rem);
+    font-size: clamp(1.15rem, 2.7vw, 1.5rem);
     font-weight: 400;
     font-style: normal;
     letter-spacing: 0.02em;
