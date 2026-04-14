@@ -1,7 +1,9 @@
 /**
- * Hero wave overlay: count-up numbers on window load (ease-out cubic).
+ * Hero metrics: count-up after the homepage load choreography (stats bar timing).
  */
 const SEL = '.hero__metrics [data-count-to]';
+/** Start counts once the stat bar begins its rise (kept slightly after CSS delay). */
+const METRICS_COUNT_START_AFTER_LOAD_MS = 3520;
 
 function formatInt(n: number): string {
   return Math.round(n).toLocaleString('en-US');
@@ -49,6 +51,7 @@ export function initHeroMetrics(): void {
   if (!nums.length) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const countDelayMs = reduced ? 0 : METRICS_COUNT_START_AFTER_LOAD_MS;
 
   const run = (): void => {
     nums.forEach((el, i) => {
@@ -71,9 +74,24 @@ export function initHeroMetrics(): void {
     });
   };
 
+  const pending: ReturnType<typeof setTimeout>[] = [];
+
+  const scheduleRun = (): void => {
+    const id = window.setTimeout(() => requestAnimationFrame(run), countDelayMs);
+    pending.push(id);
+  };
+
   if (document.readyState === 'complete') {
-    requestAnimationFrame(run);
+    scheduleRun();
   } else {
-    window.addEventListener('load', () => requestAnimationFrame(run), { once: true });
+    window.addEventListener('load', scheduleRun, { once: true });
   }
+
+  window.addEventListener(
+    'pagehide',
+    () => {
+      pending.forEach((t) => window.clearTimeout(t));
+    },
+    { once: true }
+  );
 }

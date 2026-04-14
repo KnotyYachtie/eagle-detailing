@@ -121,12 +121,12 @@ section.hero .hero__content > h1.hero__title {
 
 section.hero .hero__content > h1.hero__title .hero__title-lead {
   display: block;
-  font-weight: 400;
+  font-weight: inherit;
 }
 
 section.hero .hero__content > h1.hero__title .hero__title-rest {
   display: block;
-  font-weight: 200;
+  font-weight: inherit;
 }
 
 h2 {

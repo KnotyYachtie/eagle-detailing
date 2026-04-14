@@ -8,12 +8,15 @@ interface Props {
   title: string;
   description?: string;
   transparentHeader?: boolean;
+  /** When set, `<html>` gets `data-home-load-intro` for homepage-only load choreography (no FOUC). */
+  dataHomeLoadIntro?: boolean;
 }
 
 const {
   title,
   description = SITE.description,
   transparentHeader = false,
+  dataHomeLoadIntro = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
@@ -40,7 +43,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-home-load-intro={dataHomeLoadIntro ? true : undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
