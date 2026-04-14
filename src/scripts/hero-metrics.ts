@@ -3,7 +3,7 @@
  */
 const SEL = '.hero__metrics [data-count-to]';
 /** Start counts once the stat bar begins its rise (kept slightly after CSS delay). */
-const METRICS_COUNT_START_AFTER_LOAD_MS = 3520;
+const METRICS_COUNT_START_AFTER_LOAD_MS = 1700;
 
 function formatInt(n: number): string {
   return Math.round(n).toLocaleString('en-US');
