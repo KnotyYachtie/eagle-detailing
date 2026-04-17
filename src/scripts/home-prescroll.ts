@@ -20,6 +20,11 @@ export function initHomePreScroll(): void {
   if (typeof window === 'undefined') return;
   if (!document.documentElement.hasAttribute('data-home-load-intro')) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* Desktop: no pre-scroll (matches head inline + layout breakpoint). */
+  if (!window.matchMedia('(max-width: 960px)').matches) {
+    document.documentElement.style.setProperty('--home-prescroll-y', '0px');
+    return;
+  }
 
   const apply = (): void => {
     const y = readPrescrollY();
