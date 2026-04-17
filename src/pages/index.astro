@@ -721,6 +721,43 @@ import yacht1 from '../../assets/yacht1.png';
     transform: translate3d(0, var(--home-prescroll-y, 0px), 0);
   }
 
+  /*
+    Narrow viewports: dynamic browser chrome + pre-scroll still clip the hero cluster.
+    Extra top budget (beyond --home-prescroll-y) lowers copy + metrics without changing scroll math in JS.
+  */
+  @media (max-width: 768px) {
+    html[data-home-load-intro] .hero {
+      min-height: calc(100vh + var(--header-h) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px));
+      min-height: calc(
+        100svh + var(--header-h) + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+    }
+
+    @supports (height: 100lvh) {
+      html[data-home-load-intro] .hero {
+        min-height: calc(
+          100lvh + var(--header-h) + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+        );
+      }
+    }
+
+    html[data-home-load-intro] .hero__media {
+      min-height: calc(
+        100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+    }
+
+    html[data-home-load-intro] .hero__content {
+      padding-top: calc(
+        var(--header-h) + var(--space-md) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+    }
+
+    html[data-home-load-intro] .hero__metrics {
+      transform: translate3d(0, calc(var(--home-prescroll-y, 0px) + clamp(10px, 3vw, 20px)), 0);
+    }
+  }
+
   /* Match header Instagram / accent chrome */
   .hero__content > .u-eyebrow {
     color: var(--color-accent);

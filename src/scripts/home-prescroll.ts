@@ -2,11 +2,11 @@
  * Homepage: head inline script already sets `--home-prescroll-y` + initial scroll.
  * This re-applies if Safari resets scroll on load, and backfills the CSS var if missing.
  */
-const MIN_PX = 44;
-const MAX_PX = 120;
+const MIN_PX = 52;
+const MAX_PX = 132;
 
 function offsetPx(): number {
-  return Math.round(Math.min(MAX_PX, Math.max(MIN_PX, window.innerHeight * 0.08)));
+  return Math.round(Math.min(MAX_PX, Math.max(MIN_PX, window.innerHeight * 0.092)));
 }
 
 function readPrescrollY(): number {

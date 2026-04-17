@@ -32,7 +32,7 @@ const criticalCanvas = canvasColor ?? '#102135';
 
 /** Homepage: set scroll + `--home-prescroll-y` before first paint (after viewport meta reads innerHeight). */
 const homePreScrollHeadScript = dataHomeLoadIntro
-  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var h=window.innerHeight||800;var y=Math.round(Math.min(120,Math.max(44,h*0.08)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var h=window.innerHeight||800;var y=Math.round(Math.min(132,Math.max(52,h*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
   : '';
 
 /** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */
