@@ -224,6 +224,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     height: var(--header-h);
     display: flex;
     align-items: center;
+    box-sizing: border-box;
     background: rgba(16, 33, 53, 0.78);
     backdrop-filter: var(--glass-blur-header);
     -webkit-backdrop-filter: var(--glass-blur-header);
@@ -520,6 +521,16 @@ const eagleForHeader = eagleSvgRaw.replace(
 
     .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li {
       transition-delay: 0s;
+    }
+  }
+
+  @media (max-width: 960px) {
+    /*
+      Push logo, wordmark, and menu control below the notch / status bar.
+      `--header-h` (global) grows by the same inset so hero + nav sheet stay aligned.
+    */
+    .site-header {
+      padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-safe-fudge));
     }
   }
 

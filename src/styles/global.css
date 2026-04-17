@@ -32,7 +32,10 @@
   --space-xl: 4rem;
   --radius-sm: 6px;
   --radius-md: 12px;
+  /* Bar height used for layout (hero bleed, sticky offsets, mobile nav `inset`). */
   --header-h: 4.25rem;
+  /* Extra top inset below status bar / dynamic URL chrome (mobile only). */
+  --header-safe-fudge: 0px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   /* Glassmorphism: translucency + backdrop blur + light rim + diffuse depth */
   --glass-blur-card: blur(40px) saturate(1.42);
@@ -41,6 +44,14 @@
   --glass-blur-header: blur(14px) saturate(1.15);
   --glass-border: rgba(255, 255, 255, 0.22);
   --glass-shadow-diffuse: 0 0 clamp(2.75rem, 7vw, 5rem) rgba(0, 0, 0, 0.3);
+}
+
+/* Match Header nav breakpoint: phones + narrow tablets use hamburger + top inset. */
+@media (max-width: 960px) {
+  :root {
+    --header-safe-fudge: clamp(10px, 2.8vw, 18px);
+    --header-h: calc(4.25rem + env(safe-area-inset-top, 0px) + var(--header-safe-fudge));
+  }
 }
 
 *,
