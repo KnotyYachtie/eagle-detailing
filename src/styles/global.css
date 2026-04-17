@@ -48,10 +48,10 @@
   --metric-strip-caps-size-portrait: 1.1rem;
   --metric-strip-caps-tracking-portrait: 0.06em;
   /* Site header nav (caps) — desktop vs narrow mobile */
-  --header-nav-link-size: 0.8125rem;
-  --header-nav-link-tracking: 0.06em;
-  --header-nav-link-size-mobile: clamp(0.64rem, 2.05vw, 0.77rem);
-  --header-nav-link-tracking-mobile: 0.072em;
+  --header-nav-link-size: 0.9375rem;
+  --header-nav-link-tracking: 0.055em;
+  --header-nav-link-size-mobile: clamp(0.74rem, 2.35vw, 0.9rem);
+  --header-nav-link-tracking-mobile: 0.068em;
   /* Glassmorphism: translucency + backdrop blur + light rim + diffuse depth */
   --glass-blur-card: blur(40px) saturate(1.42);
   --glass-blur-pane: blur(18px) saturate(1.2);
@@ -72,7 +72,7 @@
     --header-safe-pad: max(0px, constant(safe-area-inset-top));
     --header-safe-pad: max(0px, env(safe-area-inset-top, 0px));
     /* Stacked brand + vertical nav — keep in sync with `Header.astro` mobile chrome height */
-    --header-bar: 8.35rem;
+    --header-bar: 8.75rem;
     --header-h: calc(var(--header-bar) + var(--header-safe-pad));
   }
 }
