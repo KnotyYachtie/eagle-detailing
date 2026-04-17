@@ -30,9 +30,12 @@ const {
 
 const criticalCanvas = canvasColor ?? '#102135';
 
-/** Homepage: mobile-only pre-scroll + `--home-prescroll-y` (after viewport meta; desktop stays at 0). */
-const homePreScrollHeadScript = dataHomeLoadIntro
-  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var h=window.innerHeight||800;var y=Math.round(Math.min(132,Math.max(52,h*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
+/**
+ * Homepage: real pixel height for one full hero screen (iOS `svh`/`lvh` alone mis-sized vs browser chrome).
+ * No pre-scroll — scrolling the doc hid most of the hero behind the URL bar.
+ */
+const homeHeroViewportHeadScript = dataHomeLoadIntro
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;d.style.setProperty('--home-prescroll-y','0px');var h=window.innerHeight||0;if(h)d.style.setProperty('--hero-inner-vh',h+'px');}catch(e){}})();`
   : '';
 
 /** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */
@@ -102,7 +105,7 @@ const jsonLd = {
       scrollbar is hidden; avoid `overflow-x` on `body` — it can pair with `overflow-y` and fight `html`.
     -->
     <style is:inline set:html={criticalInlineCss} />
-    {homePreScrollHeadScript && <script is:inline set:html={homePreScrollHeadScript} />}
+    {homeHeroViewportHeadScript && <script is:inline set:html={homeHeroViewportHeadScript} />}
     <meta name="theme-color" content={themeColor} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -157,17 +160,7 @@ const jsonLd = {
   html[data-home-load-intro] .page__main {
     display: flow-root;
     min-height: calc(100svh + var(--header-h, 4.25rem));
-  }
-
-  @supports (height: 100dvh) {
-    html[data-home-load-intro] .page__main {
-      min-height: calc(100dvh + var(--header-h, 4.25rem));
-    }
-  }
-
-  @supports (height: 100lvh) {
-    html[data-home-load-intro] .page__main {
-      min-height: calc(100lvh + var(--header-h, 4.25rem));
-    }
+    /* Matches home hero: one real `innerHeight` + header bleed (set in head inline script). */
+    min-height: calc(var(--hero-inner-vh, 100svh) + var(--header-h, 4.25rem));
   }
 </style>

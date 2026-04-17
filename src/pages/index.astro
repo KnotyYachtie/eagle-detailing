@@ -237,22 +237,10 @@ import yacht1 from '../../assets/yacht1.png';
   */
   html[data-home-load-intro] .hero {
     margin-top: calc(-1 * var(--header-h));
-    /* Match viewport + header bleed + prescroll so bottom doesn’t clip short */
-    min-height: calc(100vh + var(--header-h) + var(--home-prescroll-y, 0px));
-    min-height: calc(100svh + var(--header-h) + var(--home-prescroll-y, 0px));
-  }
-
-  /* Prefer dynamic / largest viewport on engines that support it (full-bleed hero on iOS). */
-  @supports (height: 100dvh) {
-    html[data-home-load-intro] .hero {
-      min-height: calc(100dvh + var(--header-h) + var(--home-prescroll-y, 0px));
-    }
-  }
-
-  @supports (height: 100lvh) {
-    html[data-home-load-intro] .hero {
-      min-height: calc(100lvh + var(--header-h) + var(--home-prescroll-y, 0px));
-    }
+    /* One full visible viewport + header pull-up; `--hero-inner-vh` = `innerHeight` (see head inline + `home-prescroll.ts`). */
+    min-height: calc(100vh + var(--header-h));
+    min-height: calc(100svh + var(--header-h));
+    min-height: calc(var(--hero-inner-vh, 100svh) + var(--header-h));
   }
 
   @supports (overflow: clip) {
@@ -542,7 +530,7 @@ import yacht1 from '../../assets/yacht1.png';
     right: 0;
     bottom: 0;
     left: 0;
-    min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px));
+    min-height: calc(100% + env(safe-area-inset-top, 0px));
     z-index: 0;
     overflow: hidden;
     isolation: isolate;
@@ -594,7 +582,7 @@ import yacht1 from '../../assets/yacht1.png';
   }
 
   @media not (prefers-reduced-motion: reduce) {
-    /* Slightly stronger zoom on home after prescroll so the bottom edge still fills */
+    /* Slightly stronger zoom on home so the bottom edge still fills the frame */
     html[data-home-load-intro] .hero__img {
       transform: translate3d(
           clamp(-0.35rem, -0.85vw, 0.85rem),
@@ -719,29 +707,32 @@ import yacht1 from '../../assets/yacht1.png';
     max-width: 56rem;
   }
 
-  /* Compensate for head inline prescroll: push hero copy down by the same offset */
+  /* Home: headline clears fixed/transparent header */
   html[data-home-load-intro] .hero__content {
-    padding-top: calc(var(--header-h) + var(--space-md) + var(--home-prescroll-y, 0px));
+    padding-top: calc(var(--header-h) + var(--space-md));
   }
 
   html[data-home-load-intro] .hero__metrics {
-    transform: translate3d(0, var(--home-prescroll-y, 0px), 0);
+    transform: none;
+  }
+
+  /* Avoid flex intrinsic-height quirks on phones; hero height comes from min-height + px viewport var. */
+  @media (max-width: 960px) {
+    .hero {
+      display: block;
+    }
   }
 
   /*
-    Narrow viewports: extra copy/metrics offset for pre-scroll + browser chrome (hero min-height is global + dvh/lvh).
+    Narrow viewports: slight extra safe-area on the media layer only (no pre-scroll).
   */
   @media (max-width: 768px) {
     html[data-home-load-intro] .hero__media {
-      min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
+      min-height: calc(100% + env(safe-area-inset-top, 0px) + clamp(6px, 2vw, 12px));
     }
 
     html[data-home-load-intro] .hero__content {
-      padding-top: calc(var(--header-h) + var(--space-md) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
-    }
-
-    html[data-home-load-intro] .hero__metrics {
-      transform: translate3d(0, calc(var(--home-prescroll-y, 0px) + clamp(6px, 2vw, 14px)), 0);
+      padding-top: calc(var(--header-h) + var(--space-md) + clamp(6px, 2vw, 12px));
     }
   }
 
