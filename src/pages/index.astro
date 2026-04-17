@@ -257,6 +257,19 @@ import yacht1 from '../../assets/yacht1.png';
     }
   }
 
+  /*
+    iOS: `.hero__media` uses `top: calc(-1 * env(safe-area-inset-top))` to bleed under the island.
+    `overflow-y: hidden` / `clip` on `.hero` clips that upward paint — Safari often shows the page
+    canvas (`#050505`) as a “black band” along the seam under the sticky header. 393 avoids this
+    by not clipping a sibling-stacked hero under an absolute header.
+  */
+  @media (max-width: 960px) {
+    html[data-home-load-intro] .hero {
+      overflow-y: visible;
+      overflow-x: hidden;
+    }
+  }
+
   @media (max-width: 480px) {
     .hero {
       --hero-wave-strip-height: clamp(10.5rem, 26vw, 14rem);

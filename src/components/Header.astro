@@ -544,11 +544,13 @@ const eagleForHeader = eagleSvgRaw.replace(
       inset: 0;
       z-index: 0;
       pointer-events: none;
+      /* Softer cap than 0.52 — reads flatter on iOS P3 + sticky compositing. */
+      transform: translateZ(0);
       background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.52) 0%,
-        rgba(0, 0, 0, 0.28) 42%,
-        rgba(0, 0, 0, 0.08) 78%,
+        rgba(0, 0, 0, 0.34) 0%,
+        rgba(0, 0, 0, 0.18) 38%,
+        rgba(0, 0, 0, 0.06) 72%,
         rgba(0, 0, 0, 0) 100%
       );
     }
@@ -560,13 +562,14 @@ const eagleForHeader = eagleSvgRaw.replace(
       left: 0;
       right: 0;
       top: 100%;
-      height: clamp(52px, 16vw, 112px);
+      height: clamp(64px, 22vw, 140px);
       z-index: 0;
       pointer-events: none;
+      transform: translateZ(0);
       background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.2) 0%,
-        rgba(0, 0, 0, 0.06) 55%,
+        rgba(0, 0, 0, 0.14) 0%,
+        rgba(0, 0, 0, 0.04) 52%,
         rgba(0, 0, 0, 0) 100%
       );
     }
