@@ -317,14 +317,8 @@ html[data-home-load-intro] body .page > main.page__main > section.hero {
   ) !important;
 }
 
-@supports (height: 100dvh) {
-  html[data-home-load-intro] body .page > main.page__main > section.hero {
-    min-height: calc(100dvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)) !important;
-  }
-}
-
-@supports (height: 100lvh) {
-  html[data-home-load-intro] body .page > main.page__main > section.hero {
-    min-height: calc(100lvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)) !important;
-  }
-}
+/*
+  Do NOT add `min-height: calc(100dvh + …)` / `100lvh` overrides here. They win in the cascade and
+  replace `--hero-inner-vh` (set from `visualViewport` in `BaseLayout` + `home-prescroll.ts`).
+  On iOS Safari, `dvh`/`lvh` ≠ the live chrome-aware height, so the hero shrinks and reads “short.”
+*/

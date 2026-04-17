@@ -532,6 +532,29 @@ const eagleForHeader = eagleSvgRaw.replace(
 
   @media (max-width: 960px) {
     /*
+      Sticky + filters: iOS often composites a near-black band under the chrome. Isolate the layer
+      and use lighter drop-shadows than desktop so the bar doesn’t read as a solid “black header.”
+    */
+    .site-header--transparent {
+      isolation: isolate;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .site-header--transparent .site-header__logo,
+    .site-header--transparent .site-header__logo--eagle .site-header__eagle-svg {
+      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.28));
+    }
+
+    .site-header--transparent .site-header__wordmark {
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.32);
+    }
+
+    .site-header--transparent .site-header__menu-btn {
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /*
       Tuck chrome under Dynamic Island: base nudge + extra lift scaled to `safe-area-inset-top`
       (capped) so large-island phones move ~25–30px without changing `--header-h` / hero math.
     */
@@ -547,6 +570,13 @@ const eagleForHeader = eagleSvgRaw.replace(
 
     .site-header__menu-btn {
       display: block;
+    }
+
+    /* Ghost the menu chip over the hero — avoids a second “hard bar” next to the feathered scrim. */
+    .site-header--transparent .site-header__menu-btn {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .site-header__nav {

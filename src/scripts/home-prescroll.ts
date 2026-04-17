@@ -17,9 +17,13 @@ function readVisualHeight(): number {
   return Math.round(window.innerHeight || 0);
 }
 
+/** Only write when height changes — avoids layout thrash / “breathing” hero on `visualViewport` scroll. */
+let lastHeroInnerVhPx = -1;
+
 function applyHeroInnerVh(): void {
   const h = readVisualHeight();
-  if (h <= 0) return;
+  if (h <= 0 || h === lastHeroInnerVhPx) return;
+  lastHeroInnerVhPx = h;
   document.documentElement.style.setProperty('--hero-inner-vh', `${h}px`);
 }
 
@@ -36,8 +40,8 @@ export function initHomePreScroll(): void {
 
   applyHeroInnerVh();
   window.addEventListener('resize', applyHeroInnerVh, { passive: true });
+  /* `resize` only — not `visualViewport` `scroll` (fires during page scroll; was reapplying CSS and read as a subtle “scale”). */
   window.visualViewport?.addEventListener('resize', applyHeroInnerVh, { passive: true });
-  window.visualViewport?.addEventListener('scroll', applyHeroInnerVh, { passive: true });
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   /* Desktop: no pre-scroll (matches head inline + layout breakpoint). */

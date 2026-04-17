@@ -249,17 +249,7 @@ import yacht1 from '../../assets/yacht1.png';
     );
   }
 
-  @supports (height: 100dvh) {
-    html[data-home-load-intro] .hero {
-      min-height: calc(100dvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
-    }
-  }
-
-  @supports (height: 100lvh) {
-    html[data-home-load-intro] .hero {
-      min-height: calc(100lvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
-    }
-  }
+  /* No 100dvh/100lvh overrides — they override `--hero-inner-vh` and break Safari full-height hero. */
 
   @supports (overflow: clip) {
     .hero {
@@ -556,7 +546,8 @@ import yacht1 from '../../assets/yacht1.png';
     z-index: 0;
     overflow: hidden;
     isolation: isolate;
-    background: linear-gradient(180deg, #1c1e22 0%, #141518 14%, #101114 38%, #0b0c0e 100%);
+    /* Flat canvas while the image resolves — avoids a charcoal “band” at the top edge. */
+    background: var(--page-canvas, #050505);
   }
 
   /* No dedicated header feather overlay. */
@@ -702,10 +693,17 @@ import yacht1 from '../../assets/yacht1.png';
     inset: 0;
     z-index: 3;
     /*
-      Vertical base for type; horizontal top layer keeps the left (yacht) lighter and adds depth
-      toward the dock on the right.
+      Layer order (first = top): soft top vignette (393-style nav legibility) → horizontal depth
+      for the yacht frame → vertical read for body copy.
     */
     background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.38) 0%,
+        rgba(0, 0, 0, 0.2) 10%,
+        rgba(0, 0, 0, 0.08) 22%,
+        rgba(0, 0, 0, 0) 36%
+      ),
       linear-gradient(
         to right,
         rgba(0, 0, 0, 0) 0%,
@@ -736,6 +734,13 @@ import yacht1 from '../../assets/yacht1.png';
     .hero__scrim {
       background:
         linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.48) 0%,
+          rgba(0, 0, 0, 0.26) 12%,
+          rgba(0, 0, 0, 0.1) 26%,
+          rgba(0, 0, 0, 0) 40%
+        ),
+        linear-gradient(
           to right,
           rgba(0, 0, 0, 0) 0%,
           rgba(0, 0, 0, 0) 44%,
@@ -745,14 +750,14 @@ import yacht1 from '../../assets/yacht1.png';
         linear-gradient(
           180deg,
           rgba(0, 0, 0, 0) 0%,
-          rgba(0, 0, 0, 0) 24%,
-          rgba(0, 0, 0, 0.05) 34%,
-          rgba(0, 0, 0, 0.14) 46%,
-          rgba(0, 0, 0, 0.22) 56%,
-          rgba(0, 0, 0, 0.26) 64%,
-          rgba(0, 0, 0, 0.32) 74%,
-          rgba(0, 0, 0, 0.44) 86%,
-          rgba(0, 0, 0, 0.58) 100%
+          rgba(0, 0, 0, 0) 34%,
+          rgba(0, 0, 0, 0.04) 42%,
+          rgba(0, 0, 0, 0.12) 52%,
+          rgba(0, 0, 0, 0.2) 60%,
+          rgba(0, 0, 0, 0.26) 68%,
+          rgba(0, 0, 0, 0.32) 76%,
+          rgba(0, 0, 0, 0.42) 88%,
+          rgba(0, 0, 0, 0.54) 100%
         );
     }
   }
