@@ -235,7 +235,6 @@ const eagleForHeader = eagleSvgRaw.replace(
 
   .site-header--transparent {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
     width: 100%;
@@ -245,6 +244,13 @@ const eagleForHeader = eagleSvgRaw.replace(
     -webkit-backdrop-filter: none;
     border-bottom: none;
     box-shadow: none;
+  }
+
+  /* `top` only on large screens — mobile overrides below (fixed + inset). */
+  @media (min-width: 961px) {
+    .site-header--transparent {
+      top: 0;
+    }
   }
 
   /* Keep chrome readable over the hero without a tinted “banner” bar */
@@ -527,15 +533,7 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   @media (max-width: 960px) {
-    /*
-      Move the entire header *below* the safe area instead of padding inside a `top: 0` box
-      (which still left controls under the Dynamic Island). `--header-h` stays topInset + bar + fudge.
-    */
-    .site-header,
-    .site-header--transparent {
-      top: var(--header-top-inset);
-      height: calc(var(--header-bar) + var(--header-safe-fudge));
-    }
+    /* Viewport inset + fixed transparent + sticky margin: `global.css` (unscoped) for iOS reliability. */
 
     .site-header__menu-btn {
       display: block;

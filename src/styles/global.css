@@ -50,27 +50,19 @@
   --glass-shadow-diffuse: 0 0 clamp(2.75rem, 7vw, 5rem) rgba(0, 0, 0, 0.3);
 }
 
-/* Match Header nav breakpoint: phones + narrow tablets use hamburger + `top` inset. */
+/*
+  Match Header nav breakpoint: phones + narrow tablets.
+  Floor 59px: Dynamic Island + status row when env() is wrong/0 in embedded Safari.
+*/
 @media (max-width: 960px) {
   :root {
     --header-top-inset: max(
       env(safe-area-inset-top, 0px),
       constant(safe-area-inset-top, 0px),
-      12px
+      59px
     );
     --header-safe-fudge: clamp(4px, 1.25vw, 10px);
     --header-h: calc(var(--header-top-inset) + var(--header-bar) + var(--header-safe-fudge));
-  }
-}
-
-/* Narrow phones: floor when env() is 0 so the bar clears Dynamic Island (~59px class devices). */
-@media (max-width: 480px) {
-  :root {
-    --header-top-inset: max(
-      env(safe-area-inset-top, 0px),
-      constant(safe-area-inset-top, 0px),
-      52px
-    );
   }
 }
 
@@ -292,4 +284,27 @@ p:last-child {
   color: var(--color-cream);
   font-weight: 600;
   min-width: 7.5rem;
+}
+
+/*
+  Mobile header: unscoped fallback so iOS always picks up viewport-fixed transparent chrome
+  (avoids rare scoped-bundle order issues with `site-header--transparent`).
+*/
+@media (max-width: 960px) {
+  header.site-header.site-header--transparent {
+    position: fixed;
+    top: var(--header-top-inset);
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0;
+    z-index: 50;
+    height: calc(var(--header-bar) + var(--header-safe-fudge));
+  }
+
+  header.site-header:not(.site-header--transparent) {
+    margin-top: var(--header-top-inset);
+    top: var(--header-top-inset);
+    height: calc(var(--header-bar) + var(--header-safe-fudge));
+  }
 }
