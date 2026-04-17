@@ -257,19 +257,6 @@ import yacht1 from '../../assets/yacht1.png';
     }
   }
 
-  /*
-    iOS: `.hero__media` uses `top: calc(-1 * env(safe-area-inset-top))` to bleed under the island.
-    `overflow-y: hidden` / `clip` on `.hero` clips that upward paint — Safari often shows the page
-    canvas (`#050505`) as a “black band” along the seam under the sticky header. 393 avoids this
-    by not clipping a sibling-stacked hero under an absolute header.
-  */
-  @media (max-width: 960px) {
-    html[data-home-load-intro] .hero {
-      overflow-y: visible;
-      overflow-x: hidden;
-    }
-  }
-
   @media (max-width: 480px) {
     .hero {
       --hero-wave-strip-height: clamp(10.5rem, 26vw, 14rem);
@@ -329,8 +316,7 @@ import yacht1 from '../../assets/yacht1.png';
   }
 
   /*
-    Homepage load choreography: blur resolve → headline parts → domains → stats rise.
-    (Header chrome stays visible — no delayed nav fade; see comment above `.hero__metric`.)
+    Homepage load choreography: blur resolve → headline parts → domains → stats rise → nav fade.
     Scoped to `html[data-home-load-intro]` so other pages are unaffected.
   */
   @keyframes homeHeroImgIntro {
@@ -402,13 +388,10 @@ import yacht1 from '../../assets/yacht1.png';
     animation: homeStatRise 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s forwards;
   }
 
-  /*
-    Header chrome: **no delayed opacity fade**. Even fading `.site-header__inner` (not the sticky
-    `<header>` root) still composites badly in WebKit when combined with the row’s `transform`
-    (mobile tuck) + logo `filter: drop-shadow()` — a near-black band often flashes the moment the
-    fade completes (~2.5s). Chrome stays `opacity: 1` from first paint; headline/metrics keep the
-    staggered sequence below.
-  */
+  html[data-home-load-intro] .site-header--transparent {
+    opacity: 0;
+    animation: homeFadeOnly 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s forwards;
+  }
 
   .hero__metric {
     display: flex;
@@ -497,9 +480,9 @@ import yacht1 from '../../assets/yacht1.png';
     }
 
     .hero__metric-label {
-      font-size: 1.1rem;
+      font-size: var(--metric-strip-caps-size-portrait);
       line-height: 1.22;
-      letter-spacing: 0.06em;
+      letter-spacing: var(--metric-strip-caps-tracking-portrait);
     }
   }
 
@@ -526,9 +509,9 @@ import yacht1 from '../../assets/yacht1.png';
     margin: 0;
     padding-bottom: 0.08rem;
     font-family: var(--font-ui);
-    font-size: clamp(0.8rem, 1.6vw, 1.03rem);
-    font-weight: 500;
-    letter-spacing: 0.09em;
+    font-size: var(--metric-strip-caps-size);
+    font-weight: var(--metric-strip-caps-weight);
+    letter-spacing: var(--metric-strip-caps-tracking);
     text-transform: uppercase;
     color: rgba(239, 236, 231, 0.55);
     line-height: 1.35;
@@ -559,8 +542,8 @@ import yacht1 from '../../assets/yacht1.png';
     z-index: 0;
     overflow: hidden;
     isolation: isolate;
-    /* Flat canvas while the image resolves — avoids a charcoal “band” at the top edge. */
-    background: var(--page-canvas, #050505);
+    /* Charcoal ramp while the image resolves — reads softer at the top edge than flat `#050505`. */
+    background: linear-gradient(180deg, #1c1e22 0%, #141518 14%, #101114 38%, #0b0c0e 100%);
   }
 
   /* No dedicated header feather overlay. */
@@ -636,21 +619,6 @@ import yacht1 from '../../assets/yacht1.png';
     }
   }
 
-  /*
-    Phones: drop heavy zoom/crop so the asset reads sharper and fills height without “postage stamp” hero.
-    Overrides the nested `html[data-home-load-intro]` blocks above on narrow widths.
-  */
-  @media (max-width: 960px) {
-    /*
-      Full-bleed read under the island: anchor the crop to the top (42% was pulling “sky/hull”
-      down and read as a short hero). Scale stays 1 for sharpness.
-    */
-    html[data-home-load-intro] .hero__img {
-      object-position: 50% top;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .hero__img {
       transform: translate3d(clamp(-0.35rem, -0.85vw, 0.85rem), 0, 0) scale(1.075);
@@ -685,6 +653,11 @@ import yacht1 from '../../assets/yacht1.png';
       animation: none !important;
     }
 
+    html[data-home-load-intro] .site-header--transparent {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+
     .hero__actions .hero__cta-border rect {
       transition: none !important;
       stroke: var(--color-accent) !important;
@@ -706,17 +679,10 @@ import yacht1 from '../../assets/yacht1.png';
     inset: 0;
     z-index: 3;
     /*
-      Layer order (first = top): soft top vignette (393-style nav legibility) → horizontal depth
-      for the yacht frame → vertical read for body copy.
+      Vertical base for type; horizontal top layer keeps the left (yacht) lighter and adds depth
+      toward the dock on the right.
     */
     background:
-      linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.38) 0%,
-        rgba(0, 0, 0, 0.2) 10%,
-        rgba(0, 0, 0, 0.08) 22%,
-        rgba(0, 0, 0, 0) 36%
-      ),
       linear-gradient(
         to right,
         rgba(0, 0, 0, 0) 0%,
@@ -737,39 +703,6 @@ import yacht1 from '../../assets/yacht1.png';
         rgba(0, 0, 0, 0.56) 88%,
         rgba(0, 0, 0, 0.68) 100%
       );
-  }
-
-  /*
-    Phones: the default scrim darkens from ~8% height — under the island it reads as “letterboxed”
-    black over the hero. Keep the same depth toward the bottom; stay almost clear longer at top.
-  */
-  @media (max-width: 960px) {
-    /*
-      Top feather lives on `.site-header--transparent` (mobile) so WebKit sticky compositing
-      doesn’t flatten the hero scrim into a “black bar.” Keep scrim for horizontal + lower-hero read.
-    */
-    .hero__scrim {
-      background:
-        linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0) 0%,
-          rgba(0, 0, 0, 0) 44%,
-          rgba(0, 0, 0, 0.18) 68%,
-          rgba(0, 0, 0, 0.36) 100%
-        ),
-        linear-gradient(
-          180deg,
-          rgba(0, 0, 0, 0) 0%,
-          rgba(0, 0, 0, 0) 18%,
-          rgba(0, 0, 0, 0.05) 32%,
-          rgba(0, 0, 0, 0.12) 48%,
-          rgba(0, 0, 0, 0.2) 60%,
-          rgba(0, 0, 0, 0.26) 68%,
-          rgba(0, 0, 0, 0.32) 76%,
-          rgba(0, 0, 0, 0.42) 88%,
-          rgba(0, 0, 0, 0.54) 100%
-        );
-    }
   }
 
   .hero__content {
@@ -796,19 +729,35 @@ import yacht1 from '../../assets/yacht1.png';
   }
 
   @media (max-width: 768px) {
+    html[data-home-load-intro] .hero {
+      min-height: calc(
+        100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+      min-height: calc(
+        100svh + var(--header-bar) + var(--header-safe-pad) + env(safe-area-inset-top, 0px) +
+          var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+      min-height: calc(
+        var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) +
+          var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
+    }
+
     html[data-home-load-intro] .hero__media {
-      min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
+      min-height: calc(
+        100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      );
     }
 
     html[data-home-load-intro] .hero__content {
       padding-top: calc(
         var(--header-bar) + var(--header-safe-pad) + var(--space-md) + var(--home-prescroll-y, 0px) +
-          clamp(8px, 2.5vw, 16px)
+          clamp(14px, 4.25vw, 26px)
       );
     }
 
     html[data-home-load-intro] .hero__metrics {
-      transform: translate3d(0, calc(var(--home-prescroll-y, 0px) + clamp(6px, 2vw, 14px)), 0);
+      transform: translate3d(0, calc(var(--home-prescroll-y, 0px) + clamp(10px, 3vw, 20px)), 0);
     }
   }
 

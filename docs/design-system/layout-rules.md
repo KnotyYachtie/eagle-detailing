@@ -28,17 +28,17 @@
 
 - **Height stack** (mobile-first intent)  
   - Baseline: `100vh` then `100svh`.  
-  - Home + load intro: add **`env(safe-area-inset-top)`**, **`var(--header-h)`** bleed, and **`var(--home-prescroll-y, 0px)`** once pre-scroll ships.  
-  - When supported: prefer **`100lvh`** in the same min-height chain so dynamic toolbars distort less.
+  - Home + load intro: add **`env(safe-area-inset-top)`**, header bleed (**`var(--header-bar) + var(--header-safe-pad)`** in `calc` sums — do **not** nest **`var(--header-h)`** inside outer `calc()`; WebKit treats nested `calc` as invalid), **`var(--home-prescroll-y, 0px)`**, and live height **`var(--hero-inner-vh, 100svh)`** from `visualViewport` / resize.  
+  - **Avoid** shipping **`100dvh` / `100lvh`** overrides that **replace** `--hero-inner-vh` on iOS home — they fight chrome-aware height and can **shorten** the hero.
 
 - **Layering**  
-  - `.hero__media`: absolute fill, **bleed top** with `-env(safe-area-inset-top)`, min-height extends safe-area + prescroll budget.  
+  - `.hero__media`: absolute fill, **bleed top** with `-env(safe-area-inset-top)`, min-height extends safe-area + prescroll budget; optional **soft neutral placeholder** gradient on the media layer (not the header) while the image resolves.  
   - `.hero__content`: relative, **high z-index** over media.  
   - `.hero__metrics`: absolute **from bottom**, height tied to **`--hero-wave-strip-height`** so stats share one optical band with any future wave strip.
 
 - **Header overlap**  
-  - Home: **`margin-top: -var(--header-h)`** on `.hero` so the hero’s box **extends under** the transparent header.  
-  - Content still clears the header via **padding-top** that includes **`header-h` + space + optional prescroll**.
+  - Home: transparent header **`position: absolute`**; hero **negative `margin-top`** using **`--header-bar` + `--header-safe-pad`** so the paint box **extends under** the bar.  
+  - Content still clears the header via **padding-top** that includes **`header-bar` + `header-safe-pad` + space + optional prescroll**.
 
 - **Pre-scroll compensation** (when active)  
   - `--home-prescroll-y` on `<html>` drives:  

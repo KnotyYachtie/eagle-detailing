@@ -46,15 +46,6 @@ const eagleForHeader = eagleSvgRaw.replace(
         <span class="site-header__region">South Florida</span>
       </span>
     </a>
-    <button
-      type="button"
-      class="site-header__menu-btn"
-      aria-expanded="false"
-      aria-controls="site-nav"
-      data-nav-toggle
-    >
-      Menu
-    </button>
     <nav class="site-header__nav" id="site-nav" aria-label="Primary">
       <ul class="site-header__list">
         <li class="site-header__group" data-nav-group="services" data-services-current={servicesOpen ? 'true' : 'false'}>
@@ -134,7 +125,6 @@ const eagleForHeader = eagleSvgRaw.replace(
 <script>
   const mq = window.matchMedia('(max-width: 960px)');
 
-  const btn = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('site-nav');
   const links = document.querySelectorAll('[data-nav-link]');
   const servicesGroup = document.querySelector('[data-nav-group="services"]');
@@ -168,29 +158,23 @@ const eagleForHeader = eagleSvgRaw.replace(
     setAboutExpanded(false);
   }
 
-  if (btn && nav) {
-    btn.addEventListener('click', () => {
-      const open = nav.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', String(open));
-      if (!open) {
-        collapseSubmenusIfMobile();
-      } else if (mq.matches) {
-        if (servicesGroup?.dataset.servicesCurrent === 'true') {
-          setServicesExpanded(true);
-        }
-        if (aboutGroup?.dataset.aboutCurrent === 'true') {
-          setAboutExpanded(true);
-        }
-      }
-    });
-    links.forEach((l) =>
-      l.addEventListener('click', () => {
-        nav.classList.remove('is-open');
-        btn.setAttribute('aria-expanded', 'false');
-        collapseSubmenusIfMobile();
-      })
-    );
-  }
+  links.forEach((l) =>
+    l.addEventListener('click', () => {
+      nav?.classList.remove('is-open');
+      collapseSubmenusIfMobile();
+    })
+  );
+
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (!mq.matches) return;
+      const header = document.querySelector('.site-header');
+      if (!header || !(e.target instanceof Node)) return;
+      if (!header.contains(e.target)) collapseSubmenusIfMobile();
+    },
+    true
+  );
 
   if (servicesGroup && servicesBtn) {
     servicesBtn.addEventListener('click', () => {
@@ -212,6 +196,9 @@ const eagleForHeader = eagleSvgRaw.replace(
     if (!e.matches) {
       setServicesExpanded(false);
       setAboutExpanded(false);
+    } else {
+      nav?.classList.remove('is-open');
+      collapseSubmenusIfMobile();
     }
   });
 </script>
@@ -221,9 +208,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     position: sticky;
     top: 0;
     z-index: 50;
-    /* Total chrome height incl. safe-area on narrow viewports (`global.css` tokens). */
     height: var(--header-h);
-    padding-top: var(--header-safe-pad);
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -235,8 +220,8 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   /*
-    Sticky (not absolute) so nav stays pinned while scrolling; hero still uses `margin-top: -var(--header-h)`
-    to paint the image under the chrome.
+    Sticky (same as solid header) so logo, wordmark, and nav stay visible while scrolling.
+    Home hero still uses negative margin so the photograph continues under this bar.
   */
   .site-header--transparent {
     position: sticky;
@@ -249,8 +234,6 @@ const eagleForHeader = eagleSvgRaw.replace(
     -webkit-backdrop-filter: none;
     border-bottom: none;
     box-shadow: none;
-    /* Let gradient “tail” paint past the header box (393-style handoff into the hero). */
-    overflow: visible;
   }
 
   /* Keep chrome readable over the hero without a tinted “banner” bar */
@@ -267,10 +250,6 @@ const eagleForHeader = eagleSvgRaw.replace(
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
   }
 
-  .site-header--transparent .site-header__menu-btn {
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
-  }
-
   .site-header__inner {
     display: flex;
     align-items: center;
@@ -278,6 +257,8 @@ const eagleForHeader = eagleSvgRaw.replace(
     width: 100%;
     /* Extra inset so logo + wordmark aren’t flush to the container edge */
     padding-inline: clamp(1.25rem, 4vw, 2.25rem);
+    /* Sit above vertical center — full `--header-h` on mobile reads “low” under the island */
+    transform: translateY(-0.38rem);
   }
 
   .site-header__brand {
@@ -287,7 +268,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     text-decoration: none;
     color: var(--color-cream);
     margin-right: auto;
-    transform: translateY(2px);
+    transform: translateY(-0.12rem);
     opacity: 0.82;
     transition: opacity 0.2s var(--ease-out), color 0.2s var(--ease-out);
   }
@@ -341,27 +322,12 @@ const eagleForHeader = eagleSvgRaw.replace(
     line-height: 1.2;
   }
 
-  .site-header__menu-btn {
-    display: none;
-    font-family: var(--font-ui);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-cream);
-    background: transparent;
-    border: 1px solid rgba(239, 236, 231, 0.25);
-    padding: 0.45rem 0.75rem;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-  }
-
   .site-header__nav {
     display: flex;
     justify-content: flex-end;
     flex: 0 0 auto;
     margin-left: auto;
-    transform: translateY(2px);
+    transform: translateY(-0.14rem);
   }
 
   .site-header__list {
@@ -375,9 +341,9 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   .site-header__link {
-    font-size: 0.8125rem;
+    font-size: var(--header-nav-link-size);
     font-weight: 500;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--header-nav-link-tracking);
     text-transform: uppercase;
     text-decoration: none;
     color: var(--color-cream-muted);
@@ -503,10 +469,10 @@ const eagleForHeader = eagleSvgRaw.replace(
     .site-header__sublist .site-header__sublink {
       display: block;
       padding: 0.15rem 0;
-      font-size: 0.8125rem;
+      font-size: var(--header-nav-link-size);
       font-weight: 500;
-      letter-spacing: 0.06em;
-      line-height: 1.25;
+      letter-spacing: var(--header-nav-link-tracking);
+      line-height: 1.35;
       white-space: nowrap;
       text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
     }
@@ -533,151 +499,197 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   @media (max-width: 960px) {
-    /*
-      Feathered top band (structure like 393westend.com, inverted for dark UI):
-      paint a soft gradient *on the header layer* instead of relying on transparency to reveal the
-      hero scrim through WebKit’s sticky compositor (which often reads as a flat navy/black slab).
-    */
-    .site-header--transparent::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      /* Softer cap than 0.52 — reads flatter on iOS P3 + sticky compositing. */
-      transform: translateZ(0);
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.34) 0%,
-        rgba(0, 0, 0, 0.18) 38%,
-        rgba(0, 0, 0, 0.06) 72%,
-        rgba(0, 0, 0, 0) 100%
-      );
+    .site-header {
+      height: auto;
+      min-height: var(--header-h);
+      align-items: flex-start;
+      padding-bottom: 0.2rem;
     }
 
-    /* Short tail below the chrome so the handoff into the photo is gradual, not a hard seam. */
-    .site-header--transparent::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 100%;
-      height: clamp(64px, 22vw, 140px);
-      z-index: 0;
-      pointer-events: none;
-      transform: translateZ(0);
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.14) 0%,
-        rgba(0, 0, 0, 0.04) 52%,
-        rgba(0, 0, 0, 0) 100%
-      );
+    .site-header__brand-copy {
+      display: flex;
     }
 
-    .site-header--transparent .site-header__inner {
-      position: relative;
-      z-index: 1;
+    .site-header__wordmark {
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
     }
 
-    .site-header--transparent .site-header__logo,
-    .site-header--transparent .site-header__logo--eagle .site-header__eagle-svg {
-      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.28));
+    .site-header__region {
+      font-size: clamp(0.52rem, 1.8vw, 0.62rem);
     }
 
-    .site-header--transparent .site-header__wordmark {
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.32);
+    .site-header__logo {
+      width: clamp(34px, 7.5vw, 42px);
     }
 
-    .site-header--transparent .site-header__menu-btn {
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /*
-      Tuck chrome under Dynamic Island: base nudge + extra lift scaled to `safe-area-inset-top`
-      (capped) so large-island phones move ~25–30px without changing `--header-h` / hero math.
-    */
     .site-header__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem 0;
+      padding-block: 0.15rem 0.05rem;
       transform: translateY(
-        calc(-0.22rem - min(30px, max(10px, calc(env(safe-area-inset-top, 0px) * 0.45))))
+        calc(-0.28rem - min(10px, max(0px, var(--header-safe-pad) * 0.22)))
       );
     }
 
     .site-header__brand {
-      transform: none;
-    }
-
-    .site-header__menu-btn {
-      display: block;
-    }
-
-    /* Text-only control over the gradient — no filled chip that reads as a second bar. */
-    .site-header--transparent .site-header__menu-btn {
-      border-color: rgba(255, 255, 255, 0.22);
-      background: transparent;
-      box-shadow: none;
+      margin-right: 0;
+      width: 100%;
+      transform: translateY(0);
+      justify-content: flex-start;
     }
 
     .site-header__nav {
-      position: fixed;
-      inset: var(--header-h) 0 0;
-      z-index: 70;
-      background: rgba(16, 33, 53, 0.98);
-      padding: var(--space-lg);
-      transform: translateY(-100%);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      overflow-y: auto;
-      margin-left: 0;
+      position: static;
+      inset: auto;
       flex: none;
-    }
-
-    .site-header__nav.is-open {
-      transform: translateY(0);
+      width: 100%;
+      min-width: 0;
+      margin-left: 0;
+      display: flex;
+      justify-content: stretch;
+      align-items: stretch;
       opacity: 1;
+      transform: none;
       pointer-events: auto;
+      background: none;
+      padding: 0;
+      overflow: visible;
     }
 
     .site-header__list {
       flex-direction: column;
-      align-items: flex-start;
+      flex-wrap: nowrap;
       justify-content: flex-start;
-      gap: var(--space-md);
+      align-items: stretch;
+      gap: 0.12rem 0;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .site-header__list > li {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .site-header__group {
       width: 100%;
+      min-width: 0;
+      max-width: 100%;
     }
 
-    .site-header__sublist {
-      display: none;
-      margin-top: 0.5rem;
-      padding-left: 0;
-      border: none;
+    .site-header__link,
+    .site-header__subtrigger.site-header__link {
+      font-size: var(--header-nav-link-size-mobile);
+      letter-spacing: var(--header-nav-link-tracking-mobile);
+      padding: 0.14rem 0;
+      text-align: right;
       width: 100%;
+      display: block;
       box-sizing: border-box;
+    }
+
+    /*
+      In-flow row of sublinks; items ease in horizontally (stagger).
+      `--header-bar` on mobile reserves vertical space for hero bleed.
+    */
+    .site-header__sublist {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.35rem 0.85rem;
+      position: static;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      max-height: 0;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      box-shadow: none;
+      transform: none;
+      transition:
+        max-height 0.3s var(--ease-out),
+        opacity 0.22s var(--ease-out),
+        visibility 0s linear 0.3s;
     }
 
     .site-header__group.is-services-open .site-header__sublist,
     .site-header__group.is-about-open .site-header__sublist {
-      display: block;
+      max-height: 3.5rem;
+      opacity: 1;
+      visibility: visible;
+      margin-top: 0.12rem;
+      padding-bottom: 0.12rem;
+      transition:
+        max-height 0.3s var(--ease-out),
+        opacity 0.22s var(--ease-out),
+        visibility 0s;
+    }
+
+    .site-header__sublist > li {
+      margin: 0;
+      opacity: 0;
+      transform: translateX(0.65rem);
+      transition:
+        opacity 0.2s var(--ease-out),
+        transform 0.24s var(--ease-out);
+      transition-delay: 0s;
+    }
+
+    .site-header__group.is-services-open .site-header__sublist > li,
+    .site-header__group.is-about-open .site-header__sublist > li {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(1),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(1) {
+      transition-delay: 0.04s;
+    }
+
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(2),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(2) {
+      transition-delay: 0.1s;
+    }
+
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(3),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(3) {
+      transition-delay: 0.16s;
     }
 
     .site-header__sublist .site-header__sublink {
-      display: block;
-      padding: 0.35rem 0;
-      font-size: 1rem;
+      display: inline-block;
+      padding: 0.08rem 0;
+      font-size: var(--header-nav-link-size-mobile);
       font-weight: 500;
-      letter-spacing: 0.06em;
-      line-height: 1.25;
+      letter-spacing: var(--header-nav-link-tracking-mobile);
+      line-height: 1.3;
+      white-space: nowrap;
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
     }
 
-    .site-header__link {
-      font-size: 1rem;
+    .site-header--transparent .site-header__sublist .site-header__sublink {
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  @media (max-width: 960px) and (prefers-reduced-motion: reduce) {
+    .site-header__sublist {
+      transition: none;
     }
 
+    .site-header__sublist > li {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>

@@ -60,6 +60,9 @@ All hero visuals must share:
 
 This enables seamless transitions.
 
+**Mobile edges (default bias)**  
+Where the layout meets **system chrome** (status bar, island, safe areas), prefer **soft transitions**: photography and **restrained** scrims lead; avoid **hard** horizontal UI slabs and avoid **stacking** decorative “feather” bands on the **header** unless art-directed and device-QA’d. Implementation detail lives in **Homepage hero — iOS / Safari** below.
+
 ---
 
 ### Color System
@@ -222,52 +225,64 @@ Hero:
 
 ## Homepage hero — iOS / Safari chrome & “pre-scroll” (implementation notes)
 
+**Product bias (mobile)**  
+Layouts should **lean toward a soft top edge** where possible: the photograph and a **gentle** scrim own the transition into the status bar / island — not a flat UI slab, not a hard horizontal “seam,” and not a second decorative bar that reads as *new* chrome.
+
 **Problem we were solving**  
-On phones and tablets, the **system browser UI** (time, URL bar, etc.) sits above the page. Users also perceived a **hard horizontal “band”**: either the browser chrome, the **brand-navy** page canvas, or the seam between those and the hero photo. We also removed a **light-blue hero top feather** overlay — it was meant to soften the seam but often read as **extra** banding on iOS. Luxury reads better when the **hero photograph owns the first impression** and the chrome feels intentional, not like a separate strip.
+On phones, users perceived a **hard band** at the top: flat **page canvas** (`#050505`), **sticky** transparent header compositing, or **extra** header-layer gradients fighting WebKit. Separately, **brand-navy** `html`/`body` can tint Safari’s UI when sampled.
+
+**Learnings (do not repeat the regression)**
+
+1. **`theme-color` + `canvasColor` alone do not “feather” the edge.**  
+   Matching or splitting meta vs canvas can help **toolbar tint**, but the **premium** read (hero bleeding under the Dynamic Island with a soft scrim) comes from **stacking**: transparent header **`position: absolute`** over the hero, hero **`margin-top`** pulling the paint box up, **`.hero__media`** bleeding with **`env(safe-area-inset-top)`**, and a **subtle** scrim — not from meta-tag-only experiments or `html`/`body` sky gradients alone.
+
+2. **`position: sticky` vs `absolute` on `.site-header--transparent`.**  
+   **`absolute`** prioritizes the **softest** top edge (photo composites cleanly under the island). **`sticky`** prioritizes **persistent** logo + nav while scrolling; use when product asks for it, then **re-QA** the top edge on a real iPhone. Avoid stacking **extra** header-layer gradients on sticky — those tended to read as a **hard band**.
+
+3. **Soft edge = hero-owned, not header-owned.**  
+   Prefer: **charcoal vertical gradient** on `.hero__media` while the image resolves (so the top is not raw `#050505`), **restrained** scrim (avoid stacking an aggressive **top** vignette on mobile *and* a separate header gradient). Avoid: painting another “feather” as a **sibling band** above the photo unless art-directed — it tends to read as **banding** on iOS.
+
+4. **Do not “fix” sticky banding by setting `overflow-y: visible` on `.hero` unless you accept new scroll/overflow bugs.**  
+   With an **absolute** header, the hero can keep **`overflow-y: hidden` / `clip`** as intended; upward safe-area bleed is visible without unclipping the whole hero.
+
+5. **WebKit `calc()` trap:** **`var(--header-h)` is itself a `calc()`** — do **not** nest it inside another `calc(... + var(--header-h) + ...)`**. Use **`var(--header-bar) + var(--header-safe-pad)`** in outer `calc()` expressions (see `index.astro` + `global.css` home floors).
 
 **What we did (and why)**
 
 1. **Neutral page canvas + `theme-color` on the homepage**  
-   - **Why:** Safari often blends `theme-color` with the **actual `html`/`body` background`**. If that background is **`#102135`**, the top strip can look **blue-navy** even when `theme-color` is neutral.  
-   - **How:** `BaseLayout` accepts optional **`canvasColor`**. When set, it sets **`--page-canvas`** on `<html>` and mirrors the same value in the **critical inline** `html`/`body` styles so first paint matches `global.css` (`background: var(--page-canvas, var(--color-navy))`). Homepage passes **`canvasColor`** and **`themeColor`** together (e.g. `#050505`).
+   - **Why:** Safari blends UI with the **actual `html`/`body` background**. Navy `#102135` can read as an **inky strip** if left as the default canvas.  
+   - **How:** `BaseLayout` optional **`canvasColor`** → **`--page-canvas`** + critical inline match. Homepage typically passes **`canvasColor`** and **`themeColor`** together (e.g. both `#050505`).
 
 2. **Hero image visually starts under the transparent site header**  
-   - **Why:** The header is `position: absolute` on the home hero, so it does not consume layout height; we still want the **photo** to read as continuous with the nav, not “starting an inch lower.”  
-   - **How:** Homepage hero uses a **negative `margin-top: -var(--header-h)`** (scoped to `html[data-home-load-intro]`) so the hero’s paint box extends **behind** the transparent header. **`top: 0` + `width: 100%`** on `.site-header--transparent` keeps the bar pinned predictably.
+   - **Why:** The transparent header does not consume layout height; the **photo** should read continuous with the nav.  
+   - **How:** Negative **`margin-top`** on the home hero using **`--header-bar` + `--header-safe-pad`** (not nested `var(--header-h)` inside `calc`). **`.site-header--transparent`**: **`position: absolute`**, **`top: 0`**, **`width: 100%`**.
 
 3. **Trust strip as a deliberate dark “letterbox” (optional product choice)**  
-   - **Why:** If a mid-page band feels “sticky” on scroll, lean into it: **near-black neutral** (`#050505` → `#0a0a0b` gradient) reads as **cinema chrome**, not leftover UI.  
-   - **How:** `.trust.index-atmos` uses **`position: sticky; top: var(--header-h); z-index: 45`** (under the header at `50`). **Removed `overflow-x: hidden` from `.page`** (kept clipping on `html`) so **`position: sticky` works on iOS**.
+   - Same as before: intentional **near-black** sticky strip under the header if product wants “cinema chrome.”  
+   - **Layout:** keep **`overflow-x` off `.page`**; clip on **`html`** so unrelated stickies still work.
 
-4. **“Pre-scroll” — start slightly scrolled so the hero sits under the browser chrome**  
-   - **Why:** A small **initial scroll** mimics the user nudging the page down so the **photo sits below** the worst part of the system chrome, without asking them to do it.  
-   - **How (earliest possible):** A **one-line inline `<script>` in `<head>`**, immediately **after** `<meta name="viewport" …>`, so `innerHeight` is usable. It:  
-     - computes `y` ≈ **`clamp(44px, 8vh, 120px)`**,  
-     - sets **`document.documentElement.style.setProperty('--home-prescroll-y', y + 'px')`**,  
-     - sets **`history.scrollRestoration = 'manual'`** (Safari likes to “restore” scroll to `0` and undo us),  
-     - calls **`window.scrollTo(0, y)`**.  
-   - **Follow-up:** `src/scripts/home-prescroll.ts` re-applies on **`load`** + **`requestAnimationFrame`** if Safari reset scroll.
+4. **“Pre-scroll” + `--hero-inner-vh`**  
+   - Small initial **scroll** on **mobile only** (after `<meta viewport>`), **`--home-prescroll-y`**, **`history.scrollRestoration = 'manual'`**, **`visualViewport` / inner height** for **`--hero-inner-vh`** so the hero height tracks **chrome-aware** viewport.  
+   - **`home-prescroll.ts`** repairs Safari scroll resets on **`load`**.
 
-5. **Compensate layout so typography doesn’t ride too high after pre-scroll**  
-   - **Why:** Scrolling down moves content **up** in the viewport; we re-balanced the **hero headline block** and **metrics** so the composition matches intent.  
-   - **How:** CSS uses **`var(--home-prescroll-y, 0px)`**: extra **`padding-top`** on `.hero__content`, **`translateY`** on `.hero__metrics`, and **added height** on `.hero` / `.hero__media` min-heights so the **bottom doesn’t look short**.
+5. **Compensate layout for every prescroll pixel**  
+   - **`padding-top`** on `.hero__content`, **`translateY`** on `.hero__metrics`, extra **min-height** on `.hero` / `.hero__media` (see narrow **`max-width: 768px`** clamps in `index.astro`).
 
-6. **Slightly stronger hero zoom on the homepage**  
-   - **Why:** Pre-scroll reveals more of the **lower** part of the frame; a touch more **`scale()`** keeps edges feeling **full-bleed**.  
-   - **How:** `html[data-home-load-intro] .hero__img` overrides inside **`@media not (prefers-reduced-motion: reduce)`** so reduced-motion users are not forced into extra transform.
+6. **Homepage hero image scale**  
+   - Slightly stronger **`scale()`** when motion is OK; skip for **`prefers-reduced-motion`**.
 
 **`prefers-reduced-motion`**  
-The head script and module **skip** auto pre-scroll when the user prefers reduced motion (avoids surprise jumps).
+Skip auto pre-scroll and heavy transform polish.
 
 **Where to look in code (for future agents)**  
-- `src/layouts/BaseLayout.astro` — `canvasColor`, `themeColor`, critical CSS, **inline pre-scroll script**  
-- `src/styles/global.css` — `--page-canvas` on `html`/`body`  
-- `src/pages/index.astro` — hero bleed, metrics, trust strip, home-only image overrides  
-- `src/scripts/home-prescroll.ts` — Safari scroll restore safety net  
-- `src/components/Header.astro` — transparent header pinning
+- `src/layouts/BaseLayout.astro` — `canvasColor`, `themeColor`, critical CSS, inline home viewport + prescroll script  
+- `src/styles/global.css` — `--page-canvas`, `--header-h` / safe-area tokens, `.page` shell  
+- `src/pages/index.astro` — hero bleed, scrim, metrics, prescroll payback  
+- `src/scripts/home-prescroll.ts` — scroll restore + `--hero-inner-vh`  
+- `src/components/Header.astro` — **absolute** transparent home header
 
 **Reality check**  
-We **cannot** paint web content **under** the **native** iOS Safari chrome; we can only **align colors**, **scroll**, **extend into `safe-area-inset-top`**, and **compose** so the transition feels intentional.
+We **cannot** paint web content **under** the **native** iOS status bar; we **can** make the **hero** read continuous under it via bleed, scrim, and **absolute** stacking so the edge feels **soft** and intentional.
 
 ---
 

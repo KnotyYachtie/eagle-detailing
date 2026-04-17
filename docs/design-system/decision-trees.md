@@ -2,15 +2,21 @@
 
 ## A. Mobile / Safari top seam reads “wrong”
 
-1. **Is the seam mostly the *system* chrome?**  
+**Bias:** Prefer a **soft** top edge on mobile — owned by **hero paint** (photo bleed, light scrim, neutral placeholder under the image), not by stacking extra “chrome” bands.
+
+1. **Is the seam mostly the *system* browser UI sampling the page?**  
    - **Yes** → Align **`theme-color`** + **first-paint `html`/`body`** + optional **neutral `--page-canvas`** on that route.  
-   - **Still yes** after color alignment → Add **small pre-scroll** + **`--home-prescroll-y` layout payback** (never only scroll without compensation).
+   - **Still wrong** after colors match → This is usually **not** meta-only: check **header `position` mode** (step 2) and **hero bleed / scrim** before adding **`html`/`body` gradients**.
 
-2. **Is the seam between *site header* and hero photo?**  
-   - **Yes** → Ensure **transparent header** is **`top:0` full width** and hero uses **negative `margin-top: -header-h`** so the image **continues under** the header.
+2. **Is the seam between *site header* and hero photo (hard line / slab)?**  
+   - **Yes** → Home **transparent** header should be **`position: absolute`** (not **`sticky`**) over the hero; hero uses **negative top margin** so media **continues under** the bar (express payback with **`--header-bar` + `--header-safe-pad`**, not nested **`var(--header-h)`** inside `calc()` — WebKit invalidation).  
+   - **Avoid** fixing sticky banding by **`overflow-y: visible`** on `.hero` unless you accept new overflow side effects — prefer absolute stacking first.
 
-3. **Is the seam a decorative overlay you added?**  
-   - **Yes** → **Remove** the overlay; decorative bands are read as **new** problems on iOS.
+3. **Is the seam a decorative overlay you added (header pseudo-elements, extra top vignette, “sky” strip)?**  
+   - **Yes** → **Remove** or **simplify**; on iOS these often read as a **second** bar. Soften via **hero** layers only, **restrained** scrim, optional **charcoal placeholder** gradient on `.hero__media` while the image loads.
+
+4. **Still need more separation from the URL / toolbar chrome?**  
+   - **Yes** → Add **small pre-scroll** (mobile only) + **`--home-prescroll-y` layout payback** on hero height, content `padding-top`, and metrics `translateY` — never scroll without reinvesting the pixels.
 
 ---
 

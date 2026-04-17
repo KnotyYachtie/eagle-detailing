@@ -4,6 +4,10 @@ _Date range: Apr 14–16, 2026 (approx.)_
 
 This document summarizes the sequence of changes and decisions made to the Eagle Detailing homepage hero (`index.astro`) and related layout/animation behavior.
 
+### Addendum — agent-facing summary (post–sticky regression)
+
+For **current** guidance (soft mobile top edge, iOS compositing, prescroll, `theme-color` vs layout), treat **`documentation/design-system/design.md` → “Homepage hero — iOS / Safari”** plus **`docs/design-system/decision-trees.md` §A** and **`docs/design-system/heuristics.md`** as canonical. **Short version:** the premium top read came back with **`position: absolute`** on **`.site-header--transparent`**, hero-owned softening (scrim / media placeholder), and **avoiding** sticky header + synthetic header feathers; **`theme-color` / canvas tweaks alone** did not recreate the feathered edge.
+
 ---
 
 ## 1. Hero Image & Layout
@@ -404,8 +408,7 @@ This tells iOS/Android to tint the browser UI bars to a color sampled from the h
 If you or a future assistant revisit this:
 
 - **Top Safari bar**:
-  - We’ve extended hero into the safe area, matched `theme-color`, and added a feather.  
-  - Any remaining top band is purely Safari chrome behavior; further tweak is mostly about feather color and intensity.
+  - See **Addendum** above: prefer **hero + absolute transparent header** compositing; do not assume **`theme-color`** or **`html`/`body` sky gradients** replace that. Any remaining strip is partly **system** UI; tune **scrim** and **media placeholder**, not endless meta/CSS split experiments.
 
 - **Timing feel**:
   - You might want to micro-adjust the delays (e.g., `domains` + `metrics` starting slightly later or earlier, or making the hero ease-in even more subtle by lowering blur or starting opacity higher than `0.25`).

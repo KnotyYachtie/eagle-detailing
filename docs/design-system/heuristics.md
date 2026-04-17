@@ -11,11 +11,17 @@
 
 ## Hero & viewport
 
+- **If** the home **transparent** header must meet the **soft top edge** intent (photo + island read as one field)  
+  **Then** prefer **`position: absolute`** over the hero — **`position: sticky`** on that row has repeatedly composited as a **flat slab** or **hard seam** against the photo in WebKit when combined with transforms/filters/pseudo “feathers.”
+
 - **If** the transparent header is `position: absolute` over the hero  
-  **Then** pull the hero paint box **up by `var(--header-h)`** so the photo **continues under** the nav; keep nav **`top: 0; width: 100%`** so alignment is deterministic.
+  **Then** pull the hero paint box up with **negative `margin-top`** using **`var(--header-bar) + var(--header-safe-pad)`** (same optical intent as `-var(--header-h)` but **valid** inside outer `calc()` in WebKit — **`--header-h` is itself a `calc()`** and must not nest inside another `calc` sum). Keep **`.site-header--transparent`**: **`top: 0; width: 100%`**.
+
+- **If** you want a **soft** edge without fake UI chrome  
+  **Then** soften on **`.hero__media` / `.hero__scrim`** (gentle scrim, optional **neutral vertical placeholder** gradient behind the image while it loads) — **not** a second horizontal “feather” band on the **header** unless explicitly art-directed and QA’d on iPhone.
 
 - **If** the hero must read “below” the worst part of **system** chrome  
-  **Then** apply a **small initial scroll** (`~ clamp(44px, 8vh, 120px)`), set **`--home-prescroll-y`**, **`history.scrollRestoration = 'manual'`**, and run the earliest script **after** `<meta viewport>` so `innerHeight` is sane.
+  **Then** apply a **small initial scroll** (mobile only; **`~ min/max` on `innerHeight`** in the same family as `52–132px`), set **`--home-prescroll-y`**, **`history.scrollRestoration = 'manual'`**, and run the earliest script **after** `<meta name="viewport" … viewport-fit=cover>` so `innerHeight` / `visualViewport` are sane; keep **`--hero-inner-vh`** in sync for full-bleed height.
 
 - **If** you pre-scroll  
   **Then** **re-budget** the same pixels into **hero min-height**, **hero media min-height**, **headline `padding-top`**, and **metrics `translateY`** so composition does not ride too high and the bottom does not look short.
@@ -31,8 +37,8 @@
 - **If** `position: sticky` fails on iOS for a band you care about  
   **Then** remove **`overflow-x: hidden`** from intermediate flex wrappers (e.g. `.page`); keep horizontal clipping on **`html`** instead.
 
-- **If** decorative top feather / tint reads as a **new** band on iOS  
-  **Then** **delete** it; soften seams with **scroll + canvas alignment**, not another horizontal gradient.
+- **If** a **header-layer** decorative feather / tint reads as a **new** band on iOS  
+  **Then** **delete** it or move softness into **hero-owned** layers (scrim / media placeholder); align **canvas + `theme-color`** and **pre-scroll payback** before adding new gradients.
 
 ## Navigation & density
 

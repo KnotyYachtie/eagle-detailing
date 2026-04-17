@@ -7,10 +7,14 @@ Each entry states something the current language **treats as true** without full
 ## Implementation & platform
 
 1. **Assumption:** A **homepage-only** neutral page canvas (e.g. `#050505`) plus matching `theme-color` is the right tradeoff so system browser chrome does not read as **brand navy** sampled from `#102135`.  
+   **Learning:** That pairing **reduces navy tinting** of UI chrome but does **not** by itself create a **feathered** hero under the island — compositing (**absolute** transparent header, safe-area bleed, scrim) does.  
    **Question:** Should **any** other routes (campaign landings, booking flows) ever get the same canvas override, or is **strictly home** a hard rule for brand recognition?
 
 2. **Assumption:** **`theme-color` and first-paint `html`/`body`** should track **actual paint**, not an “aspirational” swatch that differs from what ships in CSS.  
    **Question:** Who owns the checklist when tokens change—**design** or **engineering**—so critical inline CSS and `global.css` never drift?
+
+2b. **Learning (home hero / iOS, verified in implementation):** Aligning **`theme-color`** with canvas helps **browser UI sampling**, but it does **not** replace **layout compositing** for a soft top edge. **`position: sticky`** on the transparent header **plus** extra header-layer gradients regressed toward a **hard band**; **`position: absolute`** + hero-owned softening restored the **feathered** read. **Sticky** is valid when **persistent nav** is the priority—then **re-QA** top-edge on **notch + Dynamic Island** and avoid stacking synthetic header feathers.  
+   **Question:** Per route, do we default to **softest top** (`absolute`) or **sticky chrome**—or do we **document the choice** per major template (home vs interior)?
 
 3. **Assumption:** **Pre-scroll** magnitude (`~ clamp(44px, 8vh, 120px)`) is a **good enough global default** without per-device tuning in v1.  
    **Question:** Which **reference devices** (e.g. iPhone 14 Pro, SE, iPad mini) should define “golden” hero composition so scroll distance can be tuned intentionally?
