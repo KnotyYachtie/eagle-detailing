@@ -94,13 +94,14 @@ const jsonLd = {
 >
   <head>
     <meta charset="UTF-8" />
+    <!-- `viewport-fit=cover` must precede any CSS that uses `env(safe-area-inset-*)` (header inset). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!--
       First-paint scroll + chrome: must match `global.css` so external CSS does not re-resolve overflow
       (avoids a one-frame “stutter”). `overflow-y: scroll` keeps a stable vertical scrollbox while the
       scrollbar is hidden; avoid `overflow-x` on `body` — it can pair with `overflow-y` and fight `html`.
     -->
     <style is:inline set:html={criticalInlineCss} />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {homePreScrollHeadScript && <script is:inline set:html={homePreScrollHeadScript} />}
     <meta name="theme-color" content={themeColor} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

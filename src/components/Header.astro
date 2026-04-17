@@ -526,15 +526,15 @@ const eagleForHeader = eagleSvgRaw.replace(
 
   @media (max-width: 960px) {
     /*
-      Push logo, wordmark, and menu control below the notch / status bar.
-      `--header-h` (global) grows by the same inset so hero + nav sheet stay aligned.
+      Pin row under Dynamic Island: padding matches `--header-h` math in `global.css`.
+      `align-items: flex-start` avoids vertically centering `.site-header__inner` in the 4.25rem band
+      (centering could float the logo upward into the unsafe strip).
     */
     .site-header {
-      padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-safe-fudge));
+      align-items: flex-start;
+      padding-top: calc(var(--header-top-inset) + var(--header-safe-fudge));
     }
-  }
 
-  @media (max-width: 960px) {
     .site-header__menu-btn {
       display: block;
     }

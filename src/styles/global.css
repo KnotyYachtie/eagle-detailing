@@ -34,7 +34,9 @@
   --radius-md: 12px;
   /* Bar height used for layout (hero bleed, sticky offsets, mobile nav `inset`). */
   --header-h: 4.25rem;
-  /* Extra top inset below status bar / dynamic URL chrome (mobile only). */
+  /* Top inset below status bar / Dynamic Island (mobile); 0 on large screens. */
+  --header-top-inset: 0px;
+  /* Small extra under system chrome (mobile). */
   --header-safe-fudge: 0px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   /* Glassmorphism: translucency + backdrop blur + light rim + diffuse depth */
@@ -49,8 +51,25 @@
 /* Match Header nav breakpoint: phones + narrow tablets use hamburger + top inset. */
 @media (max-width: 960px) {
   :root {
-    --header-safe-fudge: clamp(10px, 2.8vw, 18px);
-    --header-h: calc(4.25rem + env(safe-area-inset-top, 0px) + var(--header-safe-fudge));
+    /* Real safe-area + legacy iOS + small floor (does not beat a truthful env() on iPad). */
+    --header-top-inset: max(
+      env(safe-area-inset-top, 0px),
+      constant(safe-area-inset-top, 0px),
+      12px
+    );
+    --header-safe-fudge: clamp(6px, 1.5vw, 12px);
+    --header-h: calc(4.25rem + var(--header-top-inset) + var(--header-safe-fudge));
+  }
+}
+
+/* Portrait phones: stronger floor when env() is 0 / wrong (Dynamic Island band). */
+@media (max-width: 480px) {
+  :root {
+    --header-top-inset: max(
+      env(safe-area-inset-top, 0px),
+      constant(safe-area-inset-top, 0px),
+      clamp(3.5rem, 12vmin, 4rem)
+    );
   }
 }
 
