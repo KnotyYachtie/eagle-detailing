@@ -12,6 +12,11 @@ interface Props {
   dataHomeLoadIntro?: boolean;
   /** Browser chrome color on mobile (Safari/Chrome UI bars). */
   themeColor?: string;
+  /**
+   * Optional neutral canvas behind the document (html/body + first-paint inline CSS).
+   * Use on the home hero so `#102135` brand navy does not tint Safari’s top chrome.
+   */
+  canvasColor?: string;
 }
 
 const {
@@ -20,7 +25,43 @@ const {
   transparentHeader = false,
   dataHomeLoadIntro = false,
   themeColor = '#102135',
+  canvasColor,
 } = Astro.props;
+
+const criticalCanvas = canvasColor ?? '#102135';
+
+/** Homepage: set scroll + `--home-prescroll-y` before first paint (after viewport meta reads innerHeight). */
+const homePreScrollHeadScript = dataHomeLoadIntro
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var h=window.innerHeight||800;var y=Math.round(Math.min(120,Math.max(44,h*0.08)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
+  : '';
+
+/** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */
+const criticalInlineCss = `
+      html {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scrollbar-width: none;
+        background: ${criticalCanvas};
+      }
+      html::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: ${criticalCanvas};
+        scrollbar-width: none;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+      }
+`;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const pageTitle = title === SITE.shortName ? title : `${title} · ${SITE.shortName}`;
@@ -46,7 +87,11 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en" data-home-load-intro={dataHomeLoadIntro ? true : undefined}>
+<html
+  lang="en"
+  data-home-load-intro={dataHomeLoadIntro ? true : undefined}
+  style={canvasColor ? `--page-canvas: ${canvasColor}` : undefined}
+>
   <head>
     <meta charset="UTF-8" />
     <!--
@@ -54,36 +99,9 @@ const jsonLd = {
       (avoids a one-frame “stutter”). `overflow-y: scroll` keeps a stable vertical scrollbox while the
       scrollbar is hidden; avoid `overflow-x` on `body` — it can pair with `overflow-y` and fight `html`.
     -->
-    <style is:inline>
-      html {
-        overflow-y: scroll;
-        overflow-x: hidden;
-        scrollbar-width: none;
-        background: #102135;
-      }
-      html::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0;
-        background: transparent;
-      }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: #102135;
-        scrollbar-width: none;
-      }
-      body::-webkit-scrollbar {
-        display: none;
-        width: 0;
-        height: 0;
-        background: transparent;
-      }
-      .page {
-        overflow-x: hidden;
-      }
-    </style>
+    <style is:inline set:html={criticalInlineCss} />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {homePreScrollHeadScript && <script is:inline set:html={homePreScrollHeadScript} />}
     <meta name="theme-color" content={themeColor} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -123,7 +141,7 @@ const jsonLd = {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    /* `overflow-x: hidden` here breaks `position: sticky` in Safari; root scroll clips on `html`. */
   }
 
   .page__main {

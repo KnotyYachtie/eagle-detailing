@@ -55,7 +55,8 @@ html {
   overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   scroll-behavior: smooth;
-  background: var(--color-navy);
+  /* `canvasColor` on `<html>` sets `--page-canvas` (home) so Safari chrome isn’t tinted by brand navy. */
+  background: var(--page-canvas, var(--color-navy));
 }
 
 html::-webkit-scrollbar {
@@ -79,12 +80,12 @@ html::-webkit-scrollbar {
 body {
   margin: 0;
   min-height: 100vh;
-  /* Horizontal clipping lives on `.page` so `body` never pairs `overflow-x` with root scroll (fewer layout jumps). */
+  /* Horizontal clipping on `html`; avoid `overflow-x` on `.page` so `position: sticky` works in Safari. */
   font-family: var(--font-ui);
   font-size: 1rem;
   line-height: 1.6;
   color: var(--color-cream);
-  background: var(--color-navy);
+  background: var(--page-canvas, var(--color-navy));
   -webkit-font-smoothing: antialiased;
 }
 
