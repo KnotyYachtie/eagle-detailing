@@ -531,6 +531,20 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   @media (max-width: 960px) {
+    /*
+      Tuck chrome under Dynamic Island: base nudge + extra lift scaled to `safe-area-inset-top`
+      (capped) so large-island phones move ~25–30px without changing `--header-h` / hero math.
+    */
+    .site-header__inner {
+      transform: translateY(
+        calc(-0.22rem - min(30px, max(10px, calc(env(safe-area-inset-top, 0px) * 0.45))))
+      );
+    }
+
+    .site-header__brand {
+      transform: none;
+    }
+
     .site-header__menu-btn {
       display: block;
     }
