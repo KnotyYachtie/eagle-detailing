@@ -326,8 +326,9 @@ import yacht1 from '../../assets/yacht1.png';
   }
 
   /*
-    Homepage load choreography (reference sequence): blur resolve → headline parts → domains →
-    stats rise → nav fade. Scoped to `html[data-home-load-intro]` so other pages are unaffected.
+    Homepage load choreography: blur resolve → headline parts → domains → stats rise.
+    (Header chrome stays visible — no delayed nav fade; see comment above `.hero__metric`.)
+    Scoped to `html[data-home-load-intro]` so other pages are unaffected.
   */
   @keyframes homeHeroImgIntro {
     from {
@@ -398,10 +399,13 @@ import yacht1 from '../../assets/yacht1.png';
     animation: homeStatRise 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s forwards;
   }
 
-  html[data-home-load-intro] :global(.site-header--transparent) {
-    opacity: 0;
-    animation: homeFadeOnly 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s forwards;
-  }
+  /*
+    Header chrome: **no delayed opacity fade**. Even fading `.site-header__inner` (not the sticky
+    `<header>` root) still composites badly in WebKit when combined with the row’s `transform`
+    (mobile tuck) + logo `filter: drop-shadow()` — a near-black band often flashes the moment the
+    fade completes (~2.5s). Chrome stays `opacity: 1` from first paint; headline/metrics keep the
+    staggered sequence below.
+  */
 
   .hero__metric {
     display: flex;
@@ -633,8 +637,12 @@ import yacht1 from '../../assets/yacht1.png';
     Overrides the nested `html[data-home-load-intro]` blocks above on narrow widths.
   */
   @media (max-width: 960px) {
+    /*
+      Full-bleed read under the island: anchor the crop to the top (42% was pulling “sky/hull”
+      down and read as a short hero). Scale stays 1 for sharpness.
+    */
     html[data-home-load-intro] .hero__img {
-      object-position: 50% 42%;
+      object-position: 50% top;
       transform: translate3d(0, 0, 0) scale(1);
     }
   }
@@ -670,11 +678,6 @@ import yacht1 from '../../assets/yacht1.png';
     html[data-home-load-intro] .hero__metrics-inner {
       opacity: 1 !important;
       transform: translate3d(0, -1cm, 0) !important;
-      animation: none !important;
-    }
-
-    html[data-home-load-intro] :global(.site-header--transparent) {
-      opacity: 1 !important;
       animation: none !important;
     }
 
@@ -723,6 +726,35 @@ import yacht1 from '../../assets/yacht1.png';
         rgba(0, 0, 0, 0.56) 88%,
         rgba(0, 0, 0, 0.68) 100%
       );
+  }
+
+  /*
+    Phones: the default scrim darkens from ~8% height — under the island it reads as “letterboxed”
+    black over the hero. Keep the same depth toward the bottom; stay almost clear longer at top.
+  */
+  @media (max-width: 960px) {
+    .hero__scrim {
+      background:
+        linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0) 44%,
+          rgba(0, 0, 0, 0.18) 68%,
+          rgba(0, 0, 0, 0.36) 100%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0) 24%,
+          rgba(0, 0, 0, 0.05) 34%,
+          rgba(0, 0, 0, 0.14) 46%,
+          rgba(0, 0, 0, 0.22) 56%,
+          rgba(0, 0, 0, 0.26) 64%,
+          rgba(0, 0, 0, 0.32) 74%,
+          rgba(0, 0, 0, 0.44) 86%,
+          rgba(0, 0, 0, 0.58) 100%
+        );
+    }
   }
 
   .hero__content {
