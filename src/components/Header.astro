@@ -221,8 +221,9 @@ const eagleForHeader = eagleSvgRaw.replace(
     position: sticky;
     top: 0;
     z-index: 50;
-    /* Bar height only; `--header-h` includes `--header-top-inset` for siblings (hero, nav sheet). */
-    height: var(--header-bar);
+    /* Total chrome height incl. safe-area on narrow viewports (`global.css` tokens). */
+    height: var(--header-h);
+    padding-top: var(--header-safe-pad);
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -233,24 +234,21 @@ const eagleForHeader = eagleSvgRaw.replace(
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
+  /*
+    Sticky (not absolute) so nav stays pinned while scrolling; hero still uses `margin-top: -var(--header-h)`
+    to paint the image under the chrome.
+  */
   .site-header--transparent {
-    position: absolute;
+    position: sticky;
+    top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: var(--header-bar);
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-bottom: none;
     box-shadow: none;
-  }
-
-  /* `top` only on large screens — mobile overrides below (fixed + inset). */
-  @media (min-width: 961px) {
-    .site-header--transparent {
-      top: 0;
-    }
   }
 
   /* Keep chrome readable over the hero without a tinted “banner” bar */
@@ -533,8 +531,6 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   @media (max-width: 960px) {
-    /* Viewport inset + fixed transparent + sticky margin: `global.css` (unscoped) for iOS reliability. */
-
     .site-header__menu-btn {
       display: block;
     }

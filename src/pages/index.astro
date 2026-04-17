@@ -236,11 +236,29 @@ import yacht1 from '../../assets/yacht1.png';
     (same plane as the nav) instead of starting below it. Header stays z-index above for hit targets.
   */
   html[data-home-load-intro] .hero {
-    margin-top: calc(-1 * var(--header-h));
-    /* One full visible viewport + header pull-up; `--hero-inner-vh` = `innerHeight` (see head inline + `home-prescroll.ts`). */
-    min-height: calc(100vh + var(--header-h));
-    min-height: calc(100svh + var(--header-h));
-    min-height: calc(var(--hero-inner-vh, 100svh) + var(--header-h));
+    /* Avoid `calc(... + var(--header-h) + ...)` — `--header-h` is a nested `calc`, invalid inside outer `calc` in WebKit. */
+    margin-top: calc(0px - var(--header-bar) - var(--header-safe-pad));
+    min-height: calc(
+      100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
+    );
+    min-height: calc(
+      100svh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
+    );
+    min-height: calc(
+      var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
+    );
+  }
+
+  @supports (height: 100dvh) {
+    html[data-home-load-intro] .hero {
+      min-height: calc(100dvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
+    }
+  }
+
+  @supports (height: 100lvh) {
+    html[data-home-load-intro] .hero {
+      min-height: calc(100lvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
+    }
   }
 
   @supports (overflow: clip) {
@@ -380,7 +398,7 @@ import yacht1 from '../../assets/yacht1.png';
     animation: homeStatRise 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s forwards;
   }
 
-  html[data-home-load-intro] .site-header--transparent {
+  html[data-home-load-intro] :global(.site-header--transparent) {
     opacity: 0;
     animation: homeFadeOnly 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s forwards;
   }
@@ -530,7 +548,7 @@ import yacht1 from '../../assets/yacht1.png';
     right: 0;
     bottom: 0;
     left: 0;
-    min-height: calc(100% + env(safe-area-inset-top, 0px));
+    min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px));
     z-index: 0;
     overflow: hidden;
     isolation: isolate;
@@ -546,6 +564,7 @@ import yacht1 from '../../assets/yacht1.png';
     position: relative;
     z-index: 0;
     width: 100%;
+    max-width: none;
     height: 100%;
     object-fit: cover;
     /* When cover crops only top/bottom, horizontal % does nothing — translateX always shifts the frame */
@@ -609,6 +628,17 @@ import yacht1 from '../../assets/yacht1.png';
     }
   }
 
+  /*
+    Phones: drop heavy zoom/crop so the asset reads sharper and fills height without “postage stamp” hero.
+    Overrides the nested `html[data-home-load-intro]` blocks above on narrow widths.
+  */
+  @media (max-width: 960px) {
+    html[data-home-load-intro] .hero__img {
+      object-position: 50% 42%;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero__img {
       transform: translate3d(clamp(-0.35rem, -0.85vw, 0.85rem), 0, 0) scale(1.075);
@@ -643,7 +673,7 @@ import yacht1 from '../../assets/yacht1.png';
       animation: none !important;
     }
 
-    html[data-home-load-intro] .site-header--transparent {
+    html[data-home-load-intro] :global(.site-header--transparent) {
       opacity: 1 !important;
       animation: none !important;
     }
@@ -702,41 +732,40 @@ import yacht1 from '../../assets/yacht1.png';
     box-sizing: border-box;
     /* margin-top shifts the whole cluster in the flex layout (padding alone was easy to miss) */
     margin-top: calc(clamp(1.5rem, 5vw, 3.25rem) + 6rem);
-    padding-top: calc(var(--header-h) + var(--space-md));
+    padding-top: calc(var(--header-bar) + var(--header-safe-pad) + var(--space-md));
     padding-bottom: var(--space-lg);
     max-width: 56rem;
   }
 
-  /* Home: headline clears fixed/transparent header */
+  /* Home: headline clears header + mobile prescroll offset (matches head inline). */
   html[data-home-load-intro] .hero__content {
-    padding-top: calc(var(--header-h) + var(--space-md));
+    padding-top: calc(
+      var(--header-bar) + var(--header-safe-pad) + var(--space-md) + var(--home-prescroll-y, 0px)
+    );
   }
 
   html[data-home-load-intro] .hero__metrics {
-    transform: none;
+    transform: translate3d(0, var(--home-prescroll-y, 0px), 0);
   }
 
-  /* Avoid flex intrinsic-height quirks on phones; hero height comes from min-height + px viewport var. */
-  @media (max-width: 960px) {
-    .hero {
-      display: block;
-    }
-  }
-
-  /*
-    Narrow viewports: slight extra safe-area on the media layer only (no pre-scroll).
-  */
   @media (max-width: 768px) {
     html[data-home-load-intro] .hero__media {
-      min-height: calc(100% + env(safe-area-inset-top, 0px) + clamp(6px, 2vw, 12px));
+      min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
     }
 
     html[data-home-load-intro] .hero__content {
-      padding-top: calc(var(--header-h) + var(--space-md) + clamp(6px, 2vw, 12px));
+      padding-top: calc(
+        var(--header-bar) + var(--header-safe-pad) + var(--space-md) + var(--home-prescroll-y, 0px) +
+          clamp(8px, 2.5vw, 16px)
+      );
+    }
+
+    html[data-home-load-intro] .hero__metrics {
+      transform: translate3d(0, calc(var(--home-prescroll-y, 0px) + clamp(6px, 2vw, 14px)), 0);
     }
   }
 
-  /* Less top “air” on phones so headline + metrics regain vertical room (header uses `top` inset now). */
+  /* Less top “air” on phones so headline + metrics regain vertical room. */
   @media (max-width: 640px) {
     .hero__content {
       margin-top: calc(clamp(1rem, 4vw, 2rem) + clamp(2rem, 8vw, 3.25rem));

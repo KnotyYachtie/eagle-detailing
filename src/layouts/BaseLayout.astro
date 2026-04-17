@@ -31,11 +31,10 @@ const {
 const criticalCanvas = canvasColor ?? '#102135';
 
 /**
- * Homepage: real pixel height for one full hero screen (iOS `svh`/`lvh` alone mis-sized vs browser chrome).
- * No pre-scroll — scrolling the doc hid most of the hero behind the URL bar.
+ * Homepage: first paint sets `--hero-inner-vh`; mobile-only `--home-prescroll-y` + scroll (desktop stays 0).
  */
 const homeHeroViewportHeadScript = dataHomeLoadIntro
-  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;d.style.setProperty('--home-prescroll-y','0px');var h=window.innerHeight||0;if(h)d.style.setProperty('--hero-inner-vh',h+'px');}catch(e){}})();`
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(132,Math.max(52,ih*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
   : '';
 
 /** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */
@@ -140,27 +139,3 @@ const jsonLd = {
   </body>
 </html>
 
-<style is:global>
-  .page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* `overflow-x: hidden` here breaks `position: sticky` in Safari; root scroll clips on `html`. */
-  }
-
-  .page__main {
-    /* Don’t let the flex row shrink the main column below its content (iOS + negative-margin hero). */
-    flex: 1 0 auto;
-  }
-
-  /*
-    Home: hero uses `margin-top: -var(--header-h)` so the photo bleeds under the fixed header.
-    Without a BFC + floor height, WebKit can collapse `<main>` to ~intrinsic content height (~35–40% viewport).
-  */
-  html[data-home-load-intro] .page__main {
-    display: flow-root;
-    min-height: calc(100svh + var(--header-h, 4.25rem));
-    /* Matches home hero: one real `innerHeight` + header bleed (set in head inline script). */
-    min-height: calc(var(--hero-inner-vh, 100svh) + var(--header-h, 4.25rem));
-  }
-</style>

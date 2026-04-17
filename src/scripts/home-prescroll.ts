@@ -1,7 +1,16 @@
 /**
- * Homepage: keep `--hero-inner-vh` in sync with the visible viewport (Safari chrome, rotation).
- * Pre-scroll was removed — it made the hero read as a short strip after `window.scrollTo`.
+ * Homepage:
+ * - Mobile (≤960px): `--home-prescroll-y` + `scrollTo` so Safari’s chrome settles; matches head inline.
+ * - All viewports: `--hero-inner-vh` from `visualViewport` / `innerHeight` (Safari URL bar).
  */
+
+const MIN_PX = 52;
+const MAX_PX = 132;
+
+function offsetPx(): number {
+  return Math.round(Math.min(MAX_PX, Math.max(MIN_PX, window.innerHeight * 0.092)));
+}
+
 function readVisualHeight(): number {
   const vv = window.visualViewport;
   if (vv?.height) return Math.round(vv.height);
@@ -14,14 +23,55 @@ function applyHeroInnerVh(): void {
   document.documentElement.style.setProperty('--hero-inner-vh', `${h}px`);
 }
 
+function readPrescrollY(): number {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--home-prescroll-y').trim();
+  const parsed = parseFloat(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return offsetPx();
+  return Math.round(parsed);
+}
+
 export function initHomePreScroll(): void {
   if (typeof window === 'undefined') return;
   if (!document.documentElement.hasAttribute('data-home-load-intro')) return;
-
-  document.documentElement.style.setProperty('--home-prescroll-y', '0px');
 
   applyHeroInnerVh();
   window.addEventListener('resize', applyHeroInnerVh, { passive: true });
   window.visualViewport?.addEventListener('resize', applyHeroInnerVh, { passive: true });
   window.visualViewport?.addEventListener('scroll', applyHeroInnerVh, { passive: true });
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* Desktop: no pre-scroll (matches head inline + layout breakpoint). */
+  if (!window.matchMedia('(max-width: 960px)').matches) {
+    document.documentElement.style.setProperty('--home-prescroll-y', '0px');
+    return;
+  }
+
+  const apply = (): void => {
+    const y = readPrescrollY();
+    if (y <= 0) return;
+    document.documentElement.style.setProperty('--home-prescroll-y', `${y}px`);
+    try {
+      if ('scrollRestoration' in history) {
+        const h = history as History & { scrollRestoration?: string };
+        h.scrollRestoration = 'manual';
+      }
+    } catch {
+      /* ignore */
+    }
+    if (window.scrollY <= 2) window.scrollTo(0, y);
+  };
+
+  if (document.readyState === 'complete') {
+    apply();
+    requestAnimationFrame(apply);
+  } else {
+    window.addEventListener(
+      'load',
+      () => {
+        apply();
+        requestAnimationFrame(apply);
+      },
+      { once: true }
+    );
+  }
 }

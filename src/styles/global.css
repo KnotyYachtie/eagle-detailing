@@ -32,14 +32,13 @@
   --space-xl: 4rem;
   --radius-sm: 6px;
   --radius-md: 12px;
-  /* Logo + controls row only (safe-area is *not* included — use `top` on the header for that). */
+  /* Chrome row (logo + nav); safe-area is padding on the header, folded into `--header-h` on narrow screens. */
   --header-bar: 4.25rem;
-  /* Distance from viewport top to bottom of header = inset + bar + fudge (hero / trust / nav sheet). */
+  --header-safe-pad: 0px;
   --header-h: var(--header-bar);
-  /* Offset the whole header below Dynamic Island / status bar (mobile). */
-  --header-top-inset: 0px;
-  /* Tiny gap under the system chrome row (mobile). */
-  --header-safe-fudge: 0px;
+  /* Homepage mobile prescroll (px); head script + `home-prescroll.ts` set on load. */
+  --home-prescroll-y: 0px;
+  --hero-inner-vh: 100svh;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   /* Glassmorphism: translucency + backdrop blur + light rim + diffuse depth */
   --glass-blur-card: blur(40px) saturate(1.42);
@@ -50,19 +49,17 @@
   --glass-shadow-diffuse: 0 0 clamp(2.75rem, 7vw, 5rem) rgba(0, 0, 0, 0.3);
 }
 
-/*
-  Match Header nav breakpoint: phones + narrow tablets.
-  Floor 59px: Dynamic Island + status row when env() is wrong/0 in embedded Safari.
-*/
 @media (max-width: 960px) {
   :root {
-    --header-top-inset: max(
-      env(safe-area-inset-top, 0px),
-      constant(safe-area-inset-top, 0px),
-      59px
-    );
-    --header-safe-fudge: clamp(4px, 1.25vw, 10px);
-    --header-h: calc(var(--header-top-inset) + var(--header-bar) + var(--header-safe-fudge));
+    /*
+      Safe-area top for notched phones. `constant()` does NOT accept a fallback (unlike `env()`);
+      `constant(safe-area-inset-top, 0px)` is invalid and poisons `--header-safe-pad`, which then
+      breaks every `calc(... + var(--header-safe-pad) + ...)` hero min-height in WebKit/Blink.
+    */
+    --header-safe-pad: 0px;
+    --header-safe-pad: max(0px, constant(safe-area-inset-top));
+    --header-safe-pad: max(0px, env(safe-area-inset-top, 0px));
+    --header-h: calc(var(--header-bar) + var(--header-safe-pad));
   }
 }
 
@@ -286,25 +283,48 @@ p:last-child {
   min-width: 7.5rem;
 }
 
-/*
-  Mobile header: unscoped fallback so iOS always picks up viewport-fixed transparent chrome
-  (avoids rare scoped-bundle order issues with `site-header--transparent`).
-*/
-@media (max-width: 960px) {
-  header.site-header.site-header--transparent {
-    position: fixed;
-    top: var(--header-top-inset);
-    left: 0;
-    right: 0;
-    width: 100%;
-    margin: 0;
-    z-index: 50;
-    height: calc(var(--header-bar) + var(--header-safe-fudge));
-  }
+/* --- Page shell (was BaseLayout `<style is:global>`; single source for Safari + flex) --- */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  header.site-header:not(.site-header--transparent) {
-    margin-top: var(--header-top-inset);
-    top: var(--header-top-inset);
-    height: calc(var(--header-bar) + var(--header-safe-fudge));
+.page__main {
+  flex: 1 0 auto;
+}
+
+/*
+  Home: `index.astro` styles are Astro-scoped; selectors like `html … .hero[data-astro-cid=…]`
+  out-specificity unscoped rules and previously broke cross-component targets (e.g. header fade).
+  These unscoped floors use the real DOM: `main.page__main > section.hero`.
+*/
+html[data-home-load-intro] body .page > main.page__main {
+  display: flow-root;
+  /*
+    Do not nest `calc(var(--hero-inner-vh) + var(--header-h) + …)` — `--header-h` is itself a `calc()`,
+    which invalidates the outer `calc` in WebKit/Blink (hero collapsed to ~content height).
+  */
+  min-height: calc(
+    var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
+  );
+}
+
+html[data-home-load-intro] body .page > main.page__main > section.hero {
+  margin-top: calc(0px - var(--header-bar) - var(--header-safe-pad)) !important;
+  min-height: calc(
+    var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
+  ) !important;
+}
+
+@supports (height: 100dvh) {
+  html[data-home-load-intro] body .page > main.page__main > section.hero {
+    min-height: calc(100dvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)) !important;
+  }
+}
+
+@supports (height: 100lvh) {
+  html[data-home-load-intro] body .page > main.page__main > section.hero {
+    min-height: calc(100lvh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)) !important;
   }
 }
