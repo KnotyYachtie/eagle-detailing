@@ -146,6 +146,28 @@ const jsonLd = {
   }
 
   .page__main {
-    flex: 1;
+    /* Don’t let the flex row shrink the main column below its content (iOS + negative-margin hero). */
+    flex: 1 0 auto;
+  }
+
+  /*
+    Home: hero uses `margin-top: -var(--header-h)` so the photo bleeds under the fixed header.
+    Without a BFC + floor height, WebKit can collapse `<main>` to ~intrinsic content height (~35–40% viewport).
+  */
+  html[data-home-load-intro] .page__main {
+    display: flow-root;
+    min-height: calc(100svh + var(--header-h, 4.25rem));
+  }
+
+  @supports (height: 100dvh) {
+    html[data-home-load-intro] .page__main {
+      min-height: calc(100dvh + var(--header-h, 4.25rem));
+    }
+  }
+
+  @supports (height: 100lvh) {
+    html[data-home-load-intro] .page__main {
+      min-height: calc(100lvh + var(--header-h, 4.25rem));
+    }
   }
 </style>

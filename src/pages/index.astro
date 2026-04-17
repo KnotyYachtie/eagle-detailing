@@ -237,10 +237,16 @@ import yacht1 from '../../assets/yacht1.png';
   */
   html[data-home-load-intro] .hero {
     margin-top: calc(-1 * var(--header-h));
-    /* Match viewport + header bleed + status inset + prescroll so bottom doesn’t clip short */
+    /* Match viewport + header bleed + prescroll so bottom doesn’t clip short */
     min-height: calc(100vh + var(--header-h) + var(--home-prescroll-y, 0px));
-    /* `--header-h` already includes safe-area via header `top` + bar height (no extra env here). */
     min-height: calc(100svh + var(--header-h) + var(--home-prescroll-y, 0px));
+  }
+
+  /* Prefer dynamic / largest viewport on engines that support it (full-bleed hero on iOS). */
+  @supports (height: 100dvh) {
+    html[data-home-load-intro] .hero {
+      min-height: calc(100dvh + var(--header-h) + var(--home-prescroll-y, 0px));
+    }
   }
 
   @supports (height: 100lvh) {
@@ -723,21 +729,9 @@ import yacht1 from '../../assets/yacht1.png';
   }
 
   /*
-    Narrow viewports: dynamic browser chrome + pre-scroll still clip the hero cluster.
-    Extra top budget (beyond --home-prescroll-y) lowers copy + metrics without changing scroll math in JS.
+    Narrow viewports: extra copy/metrics offset for pre-scroll + browser chrome (hero min-height is global + dvh/lvh).
   */
   @media (max-width: 768px) {
-    html[data-home-load-intro] .hero {
-      min-height: calc(100vh + var(--header-h) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
-      min-height: calc(100svh + var(--header-h) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
-    }
-
-    @supports (height: 100lvh) {
-      html[data-home-load-intro] .hero {
-        min-height: calc(100lvh + var(--header-h) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
-      }
-    }
-
     html[data-home-load-intro] .hero__media {
       min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(8px, 2.5vw, 16px));
     }
