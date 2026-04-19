@@ -9,8 +9,8 @@
    - **Still wrong** after colors match → This is usually **not** meta-only: check **header `position` mode** (step 2) and **hero bleed / scrim** before adding **`html`/`body` gradients**.
 
 2. **Is the seam between *site header* and hero photo (hard line / slab)?**  
-   - **Yes** → Home **transparent** header should be **`position: absolute`** (not **`sticky`**) over the hero; hero uses **negative top margin** so media **continues under** the bar (express payback with **`--header-bar` + `--header-safe-pad`**, not nested **`var(--header-h)`** inside `calc()` — WebKit invalidation).  
-   - **Avoid** fixing sticky banding by **`overflow-y: visible`** on `.hero` unless you accept new overflow side effects — prefer absolute stacking first.
+   - **Yes** → **Default today:** transparent header is **`position: sticky`** site-wide in **`Header.astro`**. For the **softest** read over a **full-bleed** hero, switch that template to **`position: absolute`** over the hero; hero uses **negative top margin** so media **continues under** the bar (express payback with **`--header-bar` + `--header-safe-pad`**, not nested **`var(--header-h)`** inside `calc()` — WebKit invalidation).  
+   - **Avoid** fixing sticky banding by **`overflow-y: visible`** on `.hero` unless you accept new overflow side effects — prefer absolute stacking first when softness is the priority.
 
 3. **Is the seam a decorative overlay you added (header pseudo-elements, extra top vignette, “sky” strip)?**  
    - **Yes** → **Remove** or **simplify**; on iOS these often read as a **second** bar. Soften via **hero** layers only, **restrained** scrim, optional **charcoal placeholder** gradient on `.hero__media` while the image loads.

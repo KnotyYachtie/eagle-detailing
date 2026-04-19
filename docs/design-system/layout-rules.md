@@ -6,6 +6,12 @@
   - `html`: `overflow-y: scroll`, `overflow-x: hidden`, **scrollbar hidden**, `scroll-behavior: smooth` (disabled under reduced motion).  
   - **Rationale:** stable scrollbox + no visible bar avoids layout “hiccups” when chrome appears/disappears.
 
+- **Site shell defaults (`BaseLayout.astro`)**  
+  - **`transparentHeader={true}`** and **`dataHomeLoadIntro={true}`** by default on **every** route unless a page opts out.  
+  - **`data-home-load-intro`** on `<html>` turns on: inline **`--hero-inner-vh`** + mobile **`--home-prescroll-y`** (see `home-prescroll.ts`), and the **`main.page__main`** min-height floor in **`global.css`**. **`initHomePreScroll()`** runs from the layout script once per page load.  
+  - **Opt-out:** `transparentHeader={false}` and/or `dataHomeLoadIntro={false}` on that page’s `<BaseLayout>`. **Campaign / minimal shell:** same props—no separate layout preset in v1; add **`canvasColor` / `themeColor`** per route when needed (see **assumptions → Owner decisions → Implementation & platform §1**).  
+  - **Narrative:** **`documentation/design-system/assumptions.md` → “Canonical decisions”** (implementation mirror) + **“Owner decisions → Implementation & platform”** for shell tuning, golden devices, overflow contract, and header sticky vs absolute policy. Assumptions use **confidence levels**; backbone promotion is explicit—see **`.cursor/rules/design-assumptions-confidence.mdc`**.
+
 - **Page shell**  
   - `.page`: column flex, `min-height: 100vh`, **no** `overflow-x: hidden` (breaks iOS sticky).  
   - `.page__main`: `flex: 1` so footer pins to bottom on short pages.
@@ -26,18 +32,23 @@
 
 ## Homepage hero (signature)
 
+- **When `html[data-home-load-intro]` is present (default)**  
+  - **`main.page__main`** gets the chrome-aware **min-height** floor (`--hero-inner-vh`, `--header-bar`, `--header-safe-pad`, `--home-prescroll-y`) — **all routes**.  
+  - **Hero-only** bleed, negative margin, metrics band, and prescroll **payback** in padding/transforms apply only where **`index.astro`**’s **`section.hero`** exists.
+
 - **Height stack** (mobile-first intent)  
   - Baseline: `100vh` then `100svh`.  
-  - Home + load intro: add **`env(safe-area-inset-top)`**, header bleed (**`var(--header-bar) + var(--header-safe-pad)`** in `calc` sums — do **not** nest **`var(--header-h)`** inside outer `calc()`; WebKit treats nested `calc` as invalid), **`var(--home-prescroll-y, 0px)`**, and live height **`var(--hero-inner-vh, 100svh)`** from `visualViewport` / resize.  
-  - **Avoid** shipping **`100dvh` / `100lvh`** overrides that **replace** `--hero-inner-vh` on iOS home — they fight chrome-aware height and can **shorten** the hero.
+  - Home hero + load intro: add **`env(safe-area-inset-top)`**, header bleed (**`var(--header-bar) + var(--header-safe-pad)`** in `calc` sums — do **not** nest **`var(--header-h)`** inside outer `calc()`; WebKit treats nested `calc` as invalid), **`var(--home-prescroll-y, 0px)`**, and live height **`var(--hero-inner-vh, 100svh)`** from `visualViewport` / resize.  
+  - **Avoid** shipping **`100dvh` / `100lvh`** overrides that **replace** `--hero-inner-vh` on iOS — they fight chrome-aware height and can **shorten** the hero.
 
 - **Layering**  
   - `.hero__media`: absolute fill, **bleed top** with `-env(safe-area-inset-top)`, min-height extends safe-area + prescroll budget; optional **soft neutral placeholder** gradient on the media layer (not the header) while the image resolves.  
   - `.hero__content`: relative, **high z-index** over media.  
-  - `.hero__metrics`: absolute **from bottom**, height tied to **`--hero-wave-strip-height`** so stats share one optical band with any future wave strip.
+  - `.hero__metrics`: absolute **from bottom**, height tied to **`--hero-wave-strip-height`** so stats share one optical band with any future wave strip.  
+  - **Scrim policy** (horizontal vs vertical only, checklist, reduced motion): **`documentation/design-system/design.md` → “Gradients & hero scrims (policy)”**.
 
 - **Header overlap**  
-  - Home: transparent header **`position: absolute`**; hero **negative `margin-top`** using **`--header-bar` + `--header-safe-pad`** so the paint box **extends under** the bar.  
+  - **Default:** transparent header is **`position: sticky`** in **`Header.astro`** (persistent nav). **`position: absolute`** is **opt-in per template** for the **softest** seam—note it here when a route switches. Hero uses **negative `margin-top`** with **`var(--header-bar) + var(--header-safe-pad)`** so the paint box **extends under** the bar.  
   - Content still clears the header via **padding-top** that includes **`header-bar` + `header-safe-pad` + space + optional prescroll**.
 
 - **Pre-scroll compensation** (when active)  

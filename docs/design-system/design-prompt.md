@@ -1,5 +1,9 @@
 # Design prompt (for agents / AI)
 
+**Workflow (read this first):** **`agent-conductor.md`** — task type → what to read → what to edit → assumptions vs backbone handoffs.
+
+---
+
 You are extending **Eagle Detailing** — a **cinematic minimal luxury** brand (precision service for high-value assets: **marine · aviation · automotive**). **Restraint beats decoration.**
 
 ## Non-negotiables
@@ -8,8 +12,8 @@ You are extending **Eagle Detailing** — a **cinematic minimal luxury** brand (
 - **One system across three domains** — never three unrelated micro-styles.
 - **Surface / photo leads**; UI **frames** and **clarifies**.
 - **Motion is slow and calm** — never bouncy, never “app-y.” Honor **`prefers-reduced-motion`** (no surprise scroll, no extra polish transforms).
-- **Mobile browser chrome is a layout input.** Align **`theme-color`**, **page canvas**, **hero bleed**, and (on home) **measured pre-scroll + `--home-prescroll-y` payback** — do not pretend iOS bars are not there.
-- **Brand navy `#102135` stays canonical** for product surfaces; **neutral near-black canvas** is a **homepage-only** tool when Safari re-tints chrome from the page background.
+- **Mobile browser chrome is a layout input.** Align **`theme-color`**, **page canvas**, **hero bleed**, and (default routes) **measured pre-scroll + `--home-prescroll-y`** — do not pretend iOS bars are not there. **Payback** in transforms/padding for the **hero** is **home-only**; **`main`** min-height floor is **site-wide** when `data-home-load-intro` is on.
+- **Brand navy `#102135` stays canonical** for product surfaces; **neutral near-black `#050505`** first-paint canvas + **`theme-color`** are the **default site shell** (`BaseLayout`); override per page if chrome sampling needs a different fill.
 
 ## Tokens & utilities (use as-is)
 
@@ -24,13 +28,13 @@ You are extending **Eagle Detailing** — a **cinematic minimal luxury** brand (
 - **Home hero:** full viewport min-height (`svh` + safe-area + header bleed + optional prescroll), **media absolute** with **top safe-area bleed**, **metrics anchored from bottom** using **`--hero-wave-strip-height`**, **content** clears transparent header using **padding** (includes prescroll when set).
 - **Header:** default **sticky glass**; hero uses **transparent absolute** with **SVG eagle**; **grouped** Services / About + flat Projects; **desktop** text flyouts; **mobile** sheet + accordions.
 - **Footer:** three-column **≥720px**; micro-headings; flat `NAV` for exploration.
-- **Home domains:** responsive **1 → 3** grid; cards use **subtle glass + Camden clip**; **IO reveal**; **home-only** expand overlay on click.
+- **Home domains (rev. 3 drift):** three **scroll chapters** on canvas — **Rellax** plate/float per band, **lateral spine** + labels, **`domains-drift.ts`**: **`.drifts-in--visible`**, exit scrub, hash **`scrollIntoView`**, **`data-spine-active`** only while a band overlaps **~20–80%** viewport height (removed off-screen); **`index.astro`** **reveal-up** on **`.domains-band__layout`** (**opacity** + **`translateY(15%)`→0** upward, **1.5s** **`ease`**, one-shot); **none** when **`prefers-reduced-motion: reduce`**. **Layout rhythm** (`--domains-chapter-pad-y`, spine links **`align-self: center`** in each row, spine↔content gap); **≥860px** **staggered** grid: Marine + Automotive **collage | copy**; Aviation **`.domains-band--flip`** (**RTL** on the inner layout row) for **copy | collage** with the **same** fig-first DOM as the others. **No** drift-block **radial** stacks / spine **wash**. Exercise log **`documentation/exercise.001.md`**. Legacy “three glass cards” grid is **not** the current home domains pattern.
 
 ## Heuristics (shortcut)
 
 - Chrome reads navy → **canvas + theme-color** match actual paint; critical inline must match `global.css`.
 - Sticky fails on iOS → **remove `overflow-x` from `.page`**, clip on `html`.
-- Pre-scroll → **always** pay back with `--home-prescroll-y` on heights + headline padding + metrics translate + slight **home-only** image scale (unless reduced motion).
+- Pre-scroll → **site-wide** vars on **`main`** min-height; **pay back** with `--home-prescroll-y` on **home** heights + headline padding + metrics translate + slight **home-only** image scale (unless reduced motion).
 - Glass unreadable → **solid** fallback at same luminance.
 
 ## Explicit “don’t”
@@ -55,6 +59,6 @@ You are extending **Eagle Detailing** — a **cinematic minimal luxury** brand (
 
 ## Inconsistencies to resolve consciously
 
-1. **Written “no glassmorphism” for domain entry** vs **implementation** using **blur-backed domain cards** on the homepage — decide whether to **tighten copy** or **reduce blur** toward solids.  
-2. **Hero primary CTA** is sometimes **commented out** in markup while design doc still prescribes **one** hero CTA — either restore the CTA or update the rule to “hero CTA optional in v1.”  
-3. **`layout-rules` file** in `documentation/design-system/` had **no extension** in the repo; canonical file here is **`layout-rules.md`** under `docs/design-system/`.
+1. **Legacy “no glassmorphism” phrasing** vs **current direction** — **glass allowed** when high-end and boundary-legible; domains are the next surface to lock a recipe. Align any stale prose with **`design.md` → Section 1** and **`assumptions.md` → Owner → Domains & glassmorphism**.  
+2. ~~**Hero primary CTA**~~ **Resolved (Apr 2026):** v1 **no** hero CTA button — **`design.md` / assumptions** updated; markup stays without hero button by product choice.  
+3. **`layout-rules`:** canonical spec is **`docs/design-system/layout-rules.md`**; **`documentation/design-system/design-prompt.md`** points here—keep both folders aligned (see **`agent-conductor.md`**).

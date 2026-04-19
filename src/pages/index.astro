@@ -4,16 +4,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site';
 import aviationTn from '../../assets/aviation-tn.jpg';
 import heroImage from '../../assets/yacht6.png';
+import car1 from '../../assets/car.1.png';
+import car2 from '../../assets/car.2.png';
+import jet2 from '../../assets/jet-2.png';
 import yacht1 from '../../assets/yacht1.png';
+import yacht2 from '../../assets/yacht2.png';
 ---
 
-<BaseLayout
-  title={SITE.shortName}
-  transparentHeader={true}
-  dataHomeLoadIntro={true}
-  canvasColor="#050505"
-  themeColor="#050505"
->
+<BaseLayout title={SITE.shortName}>
   <section class="hero">
     <div class="hero__media">
       <img
@@ -57,11 +55,11 @@ import yacht1 from '../../assets/yacht1.png';
         <span class="hero-load-headline__part hero-load-headline__part--2"> Three domains.</span>
       </h1>
       <p class="hero__domain-links" aria-label="Service domains">
-        <a href="/marine">Marine</a>
+        <a href="/#marine">Marine</a>
         <span aria-hidden="true">•</span>
-        <a href="/aviation">Aviation</a>
+        <a href="/#aviation">Aviation</a>
         <span aria-hidden="true">•</span>
-        <a href="/automotive">Automotive</a>
+        <a href="/#automotive">Automotive</a>
       </p>
       <!--
       <div class="hero__actions">
@@ -75,27 +73,24 @@ import yacht1 from '../../assets/yacht1.png';
       -->
     </div>
   </section>
-  <section class="u-section domains index-atmos">
-    <div class="u-container">
-      <div class="domains__header">
-        <p class="u-eyebrow" data-domains-abyss>Domains</p>
-        <p class="u-muted domains__intro" data-domains-abyss>
-          The same inspection-driven process — scaled to gelcoat, airframe finishes, and high-end automotive
-          paint systems.
-        </p>
-      </div>
-      <div class="domains__grid">
-        <a
-          class="card-domain card-domain--marine"
-          href="/marine"
-          data-domain-card
-          data-domain-reveal
-        >
-          <div class="card-domain__content">
-            <h3 class="card-domain__title">Marine</h3>
-            <div class="card-domain__visual card-domain__visual--marine" aria-hidden="true">
+  <!-- Enables domains entry animation before first paint of bands. -->
+  <script is:inline>
+    document.documentElement.classList.add('domains-drift-js');
+  </script>
+  <section class="u-section domains domains-drift index-atmos" aria-label="Service domains">
+    <div class="u-container domains-drift__grid">
+      <a class="domains-spine__link" href="#marine" data-spine="marine">
+        <span class="domains-spine__label">Marine</span>
+        <span class="domains-spine__bar" aria-hidden="true"></span>
+        <span class="domains-spine__node" aria-hidden="true"></span>
+      </a>
+    <article id="marine" class="domains-band" aria-label="Marine detailing">
+      <div class="domains-band__stage" data-drift-scrub style="--drift-exit: 0;">
+        <div class="domains-band__inner u-container" data-drifts-in>
+        <div class="domains-band__layout">
+          <figure class="domains-band__fig" aria-hidden="true">
+            <div class="domains-band__plate rellax" data-rellax-speed="-0.42">
               <img
-                class="card-domain__img"
                 src={yacht1.src}
                 alt=""
                 width={yacht1.width}
@@ -104,25 +99,65 @@ import yacht1 from '../../assets/yacht1.png';
                 decoding="async"
               />
             </div>
-            <div class="card-domain__body">
-              <p>
-                Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
-              </p>
-            </div>
-            <span class="card-domain__cta">Explore</span>
-          </div>
-        </a>
-        <a
-          class="card-domain card-domain--aviation"
-          href="/aviation"
-          data-domain-card
-          data-domain-reveal
-        >
-          <div class="card-domain__content">
-            <h3 class="card-domain__title">Aviation</h3>
-            <div class="card-domain__visual card-domain__visual--aviation" aria-hidden="true">
+            <div class="domains-band__float rellax" data-rellax-speed="0.26">
               <img
-                class="card-domain__img"
+                src={yacht2.src}
+                alt=""
+                width={yacht2.width}
+                height={yacht2.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
+          <div class="domains-band__text">
+            <h3 class="domains-band__title">Gelcoat to brightwork</h3>
+            <p class="domains-band__lede">
+              Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
+            </p>
+            <a
+              class="domains-drift__explore card-domain card-domain--marine card-domain--mini"
+              href="/marine"
+              data-domain-card
+            >
+              <span class="card-domain__content">
+                <span class="card-domain__title">Marine</span>
+                <div class="card-domain__body">
+                  <p>
+                    Luxury center consoles to superyachts — gelcoat, brightwork, interiors, and show-ready prep.
+                  </p>
+                </div>
+                <span class="card-domain__cta">A closer look</span>
+                <span class="card-domain__visual card-domain__visual--marine">
+                  <img
+                    class="card-domain__img"
+                    src={yacht1.src}
+                    alt=""
+                    width={yacht1.width}
+                    height={yacht1.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </article>
+      <a class="domains-spine__link" href="#aviation" data-spine="aviation">
+        <span class="domains-spine__label">Aviation</span>
+        <span class="domains-spine__bar" aria-hidden="true"></span>
+        <span class="domains-spine__node" aria-hidden="true"></span>
+      </a>
+    <article id="aviation" class="domains-band domains-band--flip" aria-label="Aviation detailing">
+      <div class="domains-band__stage" data-drift-scrub style="--drift-exit: 0;">
+        <div class="domains-band__inner u-container" data-drifts-in>
+        <div class="domains-band__layout">
+          <figure class="domains-band__fig" aria-hidden="true">
+            <div class="domains-band__plate rellax" data-rellax-speed="-0.4">
+              <img
                 src={aviationTn.src}
                 alt=""
                 width={aviationTn.width}
@@ -131,35 +166,116 @@ import yacht1 from '../../assets/yacht1.png';
                 decoding="async"
               />
             </div>
-            <div class="card-domain__body">
-              <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+            <div class="domains-band__float rellax" data-rellax-speed="0.24">
+              <img
+                src={jet2.src}
+                alt=""
+                width={jet2.width}
+                height={jet2.height}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
-            <span class="card-domain__cta">Explore</span>
+          </figure>
+          <div class="domains-band__text">
+            <h3 class="domains-band__title">Finish integrity in the hangar</h3>
+            <p class="domains-band__lede">
+              Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.
+            </p>
+            <a
+              class="domains-drift__explore card-domain card-domain--aviation card-domain--mini"
+              href="/aviation"
+              data-domain-card
+            >
+              <span class="card-domain__content">
+                <span class="card-domain__title">Aviation</span>
+                <div class="card-domain__body">
+                  <p>Private aircraft exteriors and cabins — discretion, scheduling, and finish integrity first.</p>
+                </div>
+                <span class="card-domain__cta">A closer look</span>
+                <span class="card-domain__visual card-domain__visual--aviation">
+                  <img
+                    class="card-domain__img"
+                    src={aviationTn.src}
+                    alt=""
+                    width={aviationTn.width}
+                    height={aviationTn.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+              </span>
+            </a>
           </div>
-        </a>
-        <a
-          class="card-domain card-domain--automotive"
-          href="/automotive"
-          data-domain-card
-          data-domain-reveal
-        >
-          <div class="card-domain__content">
-            <h3 class="card-domain__title">Automotive</h3>
-            <div class="card-domain__visual card-domain__visual--automotive" aria-hidden="true"></div>
-            <div class="card-domain__body">
-              <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
-            </div>
-            <span class="card-domain__cta">Explore</span>
-          </div>
-        </a>
+        </div>
+        </div>
       </div>
-    </div>
-  </section>
-  <section class="u-section u-section--tight trust index-atmos">
-    <div class="u-container trust__inner">
-      <p>Serving South Florida</p>
-      <p>Private clients</p>
-      <p>Licensed & Insured</p>
+    </article>
+      <a class="domains-spine__link" href="#automotive" data-spine="automotive">
+        <span class="domains-spine__label">Automotive</span>
+        <span class="domains-spine__bar" aria-hidden="true"></span>
+        <span class="domains-spine__node" aria-hidden="true"></span>
+      </a>
+    <article id="automotive" class="domains-band" aria-label="Automotive detailing">
+      <div class="domains-band__stage" data-drift-scrub style="--drift-exit: 0;">
+        <div class="domains-band__inner u-container" data-drifts-in>
+        <div class="domains-band__layout">
+          <figure class="domains-band__fig" aria-hidden="true">
+            <div class="domains-band__plate rellax" data-rellax-speed="-0.38">
+              <img
+                src={car1.src}
+                alt=""
+                width={car1.width}
+                height={car1.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="domains-band__float rellax" data-rellax-speed="0.22">
+              <img
+                src={car2.src}
+                alt=""
+                width={car2.width}
+                height={car2.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
+          <div class="domains-band__text">
+            <h3 class="domains-band__title">Paint systems that stay exceptional</h3>
+            <p class="domains-band__lede">
+              High-end paint correction, ceramic coating, and maintenance for exceptional road cars.
+            </p>
+            <a
+              class="domains-drift__explore card-domain card-domain--automotive card-domain--mini"
+              href="/automotive"
+              data-domain-card
+            >
+              <span class="card-domain__content">
+                <span class="card-domain__title">Automotive</span>
+                <div class="card-domain__body">
+                  <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
+                </div>
+                <span class="card-domain__cta">A closer look</span>
+                <span class="card-domain__visual card-domain__visual--automotive">
+                  <img
+                    class="card-domain__img"
+                    src={car1.src}
+                    alt=""
+                    width={car1.width}
+                    height={car1.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </article>
     </div>
   </section>
   <section class="u-section process-preview index-atmos">
@@ -200,12 +316,12 @@ import yacht1 from '../../assets/yacht1.png';
   import { initLoadDebug } from '../scripts/load-debug';
   import { initDomainCards } from '../scripts/domain-cards';
   import { initDomainReveal } from '../scripts/domain-reveal';
+  import { initDomainsDrift } from '../scripts/domains-drift';
   import { initHeroMetrics } from '../scripts/hero-metrics';
-  import { initHomePreScroll } from '../scripts/home-prescroll';
   initLoadDebug();
-  initHomePreScroll();
   initDomainCards();
   initDomainReveal();
+  initDomainsDrift();
   initHeroMetrics();
 </script>
 
@@ -1069,380 +1185,520 @@ import yacht1 from '../../assets/yacht1.png';
     line-height: 1.7;
   }
 
-  .domains__grid {
-    margin-top: 0;
+  /* ─── Domains drift: long scroll chapters on canvas (no sticky card shell) ─── */
+  .domains-drift {
+    position: relative;
+    z-index: 4;
+  }
+
+  .domains-drift__kicker {
+    margin: 0 0 clamp(1.35rem, 3.8vw, 2.1rem);
+    text-align: center;
+  }
+
+  .domains-drift__kicker-line {
+    font-family: var(--font-ui);
+    font-size: clamp(0.62rem, 1.35vw, 0.78rem);
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(196, 184, 150, 0.55);
+  }
+
+  /* Timeline spine: shares each grid row with its chapter (desktop). */
+  .domains-drift__grid {
+    position: relative;
     display: grid;
-    gap: clamp(1.25rem, 3.5vw, 2rem);
-    grid-template-columns: 1fr;
-    align-items: stretch;
-    overflow: visible;
+    /* Must fit longest tracked label + 2×gap + bar + node + pad (see .domains-spine__link grid) */
+    --spine-col: clamp(5.1rem, 11.75vw, 9.4rem);
+    --spine-link-pad-r: clamp(0.35rem, 1vw, 0.55rem);
+    /* One token bumps label↔spine and spine↔node together (grid column-gap) */
+    --spine-gap: clamp(0.62rem, 1.55vw, 0.85rem);
+    --spine-node: 0.44rem;
+    /* Band vertical padding token (spine links are row-centered; bands still use this for padding-block). */
+    --domains-chapter-pad-y: clamp(1.9rem, 5.25vw, 3.35rem);
+    /* Equal vertical gutter between Marine / Aviation / Automotive rows (desktop grid). */
+    --domains-row-gap: clamp(1.35rem, 3.25vw, 2.35rem);
+    grid-template-columns: var(--spine-col) minmax(0, 1fr);
+    column-gap: clamp(0.55rem, 1.85vw, 1.35rem);
+    row-gap: var(--domains-row-gap);
+    grid-template-rows: auto auto auto;
   }
 
-  @media (min-width: 640px) {
-    .domains__grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  /*
-    Domain cards: light glass shell (frosted panel + hairline rim) + Camden clip frame.
-  */
-  .card-domain {
-    --camden-offset: 0.65rem;
-    --camden-ax: min(3.25rem, 9vw);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    isolation: isolate;
-    overflow: visible;
-    padding: clamp(1.15rem, 2.6vw, 1.65rem);
-    text-decoration: none;
-    color: inherit;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-sm);
-    font-size: clamp(9px, min(1.05vw, 1.35vh), 12px);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    aspect-ratio: 3 / 4;
-    max-height: min(34rem, 74vh);
-    min-height: 18rem;
-    transition:
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.35s ease,
-      border-color 0.35s ease;
-  }
-
-  .card-domain::before {
+  /* Full-height line between label and node (node sits to the right of the spine). */
+  .domains-drift__grid::before {
     content: '';
-    display: block;
-    width: calc(100% + 2 * var(--camden-offset));
-    height: calc(100% + 2 * var(--camden-offset));
     position: absolute;
-    left: calc(-1 * var(--camden-offset));
-    top: calc(-1 * var(--camden-offset));
-    margin: auto;
-    z-index: 1;
-    pointer-events: none;
-    box-shadow: inset 0 0 0 0.06rem rgba(255, 255, 255, 0.07);
-    border-radius: calc(var(--radius-sm) + var(--camden-offset));
-    clip-path: polygon(
-      var(--camden-ax) 0,
-      0 0,
-      0 var(--camden-ax),
-      var(--camden-ax) var(--camden-ax),
-      var(--camden-ax) calc(100% - var(--camden-ax)),
-      0 calc(100% - var(--camden-ax)),
-      0 100%,
-      var(--camden-ax) 100%,
-      var(--camden-ax) calc(100% - var(--camden-ax)),
-      calc(100% - var(--camden-ax)) calc(100% - var(--camden-ax)),
-      calc(100% - var(--camden-ax)) 100%,
-      100% 100%,
-      100% calc(100% - var(--camden-ax)),
-      calc(100% - var(--camden-ax)) calc(100% - var(--camden-ax)),
-      calc(100% - var(--camden-ax)) var(--camden-ax),
-      100% var(--camden-ax),
-      100% 0,
-      calc(100% - var(--camden-ax)) 0,
-      calc(100% - var(--camden-ax)) var(--camden-ax),
-      var(--camden-ax) var(--camden-ax)
+    z-index: 0;
+    width: 1px;
+    /* Align with middle track: innerW - node - gap - bar - gap (two gaps flank the 1px bar) */
+    left: calc(
+      var(--spine-col) - var(--spine-link-pad-r) - var(--spine-node) - 2 * var(--spine-gap) - 1px
     );
-    transition:
-      width 0.4s ease-in-out,
-      height 0.4s ease-in-out,
-      left 0.4s ease-in-out,
-      top 0.4s ease-in-out,
-      border-radius 0.4s ease-in-out,
-      clip-path 0.4s ease-in-out;
-  }
-
-  .card-domain:hover::before {
-    --camden-offset: 0.4rem;
-    --camden-ax: min(4.5rem, 14vw);
-    border-radius: calc(var(--radius-sm) + 0.4rem);
-    /* Same hairline as rest — avoids inset “bloom” easing in after geometry */
-    box-shadow: inset 0 0 0 0.06rem rgba(255, 255, 255, 0.07);
-  }
-
-  @media (max-width: 639px) {
-    .card-domain {
-      aspect-ratio: 4 / 3;
-      max-height: none;
-      min-height: 15rem;
-    }
-  }
-
-  .card-domain__content {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-
-  /* Scroll-into-view reveal (IntersectionObserver adds `.active`) */
-  .card-domain[data-domain-reveal] {
-    opacity: 0;
-    transform: scale(0.97) translate3d(0, 3.25rem, 0);
-    filter: brightness(0.55);
-    pointer-events: none;
-    transition:
-      opacity 1.48s cubic-bezier(0.18, 1, 0.26, 1),
-      transform 1.48s cubic-bezier(0.18, 1, 0.26, 1),
-      filter 1.48s cubic-bezier(0.18, 1, 0.26, 1),
-      box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.35s ease,
-      border-color 0.35s ease;
-  }
-
-  .card-domain[data-domain-reveal].active {
-    opacity: 1;
-    transform: scale(1) translate3d(0, 0, 0);
-    filter: brightness(1);
-    pointer-events: auto;
-  }
-
-  /* Marine: rests a touch under full luminance; brightness eases like card transform/box-shadow on hover */
-  .card-domain--marine[data-domain-reveal].active {
-    filter: brightness(0.9);
-    transition:
-      opacity 1.48s cubic-bezier(0.18, 1, 0.26, 1),
-      transform 1.48s cubic-bezier(0.18, 1, 0.26, 1),
-      filter 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.35s ease,
-      border-color 0.35s ease;
-  }
-
-  .card-domain--marine[data-domain-reveal].active:hover,
-  .card-domain--marine[data-domain-reveal].active:focus-visible {
-    filter: brightness(1.05);
-  }
-
-  .card-domain[data-domain-reveal]:not(.active):hover {
-    transform: scale(0.97) translate3d(0, 3.25rem, 0);
-  }
-
-  .card-domain[data-domain-reveal].active:hover {
-    transform: translateY(-0.35rem);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38);
-  }
-
-  .card-domain[data-domain-reveal].active:active {
-    transform: translateY(-0.12rem);
-  }
-
-  .card-domain:hover {
-    transform: translateY(-0.35rem);
-    border-color: rgba(255, 255, 255, 0.09);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34);
-  }
-
-  .card-domain:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 4px;
-  }
-
-  .card-domain:active {
-    transform: translateY(-0.12rem);
-  }
-
-  /*
-    Automotive: same Camden corner animation as other cards (.card-domain:hover::before).
-    Soft exterior underglow on hover/focus (no extra interior inset on the shell).
-  */
-  .card-domain--automotive:hover,
-  .card-domain--automotive:focus-visible,
-  .card-domain--automotive[data-domain-reveal].active:hover,
-  .card-domain--automotive[data-domain-reveal].active:focus-visible {
-    box-shadow:
-      0 10px 28px -6px rgba(0, 0, 0, 0.18),
-      0 22px 52px -12px rgba(72, 96, 138, 0.09),
-      0 36px 72px -18px rgba(160, 148, 120, 0.05);
-  }
-
-  .card-domain__title {
-    font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.8vw, 1.85rem);
-    font-weight: 500;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
-    color: #fff;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
-  }
-
-  .card-domain__visual {
-    flex: 1;
-    min-height: clamp(5.5rem, 20vw, 8.5rem);
-    border-radius: var(--radius-sm);
-    margin-block: 0.25rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 6px 20px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(6px) saturate(1.05);
-    -webkit-backdrop-filter: blur(6px) saturate(1.05);
-    overflow: hidden;
-  }
-
-  /* Photo panes: same neutral chrome on all three (matches Camden card, not per-vertical tint) */
-  .card-domain__visual--marine,
-  .card-domain__visual--aviation {
-    position: relative;
-    padding: 0;
-    background: rgba(24, 24, 26, 0.55);
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-
-  .card-domain__visual--marine::after,
-  .card-domain__visual--aviation::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
+    top: clamp(1rem, 2.8vw, 1.75rem);
+    bottom: clamp(1rem, 2.8vw, 1.75rem);
+    border-radius: 1px;
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(48, 48, 52, 0.35) 0%,
-      rgba(18, 18, 20, 0.5) 100%
+      rgba(196, 184, 150, 0) 0%,
+      rgba(196, 184, 150, 0.42) 14%,
+      rgba(196, 184, 150, 0.52) 50%,
+      rgba(196, 184, 150, 0.42) 86%,
+      rgba(196, 184, 150, 0) 100%
     );
+    box-shadow: 0 0 20px rgba(196, 184, 150, 0.12);
   }
 
-  .card-domain__visual--marine .card-domain__img,
-  .card-domain__visual--aviation .card-domain__img {
-    z-index: 0;
+  .domains-spine__link {
+    grid-column: 1;
+    z-index: 1;
+    justify-self: stretch;
+    /* Center the label cluster vertically beside each full-height chapter row. */
+    align-self: center;
+    margin: 0;
+    /* Grid: label absorbs length variance; bar + node stay fixed from the track's right edge */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1px auto;
+    column-gap: var(--spine-gap);
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 0.4rem var(--spine-link-pad-r) 0.4rem 0;
+    font-family: var(--font-ui);
+    font-size: clamp(0.56rem, 1.05vw, 0.68rem);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(196, 184, 150, 0.38);
+    transition:
+      color 0.45s cubic-bezier(0.18, 1, 0.28, 1),
+      text-shadow 0.45s ease;
+    max-width: 100%;
+    line-height: 1.3;
+    hyphens: none;
   }
 
-  .card-domain__img {
+  .domains-spine__label {
+    min-width: 0;
+    justify-self: end;
+    text-align: right;
+    transition: inherit;
+  }
+
+  /* Invisible slot so column width matches the painted ::before spine */
+  .domains-spine__bar {
+    width: 1px;
+    height: 1.35em;
+    justify-self: center;
+    align-self: center;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .domains-spine__node {
+    justify-self: end;
+    width: 0.44rem;
+    height: 0.44rem;
+    border-radius: 999px;
+    border: 1px solid rgba(196, 184, 150, 0.35);
+    background: rgba(5, 8, 14, 0.94);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.32);
+    transition:
+      background 0.45s cubic-bezier(0.18, 1, 0.28, 1),
+      border-color 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+
+  .domains-spine__link:hover,
+  .domains-spine__link:focus-visible {
+    color: rgba(196, 184, 150, 0.72);
+  }
+
+  .domains-spine__link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .domains-drift[data-spine-active='marine'] .domains-spine__link[data-spine='marine'],
+  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'],
+  .domains-drift[data-spine-active='automotive'] .domains-spine__link[data-spine='automotive'] {
+    color: var(--color-accent);
+    text-shadow: 0 0 22px rgba(196, 184, 150, 0.22);
+  }
+
+  .domains-drift[data-spine-active='marine'] .domains-spine__link[data-spine='marine'] .domains-spine__node,
+  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'] .domains-spine__node,
+  .domains-drift[data-spine-active='automotive'] .domains-spine__link[data-spine='automotive'] .domains-spine__node {
+    background: var(--color-accent);
+    border-color: rgba(154, 142, 112, 0.95);
+    box-shadow:
+      0 0 0 2px rgba(196, 184, 150, 0.14),
+      0 0 14px rgba(196, 184, 150, 0.35);
+  }
+
+  .domains-spine__link[data-spine='marine'] {
+    grid-row: 1;
+  }
+
+  .domains-spine__link[data-spine='aviation'] {
+    grid-row: 2;
+  }
+
+  .domains-spine__link[data-spine='automotive'] {
+    grid-row: 3;
+  }
+
+  #marine.domains-band {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #aviation.domains-band {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #automotive.domains-band {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  @media (max-width: 719px) {
+    .domains-drift__grid {
+      display: block;
+      row-gap: unset;
+    }
+
+    .domains-drift__grid::before,
+    .domains-spine__link {
+      display: none !important;
+    }
+
+    #marine.domains-band,
+    #aviation.domains-band,
+    #automotive.domains-band {
+      grid-column: unset;
+      grid-row: unset;
+    }
+
+    /* Match desktop `row-gap` when the grid collapses to block flow. */
+    #aviation.domains-band,
+    #automotive.domains-band {
+      margin-top: var(--domains-row-gap, clamp(1.35rem, 3.25vw, 2.35rem));
+    }
+  }
+
+  .domains-band {
+    scroll-margin-top: calc(var(--header-h, 4.25rem) + 0.75rem);
+    /* Slightly shorter beats + consistent vertical rhythm = one continuous read, not three full-viewport islands. */
+    padding-block: var(--domains-chapter-pad-y, clamp(1.9rem, 5.25vw, 3.35rem));
+    min-height: min(76vh, 42rem);
+  }
+
+  .domains-band__stage {
+    --drift-exit: 0;
+    opacity: calc(1 - var(--drift-exit) * 0.42);
+    filter: brightness(calc(1 - var(--drift-exit) * 0.26));
+    will-change: opacity, filter;
+  }
+
+  /*
+   * Entry: reveal-up — cluster starts slightly below (positive translateY) and rises into place.
+   * One-shot when .drifts-in--visible — not infinite. “To” is translateY(0). Rellax unchanged.
+   */
+  .domains-band__inner[data-drifts-in] {
+    position: relative;
+  }
+
+  @keyframes domains-band-reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html.domains-drift-js .domains-band__inner[data-drifts-in]:not(.drifts-in--visible) > .domains-band__layout {
+      opacity: 0;
+      transform: translateY(15%);
+    }
+
+    html.domains-drift-js .domains-band__inner[data-drifts-in].drifts-in--visible > .domains-band__layout {
+      animation: domains-band-reveal-up 1.5s ease forwards;
+    }
+  }
+
+  .domains-band__layout {
+    display: grid;
+    gap: clamp(1.35rem, 3.5vw, 2.25rem);
+    align-items: center;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 860px) {
+    /* Staggered drift: Marine + Automotive = collage | copy; Aviation = copy | collage via RTL swap (same DOM as others). */
+    .domains-band__layout {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      direction: ltr;
+    }
+
+    .domains-band__fig {
+      grid-column: 1;
+    }
+
+    .domains-band__text {
+      grid-column: 2;
+    }
+
+    .domains-band--flip .domains-band__layout {
+      direction: rtl;
+    }
+
+    .domains-band--flip .domains-band__fig,
+    .domains-band--flip .domains-band__text {
+      direction: ltr;
+    }
+  }
+
+  .domains-band__fig {
+    position: relative;
+    margin: 0;
+    min-height: clamp(14rem, 48vw, 22rem);
+    isolation: isolate;
+  }
+
+  .domains-band__plate,
+  .domains-band__float {
+    position: absolute;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow:
+      0 18px 48px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .domains-band__plate {
+    left: 0;
+    top: 50%;
+    width: 58%;
+    aspect-ratio: 3 / 4;
+    max-height: 92%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .domains-band__float {
+    right: 0;
+    bottom: 2%;
+    width: 52%;
+    aspect-ratio: 1;
+    max-width: min(13.5rem, 42vw);
+    z-index: 2;
+  }
+
+  @media (max-width: 859px) {
+    .domains-band__fig {
+      min-height: clamp(12.5rem, 62vw, 17.5rem);
+    }
+
+    .domains-band__plate {
+      top: 0;
+      transform: none;
+      width: 60%;
+      max-height: 88%;
+    }
+
+    .domains-band__float {
+      width: 48%;
+      max-width: 11rem;
+    }
+
+  }
+
+  .domains-band__plate img,
+  .domains-band__float img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
     display: block;
   }
 
-  .card-domain__visual--automotive {
-    position: relative;
-    padding: 0;
-    background: rgba(24, 24, 26, 0.55);
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-
-  .card-domain__visual--automotive::after {
+  .domains-band__plate::after,
+  .domains-band__float::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
-    border-radius: inherit;
     pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgba(48, 48, 52, 0.35) 0%,
-      rgba(18, 18, 20, 0.5) 100%
-    );
+    background: linear-gradient(180deg, rgba(40, 44, 52, 0.18) 0%, rgba(8, 10, 14, 0.42) 100%);
   }
 
-  .card-domain__body {
-    flex-shrink: 0;
+  .domains-band__text {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(0.25rem, 1vw, 0.5rem);
   }
 
-  .card-domain__body p {
-    margin: 0;
+  .domains-band__title {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.4vw, 2.55rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    color: #f4f6fa;
+    text-shadow: 0 2px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  .domains-band__lede {
+    margin: 0 0 1.15rem;
+    max-width: 28rem;
     font-family: var(--font-ui);
-    font-size: 0.9375rem;
-    line-height: 1.55;
-    color: rgba(239, 236, 231, 0.88);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+    font-size: clamp(0.94rem, 1.7vw, 1.06rem);
+    line-height: 1.65;
+    color: rgba(178, 194, 220, 0.9);
   }
 
-  .card-domain__cta {
-    margin-top: auto;
-    padding-top: 1.1rem;
+  /* Explore: text-only on canvas; hidden fields feed domain-cards FLIP overlay */
+  .domains-drift .domains-drift__explore.card-domain--mini {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: unset;
+    border: none;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini::before {
+    content: none;
+    display: none;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini:hover,
+  .domains-drift .domains-drift__explore.card-domain--mini:focus-visible {
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__content {
+    display: block;
+    min-height: 0;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__title,
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__body {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__cta {
+    margin: 0;
+    padding: 0 0 0.15rem;
+    display: inline-block;
     font-family: var(--font-ui);
     font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-accent);
+    border-bottom: none;
+    background-image: linear-gradient(
+      90deg,
+      rgba(196, 184, 150, 0.12) 0%,
+      rgba(196, 184, 150, 0.55) 22%,
+      rgba(212, 198, 165, 0.95) 48%,
+      rgba(196, 184, 150, 0.55) 78%,
+      rgba(196, 184, 150, 0.12) 100%
+    );
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: color 0.25s ease, background-image 0.25s ease;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini:hover .card-domain__cta,
+  .domains-drift .domains-drift__explore.card-domain--mini:focus-visible .card-domain__cta {
+    color: rgba(232, 236, 245, 0.92);
+    background-image: linear-gradient(
+      90deg,
+      rgba(232, 236, 245, 0.14) 0%,
+      rgba(232, 236, 245, 0.45) 28%,
+      rgba(248, 250, 255, 0.75) 50%,
+      rgba(232, 236, 245, 0.42) 72%,
+      rgba(232, 236, 245, 0.12) 100%
+    );
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__visual {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini .card-domain__img {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+  }
+
+  .domains-drift .domains-drift__explore.card-domain--mini:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card-domain {
-      transition: none;
-    }
-
-    .domains__header [data-domains-abyss] {
+    .domains-band__inner[data-drifts-in] {
       opacity: 1;
       transform: none;
-      transition: none;
-      will-change: auto;
     }
 
-    .card-domain[data-domain-reveal] {
+    .domains-band__inner[data-drifts-in] > .domains-band__layout {
       opacity: 1;
       transform: none;
-      filter: brightness(1);
-      pointer-events: auto;
+      animation: none !important;
     }
 
-    .card-domain:hover,
-    .card-domain:active {
-      transform: none;
+    .domains-band__stage {
+      opacity: 1;
+      filter: none;
     }
-
-    .card-domain::before {
-      transition: none;
-    }
-  }
-
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .card-domain,
-    .card-domain__visual {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-
-    .card-domain {
-      background: rgba(36, 38, 44, 0.96);
-    }
-  }
-
-  .trust.index-atmos {
-    /* Cinematic letterbox: reads as intentional dark chrome under the sticky header. */
-    position: sticky;
-    top: var(--header-h);
-    z-index: 45;
-    /* Neutral near-black (no blue cast) */
-    background: linear-gradient(180deg, #050505 0%, #0a0a0b 38%, #070707 100%);
-    border-block: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 12px 28px rgba(0, 0, 0, 0.45);
-  }
-
-  .trust__inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-md) var(--space-xl);
-    justify-content: center;
-    text-align: center;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(210, 216, 228, 0.52);
   }
 
   .process-preview.index-atmos {

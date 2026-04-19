@@ -1,6 +1,7 @@
 /**
- * Domains: each header line reveals on its own IO. Cards stay idle until the intro line
- * (`.domains__intro`) has started its reveal, so “The same inspection…” leads the grid.
+ * Domains section: header lines (`[data-domains-abyss]`) reveal on intersection.
+ * Optional `[data-domain-reveal]` targets (e.g. a future band shell) arm only after `.domains__intro`
+ * reveals; the drift layout uses `[data-drifts-in]` in `domains-drift.ts` instead.
  */
 const CARD_SEL = '[data-domain-reveal]';
 const ABYSS_SEL = '[data-domains-abyss]';

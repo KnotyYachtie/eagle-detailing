@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # Expo / local tooling
 .expo/
+
+# Playwright
+test-results/
+playwright-report/

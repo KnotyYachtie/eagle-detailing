@@ -348,6 +348,8 @@ const eagleForHeader = eagleSvgRaw.replace(
     text-decoration: none;
     color: var(--color-cream-muted);
     white-space: nowrap;
+    /* Kill WebKit’s default gray/dark tap sheet only; keep our own :hover / :active feedback below */
+    -webkit-tap-highlight-color: transparent;
   }
 
   .site-header__link:hover,
@@ -371,6 +373,15 @@ const eagleForHeader = eagleSvgRaw.replace(
     font-family: var(--font-ui);
     text-align: inherit;
     line-height: inherit;
+  }
+
+  .site-header__subtrigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .site-header__subtrigger:focus:not(:focus-visible) {
+    outline: none;
   }
 
   .site-header__sublist {

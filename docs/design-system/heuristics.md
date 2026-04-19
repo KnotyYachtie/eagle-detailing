@@ -11,8 +11,8 @@
 
 ## Hero & viewport
 
-- **If** the home **transparent** header must meet the **soft top edge** intent (photo + island read as one field)  
-  **Then** prefer **`position: absolute`** over the hero — **`position: sticky`** on that row has repeatedly composited as a **flat slab** or **hard seam** against the photo in WebKit when combined with transforms/filters/pseudo “feathers.”
+- **If** a **full-bleed** hero must meet the **softest top edge** (photo + island read as one field)  
+  **Then** consider **`position: absolute`** for the transparent header over that hero — **`position: sticky`** (current **default** in `Header.astro` for all routes) has historically composited as a **flat slab** or **hard seam** in WebKit when combined with transforms/filters/pseudo “feathers.” **Interior** pages without underlap may keep **sticky**; **re-QA** when you add photography under the bar.
 
 - **If** the transparent header is `position: absolute` over the hero  
   **Then** pull the hero paint box up with **negative `margin-top`** using **`var(--header-bar) + var(--header-safe-pad)`** (same optical intent as `-var(--header-h)` but **valid** inside outer `calc()` in WebKit — **`--header-h` is itself a `calc()`** and must not nest inside another `calc` sum). Keep **`.site-header--transparent`**: **`top: 0; width: 100%`**.

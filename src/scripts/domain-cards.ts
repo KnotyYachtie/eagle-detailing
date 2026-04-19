@@ -85,14 +85,15 @@ export function initDomainCards(): void {
 
   function populateFromCard(card: HTMLElement, els: OverlayEls): void {
     const { panel, titleEl, descEl, ctaEl, visualEl } = els;
-    const h3 = card.querySelector('h3');
+    const titleSource = card.querySelector('.card-domain__title') ?? card.querySelector('h3');
     const p = card.querySelector('.card-domain__body p');
     const href = card.getAttribute('href') ?? '/';
 
-    titleEl.textContent = h3?.textContent?.trim() ?? '';
+    titleEl.textContent = titleSource?.textContent?.trim() ?? '';
     descEl.textContent = p?.textContent?.trim() ?? '';
     ctaEl.href = href;
-    ctaEl.textContent = 'Explore';
+    const ctaLabel = card.querySelector('.card-domain__cta')?.textContent?.trim() || 'Explore';
+    ctaEl.textContent = ctaLabel;
 
     panel.classList.remove(
       'domain-expand__panel--marine',

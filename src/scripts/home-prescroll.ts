@@ -1,5 +1,5 @@
 /**
- * Homepage:
+ * Site shell when `<html data-home-load-intro>` (default in BaseLayout):
  * - Mobile (≤960px): `--home-prescroll-y` + `scrollTo` so Safari’s chrome settles; matches head inline.
  * - All viewports: `--hero-inner-vh` from `visualViewport` / `innerHeight` (Safari URL bar).
  */

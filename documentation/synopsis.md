@@ -8,6 +8,8 @@ This document summarizes the sequence of changes and decisions made to the Eagle
 
 For **current** guidance (soft mobile top edge, iOS compositing, prescroll, `theme-color` vs layout), treat **`documentation/design-system/design.md` → “Homepage hero — iOS / Safari”** plus **`docs/design-system/decision-trees.md` §A** and **`docs/design-system/heuristics.md`** as canonical. **Short version:** the premium top read came back with **`position: absolute`** on **`.site-header--transparent`**, hero-owned softening (scrim / media placeholder), and **avoiding** sticky header + synthetic header feathers; **`theme-color` / canvas tweaks alone** did not recreate the feathered edge.
 
+**Addendum — site shell (Apr 2026):** **`BaseLayout.astro`** now defaults **`transparentHeader`**, **`dataHomeLoadIntro`**, and **dark `#050505`** canvas / `theme-color` on **all** routes; **`initHomePreScroll`** ships from the layout. **`data-home-load-intro`** still gates **load choreography** selectors in **`index.astro`** (home only). Locked narrative: **`documentation/design-system/assumptions.md` → “Canonical decisions (locked)”** and **`docs/design-system/layout-rules.md` → “Site shell defaults”.** Implementation note: **transparent header in code is `position: sticky`** site-wide; heuristics above remain valid when a template switches to **absolute** for max softness.
+
 ---
 
 ## 1. Hero Image & Layout
@@ -46,30 +48,12 @@ We tried:
 
 This makes the hero media extend upward into the safe area, but the **Safari browser chrome** can still draw its own color above the content.
 
-### 1.3 Top feathered blend
+### 1.3 Hero scrims (current; replaces old `.hero::before`)
 
-Because Safari’s browser bar color can’t be fully replaced in normal tab mode, we added a **feathered overlay** to soften the seam:
+Safari’s browser bar still samples page color; softness is handled on **hero-owned** layers in **`index.astro`** today:
 
-```css
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: clamp(2.2rem, 8vmin, 4.25rem);
-  z-index: 5;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(126, 168, 192, 0.48) 0%,
-    rgba(126, 168, 192, 0.16) 48%,
-    rgba(126, 168, 192, 0) 100%
-  );
-}
-```
-
-This makes the transition from the browser bar to the hero sky more intentional and less like a hard navy strip.
+- **`.hero__media`** — charcoal **vertical** placeholder ramp behind the image while it loads (so the top is not raw `#050505` canvas).
+- **`.hero__scrim`** — stacked **gradients** over the image: a **vertical** vignette for type/metrics legibility, plus an **optional horizontal** darken when the frame is asymmetric or one-sided bright (see **`documentation/design-system/design.md` → Gradients & hero scrims**). There is **no** separate `.hero::before` feather in current code; **`.hero__media::before`** is explicitly `content: none` (“no dedicated header feather overlay”).
 
 ### 1.4 Hero media & image
 
@@ -393,6 +377,11 @@ This tells iOS/Android to tint the browser UI bars to a color sampled from the h
   - Hero CSS: layout, animations, iOS safe-area, top feather.
   - Metrics CSS: base grid, mobile portrait stacked behavior, spacing, dividers, typography.
   - Load choreography keyframes and `html[data-home-load-intro]` timing.
+  - **Domains (Apr 2026, rev. 3):** **Three tall chapters** on the **`index-atmos`** canvas (no sticky card shell) — **`#marine` / `#aviation` / `#automotive`**. **`domains-drift.ts`**: per-band **`[data-drifts-in]`** → **`.drifts-in--visible`**, **`[data-drift-scrub]`** exit fade/darken via **`--drift-exit`**, **Rellax** on **`.domains-drift .rellax`**, **`/#…`** → **`scrollIntoView`**, **`data-spine-active`** only in **central viewport** band (cleared when domains off-screen). **Scoped CSS:** entry **reveal-up** on **`.domains-band__layout`** (**`opacity`** + **`translateY(15%)`→0** (upward), **1.5s** **`ease`**, one-shot); disabled under **`prefers-reduced-motion: reduce`**. **Desktop ≥860px:** **staggered** two-column layout — shared **figure-then-copy** DOM; Aviation uses **`domains-band--flip`** (**RTL** on **`.domains-band__layout`**, **`ltr`** on fig + text) for **copy | figure** without per-domain pose blocks. **Spine:** **`a.domains-spine__link`** **`align-self: center`** in each grid row beside its chapter; **rhythm** tokens (**`--domains-chapter-pad-y`**, **`--domains-row-gap`**, etc.); **no** drift **radial** / **wash** layers. **Automotive** collage uses **`assets/car.1.png`** / **`car.2.png`**. **Explore** links are **text-only** **`card-domain--mini`**. **`documentation/exercise.001.md`** sandbox tracks **rev. 2 → rev. 3** and tension vs **`assumptions.md`** motion line.
+- `src/scripts/domains-drift.ts`
+  - Rellax init, intersection reveal, exit scrub, hash navigation, teardown on **`pagehide`** (skipped when `prefers-reduced-motion` where noted in source).
+- `src/scripts/domain-cards.ts`
+  - Overlay primary link label is taken from **`.card-domain__cta`** text (e.g. “A closer look”) instead of a hardcoded “Explore”.
 - `src/layouts/BaseLayout.astro`
   - Critical inline scroll/overflow CSS.
   - `dataHomeLoadIntro` → `data-home-load-intro` attribute on `<html>`.

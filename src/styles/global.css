@@ -309,9 +309,9 @@ p:last-child {
 }
 
 /*
-  Home: `index.astro` styles are Astro-scoped; selectors like `html … .hero[data-astro-cid=…]`
-  out-specificity unscoped rules and previously broke cross-component targets (e.g. header fade).
-  These unscoped floors use the real DOM: `main.page__main > section.hero`.
+  Any route with `data-home-load-intro` on `<html>` (default in `BaseLayout.astro`): `index.astro` styles
+  are Astro-scoped; selectors like `html … .hero[data-astro-cid=…]` out-specificity unscoped rules on home.
+  These unscoped floors use the real DOM: `main.page__main > section.hero` (hero exists only on `/`).
 */
 html[data-home-load-intro] body .page > main.page__main {
   display: flow-root;

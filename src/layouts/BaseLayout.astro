@@ -8,7 +8,11 @@ interface Props {
   title: string;
   description?: string;
   transparentHeader?: boolean;
-  /** When set, `<html>` gets `data-home-load-intro` for homepage-only load choreography (no FOUC). */
+  /**
+   * When true (default), `<html>` gets `data-home-load-intro`: live `visualViewport` height (`--hero-inner-vh`),
+   * mobile prescroll (`--home-prescroll-y`), and the `main`/hero min-height floor in `global.css`.
+   * Home also uses this flag for load choreography selectors in `index.astro`; other routes get the viewport shell only.
+   */
   dataHomeLoadIntro?: boolean;
   /** Browser chrome color on mobile (Safari/Chrome UI bars). */
   themeColor?: string;
@@ -22,16 +26,16 @@ interface Props {
 const {
   title,
   description = SITE.description,
-  transparentHeader = false,
-  dataHomeLoadIntro = false,
-  themeColor = '#102135',
+  transparentHeader = true,
+  dataHomeLoadIntro = true,
+  themeColor = '#050505',
   canvasColor,
 } = Astro.props;
 
-const criticalCanvas = canvasColor ?? '#102135';
+const criticalCanvas = canvasColor ?? '#050505';
 
 /**
- * Homepage: first paint sets `--hero-inner-vh`; mobile-only `--home-prescroll-y` + scroll (desktop stays 0).
+ * Routes with `dataHomeLoadIntro`: first paint sets `--hero-inner-vh`; mobile-only `--home-prescroll-y` + scroll (desktop stays 0).
  */
 const homeHeroViewportHeadScript = dataHomeLoadIntro
   ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(132,Math.max(52,ih*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
@@ -136,6 +140,10 @@ const jsonLd = {
       </main>
       <Footer />
     </div>
+    <script>
+      import { initHomePreScroll } from '../scripts/home-prescroll';
+      initHomePreScroll();
+    </script>
   </body>
 </html>
 

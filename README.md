@@ -13,7 +13,8 @@ npm run preview
 
 ## Content & design
 
-- Brand / layout spec: [`documentation/design.md`](documentation/design.md)
+- Brand / layout spec: [`documentation/design-system/design.md`](documentation/design-system/design.md)
+- **Agents:** start with [`docs/design-system/agent-conductor.md`](docs/design-system/agent-conductor.md) then [`docs/design-system/design-prompt.md`](docs/design-system/design-prompt.md); see repo root [`AGENTS.md`](AGENTS.md).
 - Business constants & nav: [`src/site.ts`](src/site.ts)
 - Hero image: [`public/jet-1.png`](public/jet-1.png) (copy of `assets/jet-1.png`)
 
