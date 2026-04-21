@@ -89,15 +89,17 @@ import yacht2 from '../../assets/yacht2.png';
         <div class="domains-band__inner u-container" data-drifts-in>
         <div class="domains-band__layout">
           <figure class="domains-band__fig" aria-hidden="true">
-            <div class="domains-band__plate rellax" data-rellax-speed="-0.42">
-              <img
-                src={yacht1.src}
-                alt=""
-                width={yacht1.width}
-                height={yacht1.height}
-                loading="lazy"
-                decoding="async"
-              />
+            <div class="domains-band__plate" transition:name="domain-marine-hero">
+              <div class="rellax" data-rellax-speed="-0.42">
+                <img
+                  src={yacht1.src}
+                  alt=""
+                  width={yacht1.width}
+                  height={yacht1.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
             <div class="domains-band__float rellax" data-rellax-speed="0.26">
               <img
@@ -119,7 +121,6 @@ import yacht2 from '../../assets/yacht2.png';
             <a
               class="domains-drift__explore card-domain card-domain--marine card-domain--mini"
               href="/marine"
-              data-domain-card
             >
               <span class="card-domain__content">
                 <span class="card-domain__title">Marine</span>
@@ -1470,6 +1471,12 @@ import yacht2 from '../../assets/yacht2.png';
     .domains-band--flip .domains-band__text {
       direction: ltr;
     }
+
+    /* Marine: collage reads visually heavy toward the bottom; pin copy to the row bottom so it
+       aligns with the image mass instead of floating high with empty space under the CTA. */
+    #marine .domains-band__text {
+      align-self: end;
+    }
   }
 
   .domains-band__fig {
@@ -1525,6 +1532,13 @@ import yacht2 from '../../assets/yacht2.png';
       max-width: 11rem;
     }
 
+  }
+
+  .domains-band__plate > .rellax {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .domains-band__plate img,

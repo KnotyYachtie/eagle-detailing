@@ -40,6 +40,18 @@ When a row documents a **mistake path**, prefer an explicit **“Should have bee
 
 ---
 
+## Current — Marine in-place expand (Apr 2026 pilot)
+
+| | |
+|--|--|
+| **Where we started** | All three **Explore** links used **`data-domain-card`** → **`domain-cards.ts`** FLIP overlay on primary click. |
+| **Where we landed** | **Marine only:** **`data-domain-inplace="marine"`**; **`href="#marine"`**; **`#marine-expand`** **`role="region"`** **sibling after** **`.domains-band__stage`** (full-width strip under the band). Inner **`u-container`** + **`max-width: min(42rem, …)`**. **Desktop (`≥860px`):** **`.domains-band__text`** uses **`align-self: end`** on the two-column grid so the headline/lede/CTA sit **lower** with the collage’s visual weight (less dead space under “A closer look”). Panel motion: **`max-height` + `clip-path`**, gradient, stagger; **`hidden`** ~**1.1s**. **`prefers-reduced-motion`:** instant panel / no stagger. **Stage `overflow: hidden`** when expanded. **Contact** only. **Aviation / Automotive** unchanged (overlay). |
+| **Empathy signal** | Read more **without leaving the scroll story** — less “modal interrupt,” more **chapter depth**. |
+| **Design system tie** | `assumptions.md` #23 (pilot split); `design.md` Domain Entry when we consolidate post-pilot. |
+| **Tension / gap** | **`overflow: hidden`** on the stage while expanded can **trim** a sliver of collage if parallax pushes art past the box — watch on tall / narrow viewports. **Scroll:** panel may sit **below the fold** on short viewports — consider **`scrollIntoView`** on expand if testing says users miss it. **Parity:** if pilot ships long-term, decide overlay vs in-place for **all three** or **hybrid** by domain. |
+
+---
+
 ## Current — timeline spine (Apr 2026)
 
 ### F. Lateral rail + chapter anchors

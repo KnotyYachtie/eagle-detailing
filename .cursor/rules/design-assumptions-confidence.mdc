@@ -1,0 +1,51 @@
+---
+description: Project-wide — design assumptions are soft guides with confidence; backbone promotion only on owner sign-off.
+alwaysApply: true
+---
+
+# Design assumptions vs backbone
+
+**Scope:** **`alwaysApply: true`** so this applies to **any** project work (`src/**`, layouts, styles, content), not only when design Markdown is open. Assumptions and backbone live in docs and code; implementation constantly touches both.
+
+## Pipeline gate (do this before agentic UI/layout/motion/docs edits)
+
+If the task touches **any** of: `src/**/*.astro`, `src/styles/**`, `src/scripts/**` (when scroll/shell/hero-related), `src/components/**`, or `documentation/design-system/**` / `docs/design-system/**` / `documentation/exercise.*.md`:
+
+1. **Read** `docs/design-system/agent-conductor.md` and **classify** the task (A–F there).  
+2. **Follow** its read order, then implement, then its write order (Canonical mirror, Owner, exercise log when in scope, mirrors, synopsis as listed).  
+3. **Then** apply the **Default stance** and **Agent behavior** sections below (assumptions soft, confidence, Plain English, backbone promotion).
+
+Pure typo / unrelated fixes can skip the conductor if they do not touch the paths above.
+
+**Workflow detail:** `docs/design-system/agent-conductor.md` — full tables and if/then handoffs.
+
+## Default stance
+
+- **`documentation/design-system/assumptions.md`** (and related design docs) are **working hypotheses**, not immutable law. Prefer **judgment + iteration** over treating every bullet as a hard boundary.
+- After each **design instance** (layout restructure, new section, effect, animation, etc.), when the owner says the **desired design was achieved**, **update this file**: tighten wording, resolve questions, and **adjust confidence** on affected sections.
+
+## Confidence scale (use in `assumptions.md`)
+
+| Tag | Meaning |
+|-----|---------|
+| **Low** | Open exploration; expect change next pass. |
+| **Medium** | Directionally right; shipable until contradicted by a new instance. |
+| **High** | Validated on device / in code for this era of the site; candidate for **promotion** to backbone. |
+
+When editing assumptions: **set or bump confidence** for any section you touch. Lower confidence when a new experiment contradicts prior text.
+
+## Design backbone (harder contracts)
+
+**Backbone** = the durable spec layer the owner wants agents and code to treat as normative: e.g. **`documentation/design-system/design.md`**, **`docs/design-system/*.md`**, **`principles.md`**, and **codified defaults** in **`src/styles/global.css`**, **`src/layouts/BaseLayout.astro`**, and shared components.
+
+- **Do not** silently promote assumptions into backbone.  
+- **Do** promote when the owner explicitly says to **codify into the design backbone** (or equivalent), and confidence for those items is **High**.
+
+## Agent behavior
+
+0. **Conductor first** for scoped tasks (see **Pipeline gate** above)—do not treat this rule as a substitute for `agent-conductor.md`’s ordered checklist.
+1. When changing UI or tokens, **read** assumptions for intent; **do not** block reasonable implementation solely because an old **Low**/**Medium** line disagrees—**flag the drift** and offer an assumptions update.
+2. When the owner confirms a design outcome, **propose** updates to assumptions (including confidence) in the same workstream.
+3. **`Canonical decisions`** in assumptions that mirror `BaseLayout` / CSS are **implementation mirrors**—keep them aligned with code when code changes, and tag **High** while they match shipped behavior.
+4. When **adding or materially editing** an entry in `assumptions.md`, always include a ***Plain English:*** skim line (same meaning, minimal jargon) so the doc stays scannable—see the file’s **Skimming convention** in the intro.  
+5. **Exercise log (`exercise.001.md`):** When editing the **homepage domains section** (markup, scoped styles, or domain-related scripts in `index.astro` / shared pieces used only there), **update `documentation/exercise.001.md` in the same workstream**—fill or amend the grouped tables (What, Structure, Choices, Why, Design system, A vs B, Tension/gap) per that file’s header. **Do not** create `exercise.002.md` etc. **unless** the owner said so beforehand.

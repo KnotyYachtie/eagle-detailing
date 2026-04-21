@@ -34,6 +34,68 @@ function readPrescrollY(): number {
   return Math.round(parsed);
 }
 
+/** Avoid `scrollTo` clamping to 0 before layout / `scrollHeight` is final (reads as “wrong direction” on VT). */
+function clampScrollTop(target: number): number {
+  const doc = document.documentElement;
+  const max = Math.max(0, doc.scrollHeight - window.innerHeight);
+  return Math.max(0, Math.min(Math.round(target), max));
+}
+
+function scrollToPrescroll(yRaw: number): void {
+  window.scrollTo(0, clampScrollTop(yRaw));
+}
+
+/**
+ * After Astro View Transitions (or any client navigation), re-sync scroll with the same rules as the
+ * head inline script + initial load: mobile prescroll when `data-home-load-intro`, otherwise top.
+ */
+export function syncScrollAfterViewTransition(): void {
+  if (typeof window === 'undefined') return;
+  if (!document.documentElement.hasAttribute('data-home-load-intro')) {
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  applyHeroInnerVh();
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.style.setProperty('--home-prescroll-y', '0px');
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (!window.matchMedia('(max-width: 960px)').matches) {
+    document.documentElement.style.setProperty('--home-prescroll-y', '0px');
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  const yRaw = offsetPx();
+  document.documentElement.style.setProperty('--home-prescroll-y', `${yRaw}px`);
+  try {
+    if ('scrollRestoration' in history) {
+      const h = history as History & { scrollRestoration?: string };
+      h.scrollRestoration = 'manual';
+    }
+  } catch {
+    /* ignore */
+  }
+
+  const bump = (): void => {
+    scrollToPrescroll(yRaw);
+  };
+  bump();
+  requestAnimationFrame(() => {
+    bump();
+    requestAnimationFrame(bump);
+  });
+  setTimeout(bump, 0);
+  setTimeout(bump, 48);
+  setTimeout(bump, 120);
+}
+
+let astroPageLoadBound = false;
+
 export function initHomePreScroll(): void {
   if (typeof window === 'undefined') return;
   if (!document.documentElement.hasAttribute('data-home-load-intro')) return;
@@ -51,9 +113,9 @@ export function initHomePreScroll(): void {
   }
 
   const apply = (): void => {
-    const y = readPrescrollY();
-    if (y <= 0) return;
-    document.documentElement.style.setProperty('--home-prescroll-y', `${y}px`);
+    const yRaw = readPrescrollY();
+    if (yRaw <= 0) return;
+    document.documentElement.style.setProperty('--home-prescroll-y', `${yRaw}px`);
     try {
       if ('scrollRestoration' in history) {
         const h = history as History & { scrollRestoration?: string };
@@ -62,7 +124,19 @@ export function initHomePreScroll(): void {
     } catch {
       /* ignore */
     }
-    if (window.scrollY <= 2) window.scrollTo(0, y);
+    const bump = (): void => {
+      scrollToPrescroll(yRaw);
+    };
+    /* Head inline may have already scrolled; only take over from a true top-of-document load. */
+    if (window.scrollY <= 2) {
+      bump();
+      requestAnimationFrame(() => {
+        bump();
+        requestAnimationFrame(bump);
+      });
+      setTimeout(bump, 0);
+      setTimeout(bump, 48);
+    }
   };
 
   if (document.readyState === 'complete') {
@@ -77,5 +151,13 @@ export function initHomePreScroll(): void {
       },
       { once: true }
     );
+  }
+
+  if (!astroPageLoadBound) {
+    astroPageLoadBound = true;
+    document.addEventListener('astro:page-load', () => {
+      applyHeroInnerVh();
+      syncScrollAfterViewTransition();
+    });
   }
 }

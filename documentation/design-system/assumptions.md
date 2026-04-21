@@ -254,9 +254,9 @@ These mirror **`src/layouts/BaseLayout.astro`** and owner direction: **common mo
     *Plain English:* Anything 961px wide or more gets desktop nav; 960 and below gets the mobile menu pattern.  
     **Question:** Should **tablet landscape** ever get a **third** interaction model (e.g. visible subnav)?
 
-23. **Assumption:** **Home-only** domain card **expand overlay** (vs immediate navigation) is the right cinematic trade; modifier keys preserve native open-in-new-tab.  
-    *Plain English:* On the home three-tile grid, clicking opens a preview layer instead of jumping away immediately—unless you command-click like a normal link.  
-    **Question:** On repeat visits, does **overlay-first** feel **slow**—should there be a “skip preview” or direct-link pattern?
+23. **Assumption:** **Home domains “A closer look”** favors **explore-before-navigate** on plain click: **Aviation** and **Automotive** still use the **FLIP fullscreen overlay**; **Marine (Apr 2026 pilot)** expands **in-place** under **`#marine`** (scoped panel, **no** overlay). Marine mini CTA uses **`href="#marine"`** (same chapter; no separate “full marine page” affordance in the expand block while v1 copy lives here). **`/marine`** may still exist for bookmarks/SEO; **no-JS** falls through to hash. **Modifier** + click on the CTA opens the hash in a new tab (native).  
+    *Plain English:* Two domains still open the big preview layer; Marine opens more detail under its band and stays on the home chapter anchor. Command-click still opens a new tab like a normal link.  
+    **Question:** On repeat visits, does **overlay-first** (where it remains) feel **slow**—should there be a “skip preview” or direct-link pattern? If the Marine pilot wins, do we **match** all three to in-place, or keep overlay for “cinematic” domains only?
 
 24. **Assumption:** **Staggered** submenu motion on desktop reads as **luxury**; reduced motion users get **instant** appearance.  
     *Plain English:* Desktop dropdown children fade in one after another for polish; people who asked for reduced motion see all items appear at once.  
