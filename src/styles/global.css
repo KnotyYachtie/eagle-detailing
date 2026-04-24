@@ -19,9 +19,17 @@
 :root {
   --color-navy: #102135;
   --color-navy-ink: #072b53;
+  /* Same base as `Header.astro` glass bar — use solid for hero gradients so the seam under the header disappears */
+  --site-header-tint-rgb: 16, 33, 53;
+  --site-header-tint: rgb(var(--site-header-tint-rgb));
+  --site-header-tint-glass: rgba(var(--site-header-tint-rgb), 0.78);
   --color-cream: #efece7;
   --color-cream-muted: rgba(239, 236, 231, 0.72);
   --color-accent: #c4b896;
+  /* Footer + seamless handoff from dark page endings (e.g. marine reach). */
+  --footer-bg: #0a1628;
+  /* Vertical rhythm: divider → Contact, Contact → Explore, Explore → legal strip (marine + site footer). */
+  --footer-cta-section-gap: clamp(1.65rem, 4.5vw, 2.05rem);
   --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-hero: 'Butler', var(--font-display);
   --font-ui: 'DM Sans', system-ui, sans-serif;
@@ -332,101 +340,55 @@ html[data-home-load-intro] body .page > main.page__main > section.hero {
 }
 
 /*
-  Marine `/marine`: same shell + prescroll math as `section.hero` (see `index.astro` + BaseLayout head).
-  Keeps `main` min-height + hero height + media safe-area in sync with the homepage so mobile scroll
-  and the transparent header sit over photo, not flat `--page-canvas` black.
+  Marine `/marine` (min-width: 769px only): same shell + prescroll math as `section.hero`.
+  On narrow viewports, Marine uses a stacked intro + in-flow image (`marine.astro`); do not apply the
+  full-viewport fixed chain here.
 */
-html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero {
-  margin-top: calc(0px - var(--header-bar) - var(--header-safe-pad)) !important;
-  min-height: calc(
-    100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
-  );
-  min-height: calc(
-    100svh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
-  );
-  min-height: calc(
-    var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
-  ) !important;
-}
-
-/*
-  Marine: fixed full-viewport hero stacks in the *viewport* between page canvas and `.site-header` (sibling
-  in `.page` has z-index 50; in-flow `main` paint cannot go above it without `position: fixed` here).
- */
-html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero--fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 40;
-  margin-top: 0 !important;
-}
-
-/*
-  In-flow stand-in for the space the fixed hero would have occupied; height tracks the same `min-height`
-  chain as `header.marine-hero` + scoped `padding-bottom` (see `marine.astro` on `.marine-hero--fixed`).
- */
-html[data-home-load-intro] body .page > main.page__main > .marine-page > .marine-hero__spacer {
-  display: block;
-  width: 100%;
-  flex: 0 0 auto;
-  box-sizing: border-box;
-  min-height: calc(100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
-  min-height: calc(100svh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
-  min-height: calc(
-    var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
-  );
-  /* Must match `padding-bottom` on `header.marine-hero--fixed` in `marine.astro` (border-box, inside min-height) */
-  padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
-  pointer-events: none;
-}
-
-html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero .marine-hero__content {
-  padding-top: calc(
-    var(--header-bar) + var(--header-safe-pad) + var(--space-md) + var(--home-prescroll-y, 0px)
-  );
-}
-
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero {
+    margin-top: calc(0px - var(--header-bar) - var(--header-safe-pad)) !important;
+    min-height: calc(100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
+    min-height: calc(100svh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
     min-height: calc(
-      100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
-    );
-    min-height: calc(
-      100svh + var(--header-bar) + var(--header-safe-pad) + env(safe-area-inset-top, 0px) +
-        var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
-    );
-    min-height: calc(
-      var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) +
-        var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
     ) !important;
   }
 
+  /*
+    Marine: fixed full-viewport hero between page canvas and `.site-header` (z-50); in-flow `main` cannot
+    out-rank a sibling `header` without `position: fixed` here.
+   */
+  html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero--fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 40;
+    margin-top: 0 !important;
+  }
+
+  /*
+    In-flow stand-in for the fixed-bleed layout; height matches `header.marine-hero` + `padding-bottom` in `marine.astro`.
+   */
   html[data-home-load-intro] body .page > main.page__main > .marine-page > .marine-hero__spacer {
+    display: block;
+    width: 100%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    min-height: calc(100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
+    min-height: calc(100svh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px));
     min-height: calc(
-      100vh + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
+      var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) + var(--home-prescroll-y, 0px)
     );
-    min-height: calc(
-      100svh + var(--header-bar) + var(--header-safe-pad) + env(safe-area-inset-top, 0px) +
-        var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
-    );
-    min-height: calc(
-      var(--hero-inner-vh, 100svh) + var(--header-bar) + var(--header-safe-pad) +
-        var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
-    );
+    padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
+    pointer-events: none;
   }
 
-  html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero > .marine-hero__media {
-    min-height: calc(
-      100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px) + clamp(14px, 4.25vw, 26px)
-    );
-  }
-
+  /* Tighter than `var(--space-md)`: type sits a bit higher under the transparent site header. */
   html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero .marine-hero__content {
     padding-top: calc(
-      var(--header-bar) + var(--header-safe-pad) + var(--space-md) + var(--home-prescroll-y, 0px) +
-        clamp(14px, 4.25vw, 26px)
+      var(--header-bar) + var(--header-safe-pad) + clamp(0.3rem, 0.9vw, 0.5rem) + var(--home-prescroll-y, 0px)
     );
   }
 }

@@ -10,7 +10,7 @@
   - Brand mark switches to **inline SVG eagle** (`currentColor`) instead of raster — **reason:** crisp on any background.
 
 - **Navigation model**  
-  - **Grouped:** “Services” → Marine / Aviation / Automotive; “About” → Service area + Contact + (About page lives in group logic).  
+  - **Grouped:** “Services” → Marine / Aviation / Automotive; “About” → Contact + (About page lives in group logic).  
   - **Flat items:** e.g. Projects.  
   - **Active route** styling is **tone shift to white**, not a loud pill.
 

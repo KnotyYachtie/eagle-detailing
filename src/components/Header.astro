@@ -41,10 +41,7 @@ const eagleForHeader = eagleSvgRaw.replace(
           />
         )
       }
-      <span class="site-header__brand-copy">
-        <span class="site-header__wordmark">{SITE.shortName}</span>
-        <span class="site-header__region">South Florida</span>
-      </span>
+      <span class="site-header__wordmark">{SITE.shortName}</span>
     </a>
     <nav class="site-header__nav" id="site-nav" aria-label="Primary">
       <ul class="site-header__list">
@@ -123,84 +120,126 @@ const eagleForHeader = eagleSvgRaw.replace(
 </header>
 
 <script>
-  const mq = window.matchMedia('(max-width: 960px)');
+  const mql = window.matchMedia('(max-width: 960px)');
 
-  const nav = document.getElementById('site-nav');
-  const links = document.querySelectorAll('[data-nav-link]');
-  const servicesGroup = document.querySelector('[data-nav-group="services"]');
-  const aboutGroup = document.querySelector('[data-nav-group="about"]');
-  const servicesBtn = document.querySelector('[data-services-toggle]');
-  const aboutBtn = document.querySelector('[data-about-toggle]');
+  function qServices() {
+    return {
+      group: document.querySelector('[data-nav-group="services"]'),
+      trigger: document.querySelector<HTMLButtonElement>('[data-services-toggle]'),
+    };
+  }
+
+  function qAbout() {
+    return {
+      group: document.querySelector('[data-nav-group="about"]'),
+      trigger: document.querySelector<HTMLButtonElement>('[data-about-toggle]'),
+    };
+  }
 
   function setServicesExpanded(open: boolean) {
-    if (!servicesGroup || !servicesBtn) return;
-    servicesGroup.classList.toggle('is-services-open', open);
-    servicesBtn.setAttribute('aria-expanded', String(open));
-    if (open && aboutGroup && aboutBtn) {
-      aboutGroup.classList.remove('is-about-open');
-      aboutBtn.setAttribute('aria-expanded', 'false');
+    const s = qServices();
+    const a = qAbout();
+    if (!s.group || !s.trigger) return;
+    s.group.classList.toggle('is-services-open', open);
+    s.trigger.setAttribute('aria-expanded', String(open));
+    if (open && a.group && a.trigger) {
+      a.group.classList.remove('is-about-open');
+      a.trigger.setAttribute('aria-expanded', 'false');
     }
   }
 
   function setAboutExpanded(open: boolean) {
-    if (!aboutGroup || !aboutBtn) return;
-    aboutGroup.classList.toggle('is-about-open', open);
-    aboutBtn.setAttribute('aria-expanded', String(open));
-    if (open && servicesGroup && servicesBtn) {
-      servicesGroup.classList.remove('is-services-open');
-      servicesBtn.setAttribute('aria-expanded', 'false');
+    const a = qAbout();
+    const s = qServices();
+    if (!a.group || !a.trigger) return;
+    a.group.classList.toggle('is-about-open', open);
+    a.trigger.setAttribute('aria-expanded', String(open));
+    if (open && s.group && s.trigger) {
+      s.group.classList.remove('is-services-open');
+      s.trigger.setAttribute('aria-expanded', 'false');
     }
   }
 
   function collapseSubmenusIfMobile() {
-    if (!mq.matches) return;
+    if (!mql.matches) return;
     setServicesExpanded(false);
     setAboutExpanded(false);
   }
 
-  links.forEach((l) =>
-    l.addEventListener('click', () => {
-      nav?.classList.remove('is-open');
-      collapseSubmenusIfMobile();
-    })
-  );
-
-  document.addEventListener(
-    'pointerdown',
-    (e) => {
-      if (!mq.matches) return;
-      const header = document.querySelector('.site-header');
-      if (!header || !(e.target instanceof Node)) return;
-      if (!header.contains(e.target)) collapseSubmenusIfMobile();
-    },
-    true
-  );
-
-  if (servicesGroup && servicesBtn) {
-    servicesBtn.addEventListener('click', () => {
-      if (!mq.matches) return;
-      const next = !servicesGroup.classList.contains('is-services-open');
-      setServicesExpanded(next);
-    });
+  function eventTargetToElement(t: EventTarget | null): Element | null {
+    if (t == null) return null;
+    if (t instanceof Element) return t;
+    if (t instanceof Node) return t.parentElement;
+    return null;
   }
 
-  if (aboutGroup && aboutBtn) {
-    aboutBtn.addEventListener('click', () => {
-      if (!mq.matches) return;
-      const next = !aboutGroup.classList.contains('is-about-open');
-      setAboutExpanded(next);
+  /**
+   * After Astro client navigations, the old header is replaced but this script is not re-run, so
+   * per-button listeners and cached queryHandles point at detached nodes. One-time document-level
+   * delegation + fresh querySelector in setters keeps Services/About toggles and outside-dismiss.
+   */
+  const w = window as unknown as { __eagleHeaderNavInit?: boolean };
+  if (!w.__eagleHeaderNavInit) {
+    w.__eagleHeaderNavInit = true;
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        const t = eventTargetToElement(e.target);
+        if (!t) return;
+
+        const servicesBtn = t.closest('[data-services-toggle]');
+        if (servicesBtn) {
+          if (!mql.matches) return;
+          e.preventDefault();
+          const g = servicesBtn.closest('[data-nav-group="services"]');
+          if (!g) return;
+          const next = !g.classList.contains('is-services-open');
+          setServicesExpanded(next);
+          return;
+        }
+
+        const aboutBtn = t.closest('[data-about-toggle]');
+        if (aboutBtn) {
+          if (!mql.matches) return;
+          e.preventDefault();
+          const g = aboutBtn.closest('[data-nav-group="about"]');
+          if (!g) return;
+          const next = !g.classList.contains('is-about-open');
+          setAboutExpanded(next);
+          return;
+        }
+
+        if (t.closest('header.site-header [data-nav-link]')) {
+          document.getElementById('site-nav')?.classList.remove('is-open');
+          collapseSubmenusIfMobile();
+        }
+      },
+      true
+    );
+
+    document.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (!mql.matches) return;
+        const t = eventTargetToElement(e.target);
+        if (!t) return;
+        if (t.closest('header.site-header')) return;
+        collapseSubmenusIfMobile();
+      },
+      true
+    );
+
+    mql.addEventListener('change', (e) => {
+      if (!e.matches) {
+        setServicesExpanded(false);
+        setAboutExpanded(false);
+      } else {
+        document.getElementById('site-nav')?.classList.remove('is-open');
+        collapseSubmenusIfMobile();
+      }
     });
   }
-
-  mq.addEventListener('change', (e) => {
-    if (!e.matches) {
-      setServicesExpanded(false);
-      setAboutExpanded(false);
-    } else {
-      nav?.classList.remove('is-open');
-      collapseSubmenusIfMobile();
-    }
-  });
 </script>
 
 <style>
@@ -212,7 +251,7 @@ const eagleForHeader = eagleSvgRaw.replace(
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    background: rgba(16, 33, 53, 0.78);
+    background: var(--site-header-tint-glass);
     backdrop-filter: var(--glass-blur-header);
     -webkit-backdrop-filter: var(--glass-blur-header);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -264,7 +303,7 @@ const eagleForHeader = eagleSvgRaw.replace(
   .site-header__brand {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.72rem;
     text-decoration: none;
     color: var(--color-cream);
     margin-right: auto;
@@ -279,7 +318,7 @@ const eagleForHeader = eagleSvgRaw.replace(
   }
 
   .site-header__logo {
-    width: clamp(50px, 6.25vw, 64px);
+    width: clamp(52px, 6.5vw, 68px);
     height: auto;
   }
 
@@ -298,28 +337,12 @@ const eagleForHeader = eagleSvgRaw.replace(
 
   .site-header__wordmark {
     font-family: var(--font-display);
-    font-size: clamp(1.08rem, 2.45vw, 1.22rem);
+    font-size: clamp(1.28rem, 2.95vw, 1.52rem);
     font-weight: 500;
-    letter-spacing: 0.055em;
+    letter-spacing: 0.045em;
     text-transform: uppercase;
-  }
-
-  .site-header__brand-copy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.05rem;
-    line-height: 1;
-  }
-
-  .site-header__region {
-    font-family: var(--font-ui);
-    font-size: clamp(0.62rem, 1.12vw, 0.72rem);
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(239, 236, 231, 0.66);
-    line-height: 1.2;
+    line-height: 1.05;
+    text-align: start;
   }
 
   .site-header__nav {
@@ -514,33 +537,26 @@ const eagleForHeader = eagleSvgRaw.replace(
       height: auto;
       min-height: var(--header-h);
       align-items: flex-start;
+      /* Land logo/type below the notch; `--header-h` already included safe in its math but did not offset content */
+      padding-top: var(--header-safe-pad);
       padding-bottom: 0.2rem;
     }
 
-    .site-header__brand-copy {
-      display: flex;
-    }
-
     .site-header__wordmark {
-      font-size: clamp(0.9rem, 2.75vw, 1.06rem);
-    }
-
-    .site-header__region {
-      font-size: clamp(0.58rem, 2vw, 0.7rem);
+      font-size: clamp(1.05rem, 3.4vw, 1.28rem);
     }
 
     .site-header__logo {
-      width: clamp(40px, 8.5vw, 50px);
+      width: clamp(44px, 9vw, 54px);
     }
 
     .site-header__inner {
       flex-direction: column;
       align-items: stretch;
-      gap: 0.35rem 0;
-      padding-block: 0.15rem 0.05rem;
-      transform: translateY(
-        calc(-0.28rem - min(10px, max(0px, var(--header-safe-pad) * 0.22)))
-      );
+      gap: 0.1rem 0;
+      padding-block: 0.1rem 0.08rem;
+      /* No upward transform — that was pushing the mark + wordmark under the status bar. */
+      transform: none;
     }
 
     .site-header__brand {
@@ -556,7 +572,8 @@ const eagleForHeader = eagleSvgRaw.replace(
       flex: none;
       width: 100%;
       min-width: 0;
-      margin-left: 0;
+      /* Pull the link stack up toward the brand only (doesn’t move the wordmark into the safe area) */
+      margin: -0.4rem 0 0 0;
       display: flex;
       justify-content: stretch;
       align-items: stretch;

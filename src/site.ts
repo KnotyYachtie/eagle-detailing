@@ -22,18 +22,14 @@ export const NAV_SERVICES = [
   { href: '/automotive', label: 'Automotive' },
 ] as const;
 
-/** Service area + Contact — grouped under “About” in the site header. */
-export const NAV_ABOUT_CHILDREN = [
-  { href: '/service-area', label: 'Service area' },
-  { href: '/contact', label: 'Contact' },
-] as const;
+/** Contact — grouped under “About” in the site header. */
+export const NAV_ABOUT_CHILDREN = [{ href: '/contact', label: 'Contact' }] as const;
 
 export const NAV_MAIN = [{ href: '/projects', label: 'Projects' }] as const;
 
 /** Flat list for footer and anywhere else that expects every destination. */
 export const NAV = [
   ...NAV_SERVICES,
-  { href: '/service-area', label: 'Service area' },
   ...NAV_MAIN,
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },

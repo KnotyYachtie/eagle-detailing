@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../site';
+import FooterContactExplore from '../components/FooterContactExplore.astro';
 import yacht1 from '../../assets/yacht1.png';
 import yacht3 from '../../assets/yacht3.png';
 import yacht6 from '../../assets/yacht6.png';
 import yacht7 from '../../assets/yacht7.png';
+
+/** Featured vessel strip (between first chapter and quote) — carousel order = first slide on load. */
+const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
 ---
 
 <BaseLayout
@@ -12,13 +15,28 @@ import yacht7 from '../../assets/yacht7.png';
   description="High-end mobile marine detailing in South Florida — gelcoat correction, ceramic coating, brightwork, interiors, and boat show prep."
   transparentHeader={true}
   themeColor="#0a1118"
-  canvasColor="transparent"
+  canvasColor="#0a1118"
+  footerVariant="baseOnly"
 >
-  <div class="marine-page" data-marine-page>
-    <!-- Full-viewport photo: above `html/body` canvas, under glass layers; Rellax scrolls very slowly -->
+  <div class="marine-page marine-page--stack" data-marine-page>
+    <!--
+      Narrow: intro (solid) → image in flow — nav sits on color, not on photo. Wide: full-bleed fixed stack.
+    -->
+    <header class="marine-hero marine-hero--fixed">
+      <div class="marine-hero__intro">
+        <div class="marine-hero__content">
+          <p class="u-eyebrow marine-hero__eyebrow">Marine</p>
+          <h1 class="marine-hero__title">Gelcoat to brightwork</h1>
+          <p class="marine-hero__lede">
+            Luxury center consoles to superyachts — we correct, protect, and maintain finishes in salt-air
+            environments with a disciplined, inspection-first process.
+          </p>
+        </div>
+      </div>
+    </header>
     <div class="marine-page__parallax" aria-hidden="true">
       <div
-        class="marine-page__parallax-rellax rellax"
+        class="marine-page__parallax-rellax rellax marine-bleed__rellax"
         data-rellax-speed="-0.1"
       >
         <div class="marine-page__parallax-frame" transition:name="domain-marine-hero">
@@ -40,30 +58,21 @@ import yacht7 from '../../assets/yacht7.png';
       <div class="marine-page__canvas-glow marine-page__canvas-glow--b"></div>
       <div class="marine-page__canvas-grain"></div>
     </div>
-    <header class="marine-hero marine-hero--fixed">
-      <!-- Image lives in `.marine-page__parallax` so the canvas color never shows in the safe area. -->
-      <div class="marine-hero__media" aria-hidden="true"></div>
-      <div class="marine-hero__content">
-        <p class="u-eyebrow marine-hero__eyebrow">Marine</p>
-        <h1 class="marine-hero__title">Gelcoat to brightwork</h1>
-        <p class="marine-hero__lede">
-          Luxury center consoles to superyachts — we correct, protect, and maintain finishes in salt-air
-          environments with a disciplined, inspection-first process.
-        </p>
-      </div>
-    </header>
-    <!-- In-flow height when the hero is `position: fixed` and stacks under `header.site-header` (z-50) -->
+    <!-- In-flow height for the wide fixed-bleed layout only (`global.css`) -->
     <div class="marine-hero__spacer" aria-hidden="true"></div>
 
     <article class="marine-editorial">
       <section class="marine-chapter marine-chapter--split" aria-labelledby="marine-ch-1">
         <div class="marine-chapter__inner u-container">
           <div class="marine-chapter__copy">
-            <p class="marine-chapter__label" id="marine-ch-1">Salt-air discipline</p>
+            <p class="marine-chapter__label" id="marine-ch-1">Condition-based approach</p>
             <p class="marine-chapter__text">
-              Surfaces age differently on the water — UV, spray, and dock traffic all write into the finish. We
-              start with condition and environment, then build a scope you can schedule around your slip or
-              show calendar.
+              Marine finishes don’t age evenly. Gelcoat oxidizes, paint fades, varnish breaks down, and brightwork
+              dulls and rusts.
+            </p>
+            <p class="marine-chapter__text">
+              Each surface needs a different approach. We assess first, then match the correction and protection to
+              the material and its condition.
             </p>
           </div>
           <figure class="marine-chapter__fig marine-chapter__fig--depth">
@@ -86,40 +95,39 @@ import yacht7 from '../../assets/yacht7.png';
         <div class="marine-window__stack">
           <div class="marine-window__haze rellax" data-rellax-speed="0.2" aria-hidden="true"></div>
           <div class="marine-window__rellax rellax" data-rellax-speed="-0.48">
-            <img
-              class="marine-window__img"
-              src={yacht6.src}
-              alt="Luxury yacht at sea — mobile marine detailing"
-              width={yacht6.width}
-              height={yacht6.height}
-              loading="lazy"
-              decoding="async"
-            />
+            <div class="marine-window-carousel" data-marine-window-carousel>
+              <div class="marine-window-carousel__track">
+                {marineWindowCarouselImages.map((img, idx) => (
+                  <img
+                    class:list={['marine-window__img', 'marine-window-carousel__slide', idx === 0 && 'is-active']}
+                    src={img.src}
+                    alt="Luxury yacht at sea — mobile marine detailing"
+                    width={img.width}
+                    height={img.height}
+                    loading={idx < 2 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
           <div class="marine-window__rim rellax" data-rellax-speed="0.08" aria-hidden="true"></div>
         </div>
-        <p class="marine-window__caption u-container">
-          Show-ready prep without losing the integrity of the substrate — correction where it earns its keep,
-          protection where it belongs.
-        </p>
       </section>
 
       <section class="marine-quote u-container" aria-label="Editorial note">
         <blockquote class="marine-quote__inner">
-          <p>
-            We treat brightwork and gelcoat as one system — gloss only reads when edges, non-skid, and cabin
-            transitions stay intentional.
-          </p>
+          <p>First call every time we need the boat dialed in.</p>
         </blockquote>
       </section>
 
       <section class="marine-chapter marine-chapter--split marine-chapter--flip" aria-labelledby="marine-ch-2">
         <div class="marine-chapter__inner u-container">
           <div class="marine-chapter__copy">
-            <p class="marine-chapter__label" id="marine-ch-2">Programs &amp; pace</p>
+            <p class="marine-chapter__label" id="marine-ch-2">We’re at your service</p>
             <p class="marine-chapter__text">
-              Routine wash and maintenance keep salt from staging defects. When it is time to correct, we stage
-              lighting, document highs and lows, and match process to how you use the vessel — not a generic menu.
+              Dockside, between trips, or at one of South Florida’s prestigious boat shows. We work whenever and
+              wherever the project demands. Professionalism, integrity and discretion are at the heart of our values.
             </p>
           </div>
           <figure class="marine-chapter__fig marine-chapter__fig--depth">
@@ -140,14 +148,15 @@ import yacht7 from '../../assets/yacht7.png';
 
       <section class="marine-services" aria-labelledby="marine-services-h">
         <div class="marine-services__inner u-container">
-          <h2 class="marine-services__title" id="marine-services-h">What we hold to standard</h2>
+          <h2 class="marine-services__title" id="marine-services-h">What we do</h2>
           <ul class="marine-services__list">
-            <li>Routine wash &amp; maintenance programs</li>
+            <li>Wash programs &amp; ongoing care</li>
             <li>Gelcoat and paint correction</li>
-            <li>Ceramic coating and paint protection film (where appropriate)</li>
-            <li>Brightwork, glass, and non-skid care</li>
-            <li>Interior leather, vinyl, and cabin detailing</li>
-            <li>Boat show and slip-side detailing</li>
+            <li>Teak sanding, restoration and sealing</li>
+            <li>Coatings and protective systems for many surfaces</li>
+            <li>Brightwork, glass, and non-skid restoration</li>
+            <li>Interior surfaces and cabin detailing</li>
+            <li>Dockside, emergency and boat show support</li>
           </ul>
           <p class="marine-services__note u-muted">
             Emergency and prompt scheduling when capacity allows — call to discuss your slip, marina, or anchorage.
@@ -158,37 +167,79 @@ import yacht7 from '../../assets/yacht7.png';
       <section class="marine-reach" aria-labelledby="marine-reach-h">
         <div class="marine-reach__inner u-container">
           <div class="marine-reach__intro">
-            <h2 class="marine-reach__title" id="marine-reach-h">Plan your next detail</h2>
-            <p class="marine-reach__lede u-muted">
-              Reach us directly — we will respond with next steps. (A structured web quote form will be added later;
-              for now, phone, email, and Instagram are the fastest paths.)
+            <h2 class="marine-reach__title" id="marine-reach-h">Get in touch</h2>
+            <p class="marine-reach__lede">
+              New clients, please use the form below. We’ll review your message and reach out as soon as possible.
             </p>
+            <div class="marine-reach__rule" aria-hidden="true"></div>
           </div>
-          <div class="marine-reach__grid">
-            <div class="marine-reach__card">
-              <h3 class="marine-reach__card-label">Phone</h3>
-              <p class="marine-reach__card-line">
-                <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
-              </p>
-              <p class="marine-reach__card-meta u-muted">Call or text when convenient.</p>
+          <form class="marine-reach__form" id="marine-reach-form" action="#" method="post">
+            <div class="marine-reach__field">
+              <label class="marine-reach__label" for="marine-reach-name">Your name</label>
+              <div class="marine-reach__control">
+                <input
+                  class="marine-reach__input"
+                  id="marine-reach-name"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  placeholder="Jane Smith"
+                />
+              </div>
             </div>
-            <div class="marine-reach__card">
-              <h3 class="marine-reach__card-label">Email</h3>
-              <p class="marine-reach__card-line">
-                <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-              </p>
+            <div class="marine-reach__field">
+              <label class="marine-reach__label" for="marine-reach-email">Email address</label>
+              <div class="marine-reach__control">
+                <input
+                  class="marine-reach__input"
+                  id="marine-reach-email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  inputmode="email"
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
-            <div class="marine-reach__card">
-              <h3 class="marine-reach__card-label">Instagram</h3>
-              <p class="marine-reach__card-line">
-                <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagramHandle}</a>
-              </p>
+            <div class="marine-reach__field">
+              <label class="marine-reach__label" for="marine-reach-phone">Phone (optional)</label>
+              <div class="marine-reach__control">
+                <input
+                  class="marine-reach__input"
+                  id="marine-reach-phone"
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  placeholder="+1 (555) 000-0000"
+                />
+              </div>
             </div>
-          </div>
-          <div class="marine-reach__cta-row">
-            <a class="u-btn" href={`mailto:${SITE.email}?subject=Marine%20detailing%20inquiry`}>Email your scope</a>
-            <a class="u-btn u-btn--ghost" href="/contact">Full contact page</a>
-          </div>
+            <div class="marine-reach__field">
+              <label class="marine-reach__label" for="marine-reach-message">Tell us about your vessel</label>
+              <p class="marine-reach__field-hint">
+                e.g. vessel name, size, location, service needed, preferred timing
+              </p>
+              <div class="marine-reach__control">
+                <textarea
+                  class="marine-reach__textarea"
+                  id="marine-reach-message"
+                  name="message"
+                  rows="5"
+                  required
+                  placeholder="Your message…"
+                ></textarea>
+              </div>
+            </div>
+            <button class="marine-reach__submit" type="submit">
+              <span class="marine-reach__submit-arrow" aria-hidden="true">→</span>
+              Send message
+            </button>
+          </form>
+          <div class="marine-reach__rule marine-reach__rule--after-submit" aria-hidden="true"></div>
+          <FooterContactExplore class="marine-reach__footer-cta" />
         </div>
       </section>
     </article>
@@ -196,8 +247,12 @@ import yacht7 from '../../assets/yacht7.png';
 </BaseLayout>
 
 <script>
+  import { armMarineReachForm } from '../scripts/marine-reach-form';
   import { armMarinePageMotion } from '../scripts/marine-page-rellax';
+  import { armMarineWindowCarousel } from '../scripts/marine-window-carousel';
   armMarinePageMotion();
+  armMarineWindowCarousel();
+  armMarineReachForm();
 </script>
 
 <style>
@@ -205,75 +260,232 @@ import yacht7 from '../../assets/yacht7.png';
     --marine-ink: #05080e;
     --marine-ink-mid: #0a1524;
     --marine-ink-soft: #0e1c30;
+    /* Same as `canvasColor` / `<html style="--page-canvas">` — fills any hairline under the transparent header */
+    --marine-canvas: var(--page-canvas, #0a1118);
+    /* All marine photos: same nearly-square corners (very light radius) */
+    --marine-img-radius: clamp(2px, 0.28vw, 4px);
     position: relative;
     color: var(--color-cream);
     background: transparent;
   }
 
-  /* Full-bleed photo: replaces flat `html/body` under transparent header; Rellax target is the tall inner. */
-  .marine-page__parallax {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Same bleed as `.hero__media` / `marine-hero__media`: paint into the notch, not only the “layout” box. */
-    top: calc(-1 * env(safe-area-inset-top, 0px));
-    min-height: calc(100vh + env(safe-area-inset-top, 0px));
-    min-height: calc(100svh + env(safe-area-inset-top, 0px));
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-    isolation: isolate;
+  /* ——— Narrow: intro block (solid) → hero image; no full-bleed / fixed stack ——— */
+  .marine-page--stack .marine-hero--fixed {
+    position: relative;
+    isolation: auto;
+    pointer-events: auto;
+    padding-bottom: 0;
+    /* Stay above in-flow `.marine-page__parallax` so the image never paints over the intro gradient / copy */
+    z-index: 2;
   }
 
-  .marine-page__parallax-rellax {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -24%;
-    bottom: -24%;
+  .marine-hero__intro {
     width: 100%;
-    min-height: 148%;
-    z-index: 0;
-    will-change: transform;
+    max-width: 100%;
+    box-sizing: border-box;
+    /*
+      Transparent `site-header` shows `--page-canvas` (#0a1118) — NOT `--site-header-tint` (#102135).
+      Start the gradient on that exact canvas, hold it briefly, then ease into navy / ink so there is no harsh band.
+    */
+    background-color: var(--marine-canvas);
+    background-image: linear-gradient(
+      180deg,
+      var(--marine-canvas) 0%,
+      var(--marine-canvas) 14%,
+      #0d1522 28%,
+      var(--site-header-tint) 46%,
+      #121c2a 62%,
+      #0e1726 78%,
+      var(--marine-ink) 100%
+    );
   }
 
-  .marine-page__parallax-frame {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
+  @media (max-width: 768px) {
+    .marine-page--stack {
+      background: var(--marine-canvas);
+    }
 
-  .marine-page__parallax-img {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    object-position: 50% 36%;
-    /* Extra zoom = vertical runway for the slow Rellax drift */
-    transform: scale(1.22);
-    transform-origin: 50% 38%;
-    display: block;
-  }
+    /* Slight tuck under the sticky site header — keep overlap minimal. */
+    .marine-page--stack .marine-hero--fixed {
+      margin-top: clamp(-0.5rem, -1.1vw, -0.22rem);
+    }
 
-  @media (prefers-reduced-motion: reduce) {
+    .marine-hero__intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      /* Content height only — hero image follows in document flow (no tall empty gradient band). */
+      min-height: 0;
+      padding-bottom: clamp(1rem, 4vw, 1.5rem);
+      background-image: none;
+      background-color: var(--marine-canvas);
+    }
+
+    .marine-hero--fixed .marine-hero__content {
+      /*
+        Stacked mobile: `main` already sits under the sticky site header — do not add `var(--header-bar)` again
+        (that reserve is for the home hero where copy overlaps the same viewport as the nav).
+      */
+      padding-top: 0;
+    }
+
+    .marine-hero--fixed .marine-hero__content {
+      /* Simple column; no right-offset art layout */
+      margin-inline: 0;
+      width: 100%;
+      max-width: 100%;
+      padding-inline: max(var(--space-md), clamp(1.1rem, 4vw, 1.5rem));
+      padding-bottom: 0.25rem;
+    }
+
+    .marine-hero__eyebrow,
+    .marine-hero__title,
+    .marine-hero__lede {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .marine-page__parallax {
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      min-height: 0;
+      width: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .marine-page__parallax-rellax {
+      position: relative;
+      top: 0;
+      bottom: auto;
+      left: 0;
+      right: 0;
+      width: 100%;
+      min-height: 42svh;
+      min-height: 42dvh;
+    }
+
+    .marine-page__parallax-frame {
+      position: relative;
+      min-height: 42svh;
+      min-height: 42dvh;
+      overflow: hidden;
+      border-radius: var(--marine-img-radius);
+    }
+
     .marine-page__parallax-img {
-      transform: scale(1.15);
+      width: 100%;
+      height: 100%;
+      min-height: 42svh;
+      min-height: 42dvh;
+      object-fit: cover;
+      object-position: 50% 38%;
+      transform: none;
+      border-radius: inherit;
+    }
+
+    .marine-page__canvas {
+      display: none;
+    }
+
+    .marine-hero__spacer {
+      display: none;
     }
   }
 
-  .marine-page__canvas {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: calc(-1 * env(safe-area-inset-top, 0px));
-    min-height: calc(100svh + env(safe-area-inset-top, 0px));
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden;
-    /* No opaque fill — the photograph is the ground; only atmosphere + texture on top. */
-    background: transparent;
+  @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    .marine-page__parallax-img {
+      min-height: 40svh;
+    }
+  }
+
+  /* ——— Wide: full-bleed fixed parallax (original) ——— */
+  @media (min-width: 769px) {
+    .marine-hero__intro {
+      background: transparent;
+    }
+
+    .marine-page--stack .marine-hero--fixed {
+      isolation: isolate;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      pointer-events: none;
+      padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
+    }
+
+    .marine-page__parallax {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: calc(-1 * env(safe-area-inset-top, 0px));
+      min-height: calc(100vh + env(safe-area-inset-top, 0px));
+      min-height: calc(100svh + env(safe-area-inset-top, 0px));
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .marine-page__parallax-rellax {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -24%;
+      bottom: -24%;
+      width: 100%;
+      min-height: 148%;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    .marine-page__parallax-frame {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: var(--marine-img-radius);
+    }
+
+    .marine-page__parallax-img {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: 50% 36%;
+      transform: scale(1.22);
+      transform-origin: 50% 38%;
+      display: block;
+      border-radius: inherit;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marine-page__parallax-img {
+        transform: scale(1.15);
+      }
+    }
+
+    .marine-page__canvas {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: calc(-1 * env(safe-area-inset-top, 0px));
+      min-height: calc(100svh + env(safe-area-inset-top, 0px));
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .marine-hero__spacer {
+      display: block;
+    }
   }
 
   .marine-page__canvas-glow {
@@ -309,53 +521,28 @@ import yacht7 from '../../assets/yacht7.png';
     background-size: 160px 160px;
   }
 
-  .marine-hero--fixed {
-    /* Viewport-stacked: above fixed canvas (z-0) + `html, body` fill; below `header.site-header` (z-50) in
-       `Header.astro` — in-flow `main` children cannot out-rank a sibling `header` without this. */
-    isolation: isolate;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    /* Fall through scroll; nav stays clickable on top */
-    pointer-events: none;
-    padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
-  }
-
-  .marine-hero__media {
-    position: absolute;
-    /* Bleed to notch; empty — the photograph is `marine-page__parallax` below. */
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: calc(-1 * env(safe-area-inset-top, 0px));
-    z-index: 0;
-    pointer-events: none;
-    min-height: calc(100% + env(safe-area-inset-top, 0px) + var(--home-prescroll-y, 0px));
-    overflow: hidden;
-    background: transparent;
-  }
-
   .marine-hero__content {
     position: relative;
     z-index: 3;
     pointer-events: auto;
     box-sizing: border-box;
-    /* Shift copy right by 25% of the hero width; keep total horizontal footprint ≤ ~100%. */
-    margin-inline-start: 25%;
-    margin-inline-end: 0;
-    width: min(34rem, calc(75% - var(--space-md)));
-    max-width: 100%;
-    padding-inline-start: max(var(--space-md), clamp(1.25rem, 4.5vw, 2.75rem));
-    padding-inline-end: var(--space-md);
-    padding-top: calc(var(--header-bar) + var(--header-safe-pad) + var(--space-md));
-    padding-bottom: clamp(0.5rem, 2vw, 1rem);
     text-align: start;
+  }
+
+  @media (min-width: 769px) {
+    .marine-hero__content {
+      margin-inline-start: 25%;
+      margin-inline-end: 0;
+      width: min(34rem, calc(75% - var(--space-md)));
+      max-width: 100%;
+      padding-inline-start: max(var(--space-md), clamp(1.25rem, 4.5vw, 2.75rem));
+      padding-inline-end: var(--space-md);
+      padding-bottom: clamp(0.5rem, 2vw, 1rem);
+    }
   }
 
   @media (min-width: 900px) {
     .marine-hero__content {
-      /* Wider measure on large screens, still capped so 25% margin + column fits. */
       width: min(
         36rem,
         max(18rem, calc(33.333vw - clamp(1rem, 3vw, 2.5rem))),
@@ -368,7 +555,12 @@ import yacht7 from '../../assets/yacht7.png';
     color: rgba(196, 184, 150, 0.92);
     letter-spacing: 0.22em;
     margin: 0 0 var(--space-sm);
-    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
+  }
+
+  @media (min-width: 769px) {
+    .marine-hero__eyebrow {
+      text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
+    }
   }
 
   .marine-hero__title {
@@ -379,9 +571,14 @@ import yacht7 from '../../assets/yacht7.png';
     line-height: 1.12;
     letter-spacing: 0;
     color: #f6f8fc;
-    text-shadow:
-      0 2px 32px rgba(0, 0, 0, 0.55),
-      0 1px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  @media (min-width: 769px) {
+    .marine-hero__title {
+      text-shadow:
+        0 2px 32px rgba(0, 0, 0, 0.55),
+        0 1px 0 rgba(0, 0, 0, 0.25);
+    }
   }
 
   .marine-hero__lede {
@@ -389,27 +586,37 @@ import yacht7 from '../../assets/yacht7.png';
     font-size: clamp(1rem, 1.85vw, 1.12rem);
     line-height: 1.68;
     color: rgba(232, 236, 245, 0.94);
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
   }
 
+  @media (min-width: 769px) {
+    .marine-hero__lede {
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /*
+    Solid system navy down the page (same ramp as narrow) — no editorial glass blur on desktop;
+    keeps type legible over the fixed hero and matches mobile art direction.
+  */
   .marine-editorial {
     position: relative;
     /* > fixed hero (z-40 in `global.css`) so editorial scrolls over the full-bleed image */
     z-index: 45;
     background: linear-gradient(
       180deg,
-      rgba(5, 8, 14, 0.42) 0%,
-      rgba(5, 8, 14, 0.28) 18%,
-      rgba(4, 7, 12, 0.12) 40%,
-      transparent 55%
+      var(--marine-ink) 0%,
+      #070d16 18%,
+      var(--marine-ink-mid) 42%,
+      var(--marine-ink) 78%,
+      #04060c 100%
     );
-    backdrop-filter: blur(10px) saturate(1.15);
-    -webkit-backdrop-filter: blur(10px) saturate(1.15);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @media (max-width: 768px) {
     .marine-editorial {
-      background: linear-gradient(180deg, rgba(5, 8, 14, 0.7) 0%, rgba(5, 8, 14, 0.5) 22%, rgba(4, 7, 12, 0.35) 100%);
+      z-index: 1;
     }
   }
 
@@ -456,6 +663,10 @@ import yacht7 from '../../assets/yacht7.png';
     max-width: 34rem;
   }
 
+  .marine-chapter__text + .marine-chapter__text {
+    margin-top: 0.85rem;
+  }
+
   .marine-chapter__fig {
     margin: 0;
   }
@@ -470,7 +681,7 @@ import yacht7 from '../../assets/yacht7.png';
     position: absolute;
     inset: 10% 6% -6% 10%;
     z-index: 0;
-    border-radius: var(--radius-md);
+    border-radius: var(--marine-img-radius);
     background: rgba(0, 0, 0, 0.45);
     filter: blur(18px);
     opacity: 0.75;
@@ -486,7 +697,7 @@ import yacht7 from '../../assets/yacht7.png';
   .marine-chapter__frame {
     position: relative;
     z-index: 1;
-    border-radius: var(--radius-md);
+    border-radius: var(--marine-img-radius);
     overflow: hidden;
     box-shadow:
       0 22px 56px rgba(0, 0, 0, 0.48),
@@ -504,6 +715,37 @@ import yacht7 from '../../assets/yacht7.png';
     object-fit: cover;
     object-position: center;
     display: block;
+    border-radius: inherit;
+  }
+
+  /*
+    Scroll-linked scale on the photo pixels (parent keeps Rellax translate).
+    Pairs with editorial Rellax for a bit more depth; gated on view-timeline support.
+  */
+  @supports (animation-timeline: view(block)) {
+    @keyframes marine-editorial-img-scroll-scale {
+      0% {
+        transform: scale(0.982);
+      }
+      50% {
+        transform: scale(1.032);
+      }
+      100% {
+        transform: scale(0.982);
+      }
+    }
+
+    .marine-chapter__frame img,
+    .marine-window__rellax .marine-window-carousel__slide.is-active {
+      transform-origin: 50% 42%;
+      will-change: transform;
+      animation-name: marine-editorial-img-scroll-scale;
+      animation-duration: 1s; /* superseded by view timeline where supported */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view(block);
+      animation-range: entry -5% exit 105%;
+    }
   }
 
   .marine-window {
@@ -535,54 +777,89 @@ import yacht7 from '../../assets/yacht7.png';
     position: relative;
     z-index: 1;
     will-change: transform;
+    overflow: hidden;
+    border-radius: var(--marine-img-radius);
   }
 
-  .marine-window__img {
+  .marine-window-carousel {
+    position: relative;
     width: 100%;
-    height: min(78vh, 36rem);
+    min-height: min(78vh, 36rem);
+    pointer-events: none;
+  }
+
+  .marine-window-carousel__track {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .marine-window__rellax .marine-window-carousel__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: 50% 42%;
     display: block;
-    border-radius: var(--radius-md);
+    border-radius: var(--marine-img-radius);
     box-shadow:
       0 28px 80px rgba(0, 0, 0, 0.55),
       inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 1.05s cubic-bezier(0.22, 1, 0.32, 1);
+  }
+
+  .marine-window__rellax .marine-window-carousel__slide.is-active {
+    opacity: 1;
+    z-index: 1;
   }
 
   .marine-window__rim {
     position: absolute;
     inset: 0;
     z-index: 2;
-    border-radius: var(--radius-md);
+    border-radius: var(--marine-img-radius);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
     pointer-events: none;
     mix-blend-mode: soft-light;
     will-change: transform;
   }
 
-  .marine-window__caption {
-    position: relative;
-    z-index: 3;
-    margin: clamp(1rem, 2.5vw, 1.5rem) auto 0;
-    max-width: 38rem;
-    font-size: clamp(0.95rem, 1.65vw, 1.05rem);
-    line-height: 1.65;
-    color: rgba(178, 194, 220, 0.82);
-    font-style: italic;
-    text-align: center;
-  }
-
   .marine-quote {
     padding-block: clamp(2.25rem, 5vw, 3.5rem);
   }
 
+  /*
+    Same language as `.marine-window__haze` + editorial glass: cool ink, blue lift, blur —
+    reads continuous under the carousel strip and bumps quote contrast vs the old faint wash.
+  */
   .marine-quote__inner {
     margin: 0 auto;
     max-width: 38rem;
     padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem);
-    border-left: 2px solid rgba(196, 184, 150, 0.45);
-    background: rgba(255, 255, 255, 0.03);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border: 1px solid rgba(239, 236, 231, 0.1);
+    border-left: 2px solid rgba(196, 184, 150, 0.45);
+    background:
+      radial-gradient(ellipse 78% 62% at 50% 38%, rgba(32, 60, 105, 0.34) 0%, transparent 58%),
+      linear-gradient(180deg, rgba(5, 8, 14, 0.58) 0%, rgba(5, 10, 20, 0.42) 38%, rgba(5, 8, 14, 0.62) 100%);
+    backdrop-filter: blur(12px) saturate(1.18);
+    -webkit-backdrop-filter: blur(12px) saturate(1.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .marine-quote__inner {
+      background: linear-gradient(
+        180deg,
+        rgba(5, 8, 14, 0.88) 0%,
+        rgba(6, 14, 28, 0.82) 45%,
+        rgba(5, 8, 14, 0.9) 100%
+      );
+    }
   }
 
   .marine-quote__inner p {
@@ -607,6 +884,19 @@ import yacht7 from '../../assets/yacht7.png';
     backdrop-filter: blur(14px) saturate(1.2);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  /* Card shell only from tablet up; on mobile list + note sit flush on the page. */
+  @media (max-width: 719px) {
+    .marine-services__inner {
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+    }
   }
 
   .marine-services__title {
@@ -639,13 +929,18 @@ import yacht7 from '../../assets/yacht7.png';
   .marine-reach {
     position: relative;
     z-index: 2;
-    padding-block: clamp(3rem, 8vw, 5rem);
-    padding-bottom: calc(clamp(3rem, 8vw, 5rem) + env(safe-area-inset-bottom, 0px));
+    padding-top: clamp(3rem, 8vw, 5rem);
+    /* Tight under Contact/Explore — gap to legal strip comes from `site-footer--legal-only` padding. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    /* Ramp from reach content into `var(--footer-bg)` so the footer reads as one surface. */
     background: linear-gradient(
       180deg,
-      rgba(5, 10, 18, 0.42) 0%,
-      rgba(4, 6, 12, 0.78) 55%,
-      rgba(3, 5, 10, 0.9) 100%
+      rgba(5, 10, 18, 0.52) 0%,
+      rgba(4, 8, 16, 0.82) 38%,
+      #070f1c 62%,
+      #081420 78%,
+      var(--footer-bg) 94%,
+      var(--footer-bg) 100%
     );
     border-top: 1px solid rgba(239, 236, 231, 0.06);
   }
@@ -653,7 +948,15 @@ import yacht7 from '../../assets/yacht7.png';
   .marine-reach__inner {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .marine-reach__intro {
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .marine-reach__title {
@@ -666,73 +969,168 @@ import yacht7 from '../../assets/yacht7.png';
   }
 
   .marine-reach__lede {
-    margin: 0;
-    max-width: 40rem;
+    margin: 0 auto;
+    max-width: 36rem;
     font-size: 1.02rem;
     line-height: 1.65;
+    color: rgba(236, 240, 248, 0.9);
   }
 
-  .marine-reach__grid {
-    display: grid;
-    gap: var(--space-md);
-    grid-template-columns: 1fr;
+  .marine-reach__rule {
+    width: 3.25rem;
+    height: 2px;
+    margin-top: clamp(1rem, 2.5vw, 1.35rem);
+    margin-inline: auto;
+    border-radius: 1px;
+    background: linear-gradient(90deg, rgba(196, 184, 150, 0.95), rgba(196, 184, 150, 0.35));
   }
 
-  @media (min-width: 720px) {
-    .marine-reach__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  .marine-reach__rule--after-submit {
+    margin-top: clamp(1.75rem, 4.5vw, 2.25rem);
+    margin-bottom: 0;
+    margin-inline: auto;
   }
 
-  .marine-reach__card {
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(239, 236, 231, 0.1);
-    background: rgba(8, 24, 48, 0.45);
-    backdrop-filter: blur(12px) saturate(1.2);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  .marine-reach__form {
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(1rem, 2.5vw, 1.25rem);
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    text-align: center;
   }
 
-  .marine-reach__card-label {
-    margin: 0 0 var(--space-sm);
+  .marine-reach__field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
+  .marine-reach__label {
     font-family: var(--font-ui);
     font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: rgba(236, 240, 248, 0.88);
   }
 
-  .marine-reach__card-line {
-    margin: 0 0 0.35rem;
+  .marine-reach__field-hint {
+    margin: -0.15rem 0 0;
+    max-width: 32rem;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: rgba(178, 194, 220, 0.52);
+    text-align: center;
   }
 
-  .marine-reach__card-line a {
-    font-size: 1.08rem;
-    font-weight: 500;
-    text-decoration: none;
-    color: #f4f6fa;
+  .marine-reach__control {
+    width: 100%;
+    max-width: 36rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(239, 236, 231, 0.1);
+    background: rgba(2, 6, 14, 0.88);
+    overflow: hidden;
+    transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   }
 
-  .marine-reach__card-line a:hover,
-  .marine-reach__card-line a:focus-visible {
-    color: var(--color-accent);
+  .marine-reach__control:focus-within {
+    border-color: rgba(196, 184, 150, 0.4);
+    box-shadow: 0 0 0 1px rgba(196, 184, 150, 0.15);
   }
 
-  .marine-reach__card-meta {
+  .marine-reach__input,
+  .marine-reach__textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     margin: 0;
-    font-size: 0.88rem;
+    padding: 0.7rem 0.9rem;
+    font-family: var(--font-ui);
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: #f2f5fa;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    outline: none;
   }
 
-  .marine-reach__cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
+  .marine-reach__input {
+    text-align: center;
+  }
+
+  .marine-reach__textarea {
+    min-height: 8.5rem;
+    resize: vertical;
+    text-align: start;
+  }
+
+  .marine-reach__input::placeholder,
+  .marine-reach__textarea::placeholder {
+    color: rgba(178, 194, 220, 0.42);
+  }
+
+  .marine-reach__submit {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: 100%;
+    margin-top: 0.35rem;
+    padding: 0.95rem 1.35rem;
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0a1118;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, #ebe3d4 0%, #d4c4a8 38%, #b89a6a 72%, #9a7d4f 100%);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    transition:
+      filter 0.2s var(--ease-out),
+      transform 0.2s var(--ease-out);
+  }
+
+  .marine-reach__submit:hover {
+    filter: brightness(1.04);
+  }
+
+  .marine-reach__submit:active {
+    transform: translateY(1px);
+  }
+
+  .marine-reach__submit:focus-visible {
+    outline: 2px solid rgba(196, 184, 150, 0.85);
+    outline-offset: 3px;
+  }
+
+  .marine-reach__submit-arrow {
+    font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .marine-reach__footer-cta {
+    margin-top: var(--footer-cta-section-gap);
+    width: 100%;
+    max-width: 36rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .marine-hero__rellax,
+    .marine-bleed__rellax,
     .marine-chapter__shadow,
     .marine-chapter__frame,
     .marine-window__haze,
@@ -743,6 +1141,13 @@ import yacht7 from '../../assets/yacht7.png';
 
     .marine-chapter__frame {
       transform: none !important;
+    }
+
+    .marine-chapter__frame img,
+    .marine-window__rellax .marine-window-carousel__slide {
+      animation: none !important;
+      will-change: auto;
+      transition: none !important;
     }
   }
 </style>

@@ -11,6 +11,8 @@ type RellaxInstance = { destroy: () => void };
 
 const ROOT = '[data-marine-page]';
 const SEL = `${ROOT} .rellax`;
+/** Full-bleed hero (desktop); excluded on narrow so the stacked, in-flow image is not Rellax-shifted. */
+const SEL_NARROW = `${ROOT} .rellax:not(.marine-bleed__rellax)`;
 
 let marineRellax: RellaxInstance | null = null;
 
@@ -23,9 +25,10 @@ function initMarinePageRellax(): void {
   destroyMarineRellax();
   if (!document.querySelector(ROOT)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (!document.querySelectorAll(SEL).length) return;
+  const q = window.matchMedia('(max-width: 768px)').matches ? SEL_NARROW : SEL;
+  if (!document.querySelectorAll(q).length) return;
   try {
-    marineRellax = new Rellax(SEL, {
+    marineRellax = new Rellax(q, {
       center: true,
       round: true,
       vertical: true,

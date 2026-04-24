@@ -22,6 +22,8 @@ interface Props {
    * Use on the home hero so `#102135` brand navy does not tint Safari’s top chrome.
    */
   canvasColor?: string;
+  /** Footer: full Contact+Explore+legal, or legal strip only (Contact/Explore inlined on page). */
+  footerVariant?: 'full' | 'baseOnly';
 }
 
 const {
@@ -31,6 +33,7 @@ const {
   dataHomeLoadIntro = true,
   themeColor = '#050505',
   canvasColor,
+  footerVariant = 'full',
 } = Astro.props;
 
 const criticalCanvas = canvasColor ?? '#050505';
@@ -140,7 +143,7 @@ const jsonLd = {
       <main class="page__main">
         <slot />
       </main>
-      <Footer />
+      <Footer variant={footerVariant} />
     </div>
     <script>
       import { initHomePreScroll } from '../scripts/home-prescroll';
