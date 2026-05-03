@@ -149,6 +149,46 @@ const eagleForFooter = eagleSvgRaw.replace(
     grid-area: cta;
   }
 
+  @media (max-width: 767px) {
+    .site-footer__grid {
+      justify-items: center;
+    }
+
+    .site-footer__col {
+      text-align: center;
+    }
+
+    .site-footer__brand {
+      justify-content: center;
+    }
+
+    .site-footer__brand-dash {
+      margin-inline: auto;
+    }
+
+    .site-footer__tagline {
+      margin-inline: auto;
+    }
+
+    .site-footer__social {
+      justify-content: center;
+    }
+
+    .site-footer__explore-list {
+      justify-items: center;
+    }
+
+    .site-footer__contact-row {
+      justify-content: center;
+      align-items: center;
+    }
+
+    .site-footer__bottom {
+      align-items: center;
+      text-align: center;
+    }
+  }
+
   @media (min-width: 768px) and (max-width: 1023px) {
     .site-footer__grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
