@@ -18,7 +18,7 @@ You are extending **Eagle Detailing** — a **cinematic minimal luxury** brand (
 ## Tokens & utilities (use as-is)
 
 - **Colors:** `--color-navy`, `--color-navy-ink`, `--color-cream`, `--color-cream-muted`, `--color-accent`; optional `--page-canvas` for route-level canvas override.
-- **Type:** `--font-display` (Playfair), `--font-hero` (Butler for home hero headline), `--font-ui` (DM Sans).
+- **Type:** `--font-display` (Playfair), `--font-hero` (Butler for home hero headline), `--font-ui` (DM Sans). **Hero headline + lede (shared home / marine / domains band H2):** `--type-hero-title-*`, `--type-hero-lede-*`, plus optional `--type-hero-title-shadow-on-photo`, `--type-hero-lede-shadow-on-photo`, `--type-hero-edge-shadow-narrow` in `global.css`.
 - **Space:** `--space-xs` … `--space-xl`; **radius** `--radius-sm|md`; **header** `--header-h`; **ease** `--ease-out`.
 - **Layout:** `.u-container`, `.u-section` / `.u-section--tight`, `.u-eyebrow`, `.u-muted`, `.u-btn` / `.u-btn--ghost`.
 

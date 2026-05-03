@@ -27,7 +27,7 @@ export const NAV_ABOUT_CHILDREN = [{ href: '/contact', label: 'Contact' }] as co
 
 export const NAV_MAIN = [{ href: '/projects', label: 'Projects' }] as const;
 
-/** Flat list for footer and anywhere else that expects every destination. */
+/** Flat list for anywhere that expects every destination (header tooling, structured footer uses subsets). */
 export const NAV = [
   ...NAV_SERVICES,
   ...NAV_MAIN,

@@ -1,0 +1,283 @@
+---
+/**
+ * Flowbite carousel markup + scoped styles (Tailwind-equivalent utilities).
+ * @see https://flowbite.com/docs/components/carousel/
+ */
+export interface FlowbiteCarouselSlide {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  loading?: 'eager' | 'lazy';
+}
+
+interface Props {
+  id: string;
+  slides: FlowbiteCarouselSlide[];
+  mode?: 'slide' | 'static';
+  /** Auto-advance interval in ms when `mode` is `slide`. Ignored when prefers-reduced-motion. */
+  intervalMs?: number;
+  ariaLabel?: string;
+  prevLabel?: string;
+  nextLabel?: string;
+}
+
+const {
+  id,
+  slides,
+  mode = 'slide',
+  intervalMs = 5000,
+  ariaLabel = 'Image carousel',
+  prevLabel = 'Previous slide',
+  nextLabel = 'Next slide',
+} = Astro.props;
+
+if (!slides.length) {
+  throw new Error('FlowbiteCarousel: at least one slide is required.');
+}
+---
+
+<div
+  class="fb-carousel"
+  {id}
+  data-carousel={mode}
+  data-carousel-interval={String(intervalMs)}
+  role="region"
+  aria-roledescription="carousel"
+  aria-label={ariaLabel}
+>
+  <div class="fb-carousel__viewport">
+    {
+      slides.map((slide, idx) => (
+        <div class="fb-carousel__item" data-carousel-item={idx === 0 ? 'active' : ''}>
+          <img
+            class="fb-carousel__img"
+            src={slide.src}
+            alt={slide.alt}
+            width={slide.width}
+            height={slide.height}
+            loading={slide.loading ?? (idx < 2 ? 'eager' : 'lazy')}
+            decoding="async"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="fb-carousel__indicators" role="tablist" aria-label="Slides">
+    {
+      slides.map((_, idx) => (
+        <button
+          type="button"
+          class="fb-carousel__dot"
+          data-carousel-slide-to={String(idx)}
+          aria-label={`Go to slide ${idx + 1}`}
+          aria-current={idx === 0 ? 'true' : 'false'}
+        />
+      ))
+    }
+  </div>
+
+  <button type="button" class="fb-carousel__control fb-carousel__control--prev" data-carousel-prev>
+    <span class="fb-carousel__control-surface" aria-hidden="true">
+      <svg class="fb-carousel__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 1 1 5l4 4"></path>
+      </svg>
+    </span>
+    <span class="fb-carousel__sr-only">{prevLabel}</span>
+  </button>
+
+  <button type="button" class="fb-carousel__control fb-carousel__control--next" data-carousel-next>
+    <span class="fb-carousel__control-surface" aria-hidden="true">
+      <svg class="fb-carousel__chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m1 9 4-4-4-4"></path>
+      </svg>
+    </span>
+    <span class="fb-carousel__sr-only">{nextLabel}</span>
+  </button>
+</div>
+
+<script>
+  import { armFlowbiteCarousel } from '../scripts/flowbite-carousel';
+  armFlowbiteCarousel();
+</script>
+
+<style>
+  /* Tailwind: relative w-full */
+  .fb-carousel {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Tailwind: relative h-56 overflow-hidden rounded-base md:h-96 — radii from design tokens */
+  .fb-carousel__viewport {
+    position: relative;
+    height: 14rem;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: #111827;
+    box-shadow:
+      0 28px 80px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  @media (min-width: 768px) {
+    .fb-carousel__viewport {
+      height: 24rem;
+    }
+  }
+
+  /* Stacked slides + Flowbite duration-700 ease-in-out crossfade */
+  .fb-carousel__item {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 0;
+    transition:
+      opacity 700ms ease-in-out,
+      visibility 700ms ease-in-out;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .fb-carousel__item[data-carousel-item='active'] {
+    opacity: 1;
+    z-index: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Tailwind: absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 */
+  .fb-carousel__img {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Tailwind: absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 */
+  .fb-carousel__indicators {
+    position: absolute;
+    z-index: 30;
+    display: flex;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%);
+    gap: 0.75rem;
+  }
+
+  /* Tailwind: w-3 h-3 rounded-full (dark theme indicator colors) */
+  .fb-carousel__dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    padding: 0;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.45);
+    transition: background 0.2s ease;
+  }
+
+  .fb-carousel__dot:hover,
+  .fb-carousel__dot:focus-visible {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .fb-carousel__dot[aria-current='true'] {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .fb-carousel__dot:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  /* Tailwind: absolute top-0 start-0 / end-0 z-30 flex items-center justify-center h-full px-4 */
+  .fb-carousel__control {
+    position: absolute;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .fb-carousel__control--prev {
+    left: 0;
+  }
+
+  .fb-carousel__control--next {
+    right: 0;
+  }
+
+  .fb-carousel__control:focus-visible {
+    outline: none;
+  }
+
+  .fb-carousel__control:focus-visible .fb-carousel__control-surface {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  /* group-hover:bg-white/50 dark:bg-gray-800/30 */
+  .fb-carousel__control-surface {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: rgba(31, 41, 55, 0.55);
+    color: #f9fafb;
+    transition: background 0.2s ease;
+  }
+
+  .fb-carousel__control:hover .fb-carousel__control-surface,
+  .fb-carousel__control:focus-visible .fb-carousel__control-surface {
+    background: rgba(31, 41, 55, 0.78);
+  }
+
+  .fb-carousel__chevron {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .fb-carousel__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fb-carousel__item {
+      transition: none;
+    }
+  }
+</style>

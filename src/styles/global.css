@@ -67,6 +67,32 @@
   --glass-blur-header: blur(14px) saturate(1.15);
   --glass-border: rgba(255, 255, 255, 0.22);
   --glass-shadow-diffuse: 0 0 clamp(2.75rem, 7vw, 5rem) rgba(0, 0, 0, 0.3);
+
+  /*
+    Hero headline + lede (home `/`, `/marine`, domains band header on home).
+    Use these vars anywhere the same display type should appear; rules below consume them first.
+  */
+  --type-hero-title-font: var(--font-hero);
+  --type-hero-title-weight: 300;
+  --type-hero-title-style: normal;
+  --type-hero-title-size: clamp(2.25rem, 5vw, 3.75rem);
+  --type-hero-title-leading: 1.15;
+  --type-hero-title-tracking: 0;
+  --type-hero-title-word-spacing: normal;
+  --type-hero-title-color: var(--color-cream);
+  --type-hero-title-margin: 0 0 var(--space-md);
+  --type-hero-title-shadow: none;
+
+  --type-hero-lede-size: 1.0625rem;
+  --type-hero-lede-leading: 1.65;
+  --type-hero-lede-color: var(--color-cream-muted);
+  --type-hero-lede-margin: 0 0 var(--space-md);
+  --type-hero-lede-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
+
+  /* Marine (and similar) full-bleed photo: optional stronger shadows — set in page scope where needed. */
+  --type-hero-title-shadow-on-photo: 0 2px 32px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(0, 0, 0, 0.25);
+  --type-hero-lede-shadow-on-photo: 0 2px 24px rgba(0, 0, 0, 0.5);
+  --type-hero-edge-shadow-narrow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 960px) {
@@ -163,13 +189,27 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-size: var(--type-hero-title-size);
   margin: 0 0 var(--space-sm);
 }
 
-/* Home hero: Butler (weights on spans). Letter/word spacing lives in index.astro so it isn’t lost to CSS chunk order. */
-section.hero .hero__content > h1.hero__title {
-  font-family: var(--font-hero);
+/*
+  Home + Marine hero H1 + domains band H2: Butler ultra-light, same clamp scale as homepage hero.
+  (Domains header was previously paired with hero in `index.astro`; single source of truth here.)
+*/
+section.hero .hero__content > h1.hero__title,
+.marine-page .marine-hero__content > h1.hero__title,
+.domains.index-atmos .domains__header h2 {
+  font-family: var(--type-hero-title-font);
+  font-weight: var(--type-hero-title-weight);
+  font-style: var(--type-hero-title-style);
+  font-size: var(--type-hero-title-size);
+  letter-spacing: var(--type-hero-title-tracking);
+  word-spacing: var(--type-hero-title-word-spacing);
+  line-height: var(--type-hero-title-leading);
+  color: var(--type-hero-title-color);
+  margin: var(--type-hero-title-margin);
+  text-shadow: var(--type-hero-title-shadow);
 }
 
 section.hero .hero__content > h1.hero__title .hero__title-lead {
@@ -180,6 +220,16 @@ section.hero .hero__content > h1.hero__title .hero__title-lead {
 section.hero .hero__content > h1.hero__title .hero__title-rest {
   display: block;
   font-weight: inherit;
+}
+
+/* Home hero supporting line + Marine hero lede (same size/color/shadow as `.hero__lede` in index). */
+section.hero .hero__content > .hero__lede,
+.marine-page .marine-hero__content > .hero__lede {
+  font-size: var(--type-hero-lede-size);
+  color: var(--type-hero-lede-color);
+  margin: var(--type-hero-lede-margin);
+  text-shadow: var(--type-hero-lede-shadow);
+  line-height: var(--type-hero-lede-leading);
 }
 
 h2 {
@@ -316,6 +366,15 @@ p:last-child {
   flex: 1 0 auto;
 }
 
+/* Marine: opaque main fill so fixed full-bleed hero never reads through short content / below the fold. */
+.page__main:has(.marine-page) {
+  background-color: var(--footer-bg);
+}
+
+.page__main:has(.contact-page) {
+  background-color: #050a14;
+}
+
 /*
   Any route with `data-home-load-intro` on `<html>` (default in `BaseLayout.astro`): `index.astro` styles
   are Astro-scoped; selectors like `html … .hero[data-astro-cid=…]` out-specificity unscoped rules on home.
@@ -407,8 +466,9 @@ html[data-home-load-intro] body .page > main.page__main > section.hero {
     animation-timing-function: cubic-bezier(0.28, 0.9, 0.32, 1);
   }
 
+  /* Homepage marine tile only (pairs with root timing so VT doesn’t feel “double-speed” vs `/aviation` etc.). */
   ::view-transition-group(domain-marine-hero) {
-    animation-duration: 1.05s;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.28, 1);
+    animation-duration: 0.62s;
+    animation-timing-function: cubic-bezier(0.28, 0.9, 0.32, 1);
   }
 }

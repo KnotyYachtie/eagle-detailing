@@ -36,11 +36,14 @@ These mirror **`src/layouts/BaseLayout.astro`** and owner direction: **common mo
 2. **`data-home-load-intro` on `<html>`** (default on) — Enables: (a) inline head script → **`--hero-inner-vh`** from `visualViewport`, mobile **`--home-prescroll-y`** + initial scroll (skipped when `prefers-reduced-motion: reduce`); (b) **`global.css`** min-height floor on **`main.page__main`**; (c) **`initHomePreScroll()`** loaded once from **BaseLayout** (not duplicated in `index.astro`). **Hero load choreography** (blur intro, metrics, header fade) stays **only in `src/pages/index.astro`** and only affects elements that exist on `/`.  
    *Plain English:* A flag on the root of the page turns on “real phone height,” a tiny initial scroll on small screens (unless the user asked for less motion), a safety net so the main column is tall enough, and a script that fixes Safari scroll quirks. The fancy fade-in timing for the home hero still lives only on the homepage file.
 
-3. **Header chrome** — Default path avoids a **hard opaque bar** across the top on phones; transparent glass + eagle treatment matches home on **all** routes unless a template opts out.  
-   *Plain English:* We do not ship a solid slab of color under the status clock by default; the nav reads as light glass with the eagle so inner pages feel like the same brand as home.
+3. **Header chrome** — Default **`transparentHeader={true}`**: **transparent** sticky bar + **inline eagle SVG** (`currentColor` white) over hero photography — **no** `logo-light.png`. **`transparentHeader={false}`** (e.g. `/contact`): **flat** `#050a14` bar, **no** navy glass/blur slab — same eagle SVG so there is **no** separate tinted logo box.  
+   *Plain English:* Most pages float the nav over the hero with the white eagle drawn in code; pages that turn off transparent mode get a simple dark strip that matches the contact-style shell—not a lighter blue panel behind the mark.
 
 4. **Mobile nav tap** — **System** WebKit tap dimming is suppressed via **`-webkit-tap-highlight-color: transparent`** on `.site-header__link`; **cream → white** on **`:hover` / `.is-active`** remains the intentional light feedback.  
    *Plain English:* Tapping a link on iPhone does not flash the ugly default gray box; instead you only see our deliberate lightening when you tap or open a menu item.
+
+5. **Site footer (`Footer.astro`)** — **Responsive CSS Grid**: **desktop (`≥1024px`)** four columns — brand (logo + tagline + Instagram), **Explore** (`NAV_SERVICES` + `NAV_MAIN` only), contact (`tel` / `mailto` / locality), **Get started** (`/contact` + `sms:` secondary); **tablet (`768–1023px`)** `2×2` areas (`brand | cta` / `explore | contact`); **mobile (`<768px`)** stacked **brand → CTA → Explore (two-column link grid) → contact**, then **bottom legal** row (`©` left copy / locality + licensed on wide screens, stacked narrow). Footer background is **flat** `var(--footer-bg)` (no gradient overlays).  
+   *Plain English:* The footer is a structured grid—not a centered blob—with the request-service button high on phones, explore links in two columns on small screens, a solid navy footer fill, and the usual copyright strip along the bottom.
 
 ---
 
@@ -242,9 +245,8 @@ These mirror **`src/layouts/BaseLayout.astro`** and owner direction: **common mo
 
 *Plain English (whole section):* How menus are grouped, how you know what page you are on, when desktop vs mobile nav kicks in, the home domain-card preview, and submenu animation tastes.
 
-20. **Assumption:** **Grouped** header nav (Services / About) **plus** **flat** footer `NAV` is the correct pairing for mental models.  
-    *Plain English:* Top nav groups related links; the footer lists every link in one flat list so nothing is hidden.  
-    **Question:** Should footer someday **mirror** groups visually, or is **flat + complete** always the rule?
+20. **Assumption:** **Grouped** header nav (Services / About) pairs with a **structured site footer**: **Explore** lists **Marine / Aviation / Automotive / Projects** only (`NAV_SERVICES` + `NAV_MAIN`); **About** and **Contact** stay in the header and primary CTAs—not duplicated as footer nav rows. **Confidence: Medium** for IA pairing until another footer experiment ships.  
+    *Plain English:* Top nav still groups items; the footer uses columns (brand, key destinations, contact, get started) instead of repeating every header link in one long list.
 
 21. **Assumption:** **Active route** styling is a **tone shift toward white**, not a pill—quiet luxury over app patterns.  
     *Plain English:* The current page link gets slightly brighter text, not a rounded “app button” background.  

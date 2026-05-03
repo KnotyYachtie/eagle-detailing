@@ -1,13 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FooterContactExplore from '../components/FooterContactExplore.astro';
-import yacht1 from '../../assets/yacht1.png';
+import { SITE } from '../site';
+import FlowbiteCarousel from '../components/FlowbiteCarousel.astro';
+import mc1 from '../../assets/carousel_marine/mc-1.png';
+import mc2 from '../../assets/carousel_marine/mc-2.png';
+import mc3 from '../../assets/carousel_marine/mc-3.png';
+import mc4 from '../../assets/carousel_marine/mc-4.png';
+import mc5 from '../../assets/carousel_marine/mc-5.png';
+import mc6 from '../../assets/carousel_marine/mc-6.png';
 import yacht3 from '../../assets/yacht3.png';
-import yacht6 from '../../assets/yacht6.png';
-import yacht7 from '../../assets/yacht7.png';
+import yacht9 from '../../assets/yacht9.png';
+import yacht12 from '../../assets/yacht12.png';
+import eagleSvgRaw from '../../assets/eagle.svg?raw';
 
 /** Featured vessel strip (between first chapter and quote) — carousel order = first slide on load. */
-const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
+const marineWindowCarouselImages = [mc1, mc2, mc3, mc4, mc5, mc6];
+
+const eagleMarineServicesVisual = eagleSvgRaw.replace(
+  /<svg[\s\S]*?>/,
+  '<svg class="marine-services__eagle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503 408" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+);
 ---
 
 <BaseLayout
@@ -16,7 +28,6 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
   transparentHeader={true}
   themeColor="#0a1118"
   canvasColor="#0a1118"
-  footerVariant="baseOnly"
 >
   <div class="marine-page marine-page--stack" data-marine-page>
     <!--
@@ -26,9 +37,9 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
       <div class="marine-hero__intro">
         <div class="marine-hero__content">
           <p class="u-eyebrow marine-hero__eyebrow">Marine</p>
-          <h1 class="marine-hero__title">Gelcoat to brightwork</h1>
-          <p class="marine-hero__lede">
-            Luxury center consoles to superyachts — we correct, protect, and maintain finishes in salt-air
+          <h1 class="hero__title marine-hero__title">Gelcoat to brightwork</h1>
+          <p class="hero__lede marine-hero__lede">
+            Luxury center consoles to superyachts; we correct, protect, and maintain finishes in salt-air
             environments with a disciplined, inspection-first process.
           </p>
         </div>
@@ -39,13 +50,13 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
         class="marine-page__parallax-rellax rellax marine-bleed__rellax"
         data-rellax-speed="-0.1"
       >
-        <div class="marine-page__parallax-frame" transition:name="domain-marine-hero">
+        <div class="marine-page__parallax-frame">
           <img
             class="marine-page__parallax-img"
-            src={yacht7.src}
+            src={yacht9.src}
             alt=""
-            width={yacht7.width}
-            height={yacht7.height}
+            width={yacht9.width}
+            height={yacht9.height}
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -78,11 +89,11 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
           <figure class="marine-chapter__fig marine-chapter__fig--depth">
             <div class="marine-chapter__shadow" aria-hidden="true"></div>
             <div class="marine-chapter__frame rellax" data-rellax-speed="0.24">
-              <img
-                src={yacht1.src}
+            <img
+                src={yacht12.src}
                 alt="Motor yacht — exterior detailing"
-                width={yacht1.width}
-                height={yacht1.height}
+                width={yacht12.width}
+                height={yacht12.height}
                 loading="lazy"
                 decoding="async"
               />
@@ -92,32 +103,25 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
       </section>
 
       <section class="marine-window" aria-label="Featured vessel">
-        <div class="marine-window__stack">
-          <div class="marine-window__haze rellax" data-rellax-speed="0.2" aria-hidden="true"></div>
-          <div class="marine-window__rellax rellax" data-rellax-speed="-0.48">
-            <div class="marine-window-carousel" data-marine-window-carousel>
-              <div class="marine-window-carousel__track">
-                {marineWindowCarouselImages.map((img, idx) => (
-                  <img
-                    class:list={['marine-window__img', 'marine-window-carousel__slide', idx === 0 && 'is-active']}
-                    src={img.src}
-                    alt="Luxury yacht at sea — mobile marine detailing"
-                    width={img.width}
-                    height={img.height}
-                    loading={idx < 2 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div class="marine-window__rim rellax" data-rellax-speed="0.08" aria-hidden="true"></div>
+        <div class="u-container">
+          <FlowbiteCarousel
+            id="marine-featured-carousel"
+            slides={marineWindowCarouselImages.map((img) => ({
+              src: img.src,
+              width: img.width,
+              height: img.height,
+              alt: 'Luxury yacht at sea — mobile marine detailing',
+            }))}
+            mode="slide"
+            intervalMs={5200}
+            ariaLabel="Featured vessel"
+          />
         </div>
       </section>
 
       <section class="marine-quote u-container" aria-label="Editorial note">
         <blockquote class="marine-quote__inner">
-          <p>First call every time we need the boat dialed in.</p>
+          <p>The first call every time we need the boat dialed in.</p>
         </blockquote>
       </section>
 
@@ -146,21 +150,109 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
         </div>
       </section>
 
-      <section class="marine-services" aria-labelledby="marine-services-h">
-        <div class="marine-services__inner u-container">
-          <h2 class="marine-services__title" id="marine-services-h">What we do</h2>
-          <ul class="marine-services__list">
-            <li>Wash programs &amp; ongoing care</li>
-            <li>Gelcoat and paint correction</li>
-            <li>Teak sanding, restoration and sealing</li>
-            <li>Coatings and protective systems for many surfaces</li>
-            <li>Brightwork, glass, and non-skid restoration</li>
-            <li>Interior surfaces and cabin detailing</li>
-            <li>Dockside, emergency and boat show support</li>
-          </ul>
-          <p class="marine-services__note u-muted">
-            Emergency and prompt scheduling when capacity allows — call to discuss your slip, marina, or anchorage.
-          </p>
+      <section class="marine-services" aria-labelledby="marine-services-label">
+        <div class="marine-services__shell u-container">
+          <div class="marine-services__grid">
+            <div class="marine-services__main">
+              <p class="marine-services__eyebrow" id="marine-services-label">Services we offer</p>
+              <h2 class="marine-services__headline" id="marine-services-headline">
+                Meticulous care. Exceptional results.
+              </h2>
+              <p class="marine-services__lede">
+                Comprehensive detailing and restoration services for vessels that deserve nothing less.
+              </p>
+
+              <ul class="marine-services__rows" role="list">
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 2.5c2.5 4 6 7.2 6 11.2a6 6 0 1 1-12 0c0-4 3.5-7.2 6-11.2z"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Wash programs &amp; ongoing care</span>
+                </li>
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+                      <circle cx="12" cy="12" r="3.5"></circle>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Gelcoat &amp; paint correction</span>
+                </li>
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M4 18h16M4 14h12M4 10h16M4 6h10"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Teak sanding, restoration &amp; sealing</span>
+                </li>
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Coatings &amp; protective systems</span>
+                </li>
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Brightwork, glass &amp; non-skid restoration</span>
+                </li>
+                <li class="marine-services__row">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M5 11V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"></path>
+                      <path d="M5 11h14v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-8zM9 15h6"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Interior &amp; cabin detailing</span>
+                </li>
+                <li class="marine-services__row marine-services__row--last">
+                  <span class="marine-services__row-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="8"></circle>
+                      <path d="M12 4v16M4 12h16"></path>
+                      <path d="M7.5 7.5l9 9M16.5 7.5l-9 9" opacity="0.35"></path>
+                    </svg>
+                  </span>
+                  <span class="marine-services__row-text">Dockside, emergency &amp; boat show support</span>
+                </li>
+              </ul>
+
+              <div class="marine-services__cta">
+                <div class="marine-services__cta-copy">
+                  <p class="marine-services__cta-title">Need immediate dockside support?</p>
+                  <p class="marine-services__cta-sub">Call or text anytime — we’re here to help!</p>
+                </div>
+                <a
+                  class="marine-services__cta-btn"
+                  href={`tel:${SITE.phoneTel}`}
+                  aria-label={`Call or text ${SITE.phoneDisplay}`}
+                >
+                  <svg class="marine-services__cta-btn-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    ></path>
+                  </svg>
+                  <span class="marine-services__cta-btn-stack">
+                    <span class="marine-services__cta-btn-number">{SITE.phoneDisplay}</span>
+                    <span class="marine-services__cta-btn-label">Call or text</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <div class="marine-services__visual" aria-hidden="true">
+              <div class="marine-services__eagle" set:html={eagleMarineServicesVisual} />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -237,9 +329,11 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
               <span class="marine-reach__submit-arrow" aria-hidden="true">→</span>
               Send message
             </button>
+            <p class="marine-services__note marine-reach__form-disclaimer u-muted">
+              Existing clients, emergency or overnight service please call or text{' '}
+              <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
+            </p>
           </form>
-          <div class="marine-reach__rule marine-reach__rule--after-submit" aria-hidden="true"></div>
-          <FooterContactExplore class="marine-reach__footer-cta" />
         </div>
       </section>
     </article>
@@ -249,9 +343,7 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
 <script>
   import { armMarineReachForm } from '../scripts/marine-reach-form';
   import { armMarinePageMotion } from '../scripts/marine-page-rellax';
-  import { armMarineWindowCarousel } from '../scripts/marine-window-carousel';
   armMarinePageMotion();
-  armMarineWindowCarousel();
   armMarineReachForm();
 </script>
 
@@ -339,9 +431,9 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     }
 
     .marine-hero__eyebrow,
-    .marine-hero__title,
-    .marine-hero__lede {
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    .marine-page .marine-hero__content > h1.hero__title,
+    .marine-page .marine-hero__content > p.hero__lede {
+      text-shadow: var(--type-hero-edge-shadow-narrow);
     }
 
     .marine-page__parallax {
@@ -383,9 +475,10 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
       min-height: 42svh;
       min-height: 42dvh;
       object-fit: cover;
-      object-position: 50% 38%;
+      object-position: 50% 34%;
       transform: none;
       border-radius: inherit;
+    max-width: 100vw;
     }
 
     .marine-page__canvas {
@@ -457,10 +550,9 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
       height: 100%;
       min-height: 100%;
       object-fit: cover;
-      object-position: 50% 36%;
-      transform: scale(1.22);
-      transform-origin: 50% 38%;
+      object-position: 50% 32%;
       display: block;
+      max-width: 100vw;
       border-radius: inherit;
     }
 
@@ -563,35 +655,52 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     }
   }
 
-  .marine-hero__title {
-    margin: 0 0 0.75rem;
-    font-family: var(--font-hero);
-    font-weight: 300;
-    font-size: clamp(2.2rem, 5.2vw, 3.5rem);
-    line-height: 1.12;
-    letter-spacing: 0;
-    color: #f6f8fc;
-  }
-
+  /* Typography: `global.css` `--type-hero-*` + `.hero__title` / `.hero__lede`; here only photo legibility. */
   @media (min-width: 769px) {
-    .marine-hero__title {
-      text-shadow:
-        0 2px 32px rgba(0, 0, 0, 0.55),
-        0 1px 0 rgba(0, 0, 0, 0.25);
+    .marine-page .marine-hero__content > h1.hero__title {
+      text-shadow: var(--type-hero-title-shadow-on-photo);
+    }
+
+    .marine-page .marine-hero__content > p.hero__lede {
+      text-shadow: var(--type-hero-lede-shadow-on-photo);
     }
   }
 
-  .marine-hero__lede {
-    margin: 0;
-    font-size: clamp(1rem, 1.85vw, 1.12rem);
-    line-height: 1.68;
-    color: rgba(232, 236, 245, 0.94);
+  /*
+    Hero type-in: same easing + stagger as homepage `hero-load-headline__part` / `homeWordRise`
+    (index.astro): eyebrow + h1 at 0.25s, lede at 1s; eyebrow fades in from above (↓).
+    Gated on `html[data-home-load-intro]` (BaseLayout default) and `.marine-page` only.
+  */
+  @keyframes marine-hero-word-rise {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  @media (min-width: 769px) {
-    .marine-hero__lede {
-      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  @keyframes marine-hero-tag-drop {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
+
+  :global(html[data-home-load-intro]) .marine-page .marine-hero__eyebrow {
+    opacity: 0;
+    transform: translateY(-22px);
+    animation: marine-hero-tag-drop 0.75s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
+  }
+
+  :global(html[data-home-load-intro]) .marine-page h1.hero__title {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: marine-hero-word-rise 0.75s cubic-bezier(0.25, 0.1, 0.25, 1) 0.25s forwards;
+  }
+
+  :global(html[data-home-load-intro]) .marine-page p.hero__lede {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: marine-hero-word-rise 0.75s cubic-bezier(0.25, 0.1, 0.25, 1) 1s forwards;
   }
 
   /*
@@ -735,8 +844,7 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
       }
     }
 
-    .marine-chapter__frame img,
-    .marine-window__rellax .marine-window-carousel__slide.is-active {
+    .marine-chapter__frame img {
       transform-origin: 50% 42%;
       will-change: transform;
       animation-name: marine-editorial-img-scroll-scale;
@@ -754,88 +862,11 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     overflow: clip;
   }
 
-  .marine-window__stack {
-    position: relative;
-    margin-inline: calc(50% - 50vw);
-    width: 100vw;
-    max-height: min(78vh, 36rem);
-  }
-
-  .marine-window__haze {
-    position: absolute;
-    inset: -8% -5% -12%;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 70% 55% at 50% 40%, rgba(32, 60, 105, 0.35) 0%, transparent 62%),
-      linear-gradient(180deg, rgba(5, 8, 14, 0.55) 0%, transparent 35%, transparent 70%, rgba(5, 8, 14, 0.65) 100%);
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    will-change: transform;
-  }
-
-  .marine-window__rellax {
-    position: relative;
-    z-index: 1;
-    will-change: transform;
-    overflow: hidden;
-    border-radius: var(--marine-img-radius);
-  }
-
-  .marine-window-carousel {
-    position: relative;
-    width: 100%;
-    min-height: min(78vh, 36rem);
-    pointer-events: none;
-  }
-
-  .marine-window-carousel__track {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .marine-window__rellax .marine-window-carousel__slide {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 42%;
-    display: block;
-    border-radius: var(--marine-img-radius);
-    box-shadow:
-      0 28px 80px rgba(0, 0, 0, 0.55),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-    opacity: 0;
-    z-index: 0;
-    transition: opacity 1.05s cubic-bezier(0.22, 1, 0.32, 1);
-  }
-
-  .marine-window__rellax .marine-window-carousel__slide.is-active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  .marine-window__rim {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    border-radius: var(--marine-img-radius);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
-    pointer-events: none;
-    mix-blend-mode: soft-light;
-    will-change: transform;
-  }
-
   .marine-quote {
     padding-block: clamp(2.25rem, 5vw, 3.5rem);
   }
 
-  /*
-    Same language as `.marine-window__haze` + editorial glass: cool ink, blue lift, blur —
-    reads continuous under the carousel strip and bumps quote contrast vs the old faint wash.
-  */
+  /* Editorial glass: cool ink, blue lift, blur — reads continuous after the featured strip. */
   .marine-quote__inner {
     margin: 0 auto;
     max-width: 38rem;
@@ -843,12 +874,16 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     border: 1px solid rgba(239, 236, 231, 0.1);
     border-left: 2px solid rgba(196, 184, 150, 0.45);
-    background:
-      radial-gradient(ellipse 78% 62% at 50% 38%, rgba(32, 60, 105, 0.34) 0%, transparent 58%),
-      linear-gradient(180deg, rgba(5, 8, 14, 0.58) 0%, rgba(5, 10, 20, 0.42) 38%, rgba(5, 8, 14, 0.62) 100%);
+    background: radial-gradient(circle at 40% -20%, rgba(36, 64, 106, 0.5), transparent 60%),
+      radial-gradient(circle at 60% 120%, rgba(196, 184, 150, 0.25), transparent 50%),
+      linear-gradient(180deg, rgba(10, 16, 28, 0.85) 0%, rgba(5, 8, 14, 0.9) 100%);
     backdrop-filter: blur(12px) saturate(1.18);
     -webkit-backdrop-filter: blur(12px) saturate(1.18);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset 0 0 24px rgba(5, 8, 14, 0.9),
+      inset 0 1px 0 rgba(32, 60, 105, 0.25),
+      0 18px 40px rgba(5, 8, 14, 0.55);
+    font-style: italic;
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -863,63 +898,330 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
   }
 
   .marine-quote__inner p {
+    --marine-quote-size: clamp(1rem, 2vw, 1.3rem);
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    font-size: var(--marine-quote-size);
     font-weight: 400;
     font-style: italic;
     line-height: 1.55;
     color: rgba(236, 240, 248, 0.92);
+    position: relative;
+    padding-left: clamp(1rem, 2vw, 1.3rem);
   }
 
+  .marine-quote__inner p::before {
+    content: '“';
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: calc(var(--marine-quote-size) + 10pt);
+    color: rgba(236, 240, 248, 0.55);
+    line-height: 1;
+  }
+
+  /* ——— Services we offer: editorial split (no card shell) ——— */
   .marine-services {
-    padding-block: clamp(2.75rem, 6vw, 4.5rem);
+    position: relative;
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(2.5rem, 7vw, 7.5rem);
+    text-align: left;
   }
 
-  .marine-services__inner {
-    padding: clamp(1.75rem, 4vw, 2.75rem);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(239, 236, 231, 0.1);
-    background: rgba(6, 18, 36, 0.35);
-    backdrop-filter: blur(14px) saturate(1.2);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
-  }
-
-  /* Card shell only from tablet up; on mobile list + note sit flush on the page. */
-  @media (max-width: 719px) {
-    .marine-services__inner {
-      padding: 0;
-      border: none;
-      border-radius: 0;
-      background: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      box-shadow: none;
+  @media (min-width: 1024px) {
+    .marine-services {
+      padding-block: clamp(3.5rem, 8vw, 7.5rem) clamp(4rem, 9vw, 7.5rem);
     }
   }
 
-  .marine-services__title {
-    margin: 0 0 1.25rem;
+  .marine-services__shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .marine-services__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 4vw, 2.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .marine-services__grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.52fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
+      align-items: center;
+    }
+  }
+
+  .marine-services__main {
+    max-width: 40rem;
+  }
+
+  @media (min-width: 1024px) {
+    .marine-services__main {
+      max-width: none;
+    }
+  }
+
+  .marine-services__eyebrow {
+    margin: 0 0 clamp(0.65rem, 1.5vw, 1rem);
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .marine-services__headline {
+    margin: 0 0 clamp(0.85rem, 2vw, 1.25rem);
+    max-width: min(22rem, 100%);
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(1.85rem, 4.2vw, 2.85rem);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
     color: #f2f5fa;
   }
 
-  .marine-services__list {
-    margin: 0 0 1.25rem;
-    padding-left: 1.2rem;
-    font-size: clamp(0.94rem, 1.65vw, 1.02rem);
-    line-height: 1.62;
-    color: rgba(186, 200, 224, 0.9);
+  .marine-services__lede {
+    margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+    max-width: 36rem;
+    font-family: var(--font-ui);
+    font-size: clamp(0.98rem, 1.85vw, 1.08rem);
+    line-height: 1.65;
+    color: rgba(186, 200, 224, 0.82);
   }
 
-  .marine-services__list li {
-    margin-bottom: 0.45rem;
+  .marine-services__rows {
+    list-style: none;
+    margin: 0 0 clamp(2rem, 5vw, 3rem);
+    padding: 0;
   }
 
+  .marine-services__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: clamp(0.65rem, 1.5vw, 0.85rem) 0;
+    border-bottom: 1px solid rgba(239, 236, 231, 0.08);
+    font-family: var(--font-ui);
+    font-size: clamp(1rem, 1.85vw, 1.08rem);
+    line-height: 1.55;
+    color: rgba(236, 240, 248, 0.94);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marine-services__row {
+      transition: opacity 0.18s ease;
+    }
+  }
+
+  .marine-services__row--last {
+    border-bottom: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .marine-services__row:hover {
+      opacity: 0.92;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .marine-services__row:hover {
+        transform: translateX(3px);
+      }
+    }
+  }
+
+  .marine-services__row-icon {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-top: 0.12rem;
+    color: rgba(196, 184, 150, 0.88);
+  }
+
+  .marine-services__row-icon svg {
+    display: block;
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .marine-services__row-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .marine-services__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    padding-top: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-top: 1px solid rgba(239, 236, 231, 0.1);
+  }
+
+  @media (min-width: 768px) {
+    .marine-services__cta {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+
+  .marine-services__cta-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .marine-services__cta-title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: #f2f5fa;
+  }
+
+  .marine-services__cta-sub {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(186, 200, 224, 0.78);
+  }
+
+  .marine-services__cta-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    border: 1px solid rgba(196, 184, 150, 0.85);
+    border-radius: 2px;
+    text-decoration: none;
+    color: rgba(239, 236, 231, 0.96);
+    background: rgba(255, 255, 255, 0.03);
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  @media (min-width: 768px) {
+    .marine-services__cta-btn {
+      width: auto;
+      min-width: 12.5rem;
+      flex-direction: row;
+      gap: 0.65rem;
+      padding: 0.75rem 1.25rem;
+    }
+  }
+
+  .marine-services__cta-btn:hover {
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .marine-services__cta-btn:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  .marine-services__cta-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .marine-services__cta-btn-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: rgba(196, 184, 150, 0.95);
+  }
+
+  .marine-services__cta-btn-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  @media (min-width: 768px) {
+    .marine-services__cta-btn-stack {
+      align-items: center;
+    }
+  }
+
+  .marine-services__cta-btn-number {
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .marine-services__cta-btn-label {
+    font-family: var(--font-ui);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.95;
+  }
+
+  .marine-services__visual {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .marine-services__visual {
+      display: flex;
+      margin-top: 0.5rem;
+      opacity: 0.1;
+      max-height: 14rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .marine-services__visual {
+      display: flex;
+      opacity: 0.12;
+      max-height: none;
+      margin-top: 0;
+      align-self: center;
+    }
+  }
+
+  .marine-services__eagle {
+    width: min(100%, 22rem);
+    color: #fff;
+    line-height: 0;
+    pointer-events: none;
+  }
+
+  .marine-services__eagle-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Shared note style (Get in touch form disclaimer reuses this class). */
   .marine-services__note {
     margin: 0;
     font-size: 0.9rem;
@@ -930,8 +1232,8 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     position: relative;
     z-index: 2;
     padding-top: clamp(3rem, 8vw, 5rem);
-    /* Tight under Contact/Explore — gap to legal strip comes from `site-footer--legal-only` padding. */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    /* Air between form disclaimer and global footer (footer has its own top padding). */
+    padding-bottom: max(clamp(3rem, 9vw, 6.5rem), env(safe-area-inset-bottom, 0px));
     /* Ramp from reach content into `var(--footer-bg)` so the footer reads as one surface. */
     background: linear-gradient(
       180deg,
@@ -983,12 +1285,6 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     margin-inline: auto;
     border-radius: 1px;
     background: linear-gradient(90deg, rgba(196, 184, 150, 0.95), rgba(196, 184, 150, 0.35));
-  }
-
-  .marine-reach__rule--after-submit {
-    margin-top: clamp(1.75rem, 4.5vw, 2.25rem);
-    margin-bottom: 0;
-    margin-inline: auto;
   }
 
   .marine-reach__form {
@@ -1081,6 +1377,10 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     color: rgba(178, 194, 220, 0.42);
   }
 
+  .marine-reach__form-disclaimer {
+    margin-top: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
   .marine-reach__submit {
     display: inline-flex;
     align-items: center;
@@ -1123,31 +1423,26 @@ const marineWindowCarouselImages = [yacht6, yacht7, yacht3, yacht1];
     opacity: 0.9;
   }
 
-  .marine-reach__footer-cta {
-    margin-top: var(--footer-cta-section-gap);
-    width: 100%;
-    max-width: 36rem;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .marine-bleed__rellax,
     .marine-chapter__shadow,
     .marine-chapter__frame,
-    .marine-window__haze,
-    .marine-window__rellax,
-    .marine-window__rim {
-      transform: none !important;
-    }
-
     .marine-chapter__frame {
       transform: none !important;
     }
 
-    .marine-chapter__frame img,
-    .marine-window__rellax .marine-window-carousel__slide {
+    .marine-chapter__frame img {
       animation: none !important;
       will-change: auto;
       transition: none !important;
+    }
+
+    :global(html[data-home-load-intro]) .marine-page .marine-hero__eyebrow,
+    :global(html[data-home-load-intro]) .marine-page h1.hero__title,
+    :global(html[data-home-load-intro]) .marine-page p.hero__lede {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
     }
   }
 </style>

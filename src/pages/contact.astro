@@ -1,95 +1,859 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site';
+import eagleSvgRaw from '../../assets/eagle.svg?raw';
+import marina1 from '../../assets/marina1.png';
+
+const eagleContactHero = eagleSvgRaw.replace(
+  /<svg[\s\S]*?>/,
+  '<svg class="contact-hero__eagle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503 408" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+);
+
+const contactMarinaBg = `url(${marina1.src})`;
 ---
 
 <BaseLayout
   title="Contact"
-  description="Contact Eagle Detailing LLC — call, email, or message on Instagram. Mobile detailing across South Florida."
+  description="Contact Eagle Detailing — call, email, or request service. Mobile detailing across South Florida."
+  transparentHeader={false}
+  dataHomeLoadIntro={false}
+  themeColor="#050a14"
+  canvasColor="#050a14"
 >
-  <section class="page-hero u-container">
-    <p class="u-eyebrow">Contact</p>
-    <h1>Start a conversation</h1>
-    <p class="u-muted page-hero__lede">
-      Tell us what you are protecting — we will respond with next steps. A web form for structured quotes
-      will be added later; for now, reach us directly.
-    </p>
-  </section>
-  <section class="u-section page-body">
-    <div class="u-container contact-grid">
-      <div class="contact-card">
-        <h2>Phone</h2>
-        <p>
-          <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
-        </p>
-        <p class="u-muted">Call or text when convenient.</p>
+  <div class="contact-page">
+    <section class="contact-hero" aria-labelledby="contact-hero-label">
+      <div class="contact-hero__shell u-container">
+        <div class="contact-hero__grid">
+          <div class="contact-hero__main">
+            <p class="contact-hero__label" id="contact-hero-label">Contact</p>
+            <h1 class="contact-hero__title">Let’s get it handled.</h1>
+            <p class="contact-hero__lede">
+              Tell us what you need—we’ll respond promptly and handle the rest.
+            </p>
+          </div>
+          <div class="contact-hero__visual" aria-hidden="true">
+            <div class="contact-hero__eagle" set:html={eagleContactHero} />
+          </div>
+        </div>
       </div>
-      <div class="contact-card">
-        <h2>Email</h2>
-        <p>
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </p>
+    </section>
+
+    <section class="contact-methods" aria-label="Contact options">
+      <div class="contact-methods__shell u-container">
+        <div class="contact-methods__row">
+          <a class="contact-methods__cell" href={`tel:${SITE.phoneTel}`}>
+            <span class="contact-methods__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                ></path>
+              </svg>
+            </span>
+            <span class="contact-methods__meta">
+              <span class="contact-methods__kicker">Call / text</span>
+              <span class="contact-methods__value">{SITE.phoneDisplay}</span>
+              <span class="contact-methods__hint">Available for dockside &amp; urgent service</span>
+            </span>
+          </a>
+          <a class="contact-methods__cell" href={`mailto:${SITE.email}`}>
+            <span class="contact-methods__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65">
+                <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+                <path d="m22 6-10 7L2 6"></path>
+              </svg>
+            </span>
+            <span class="contact-methods__meta">
+              <span class="contact-methods__kicker">Email</span>
+              <span class="contact-methods__value">{SITE.email}</span>
+              <span class="contact-methods__hint">General inquiries &amp; scheduling</span>
+            </span>
+          </a>
+        </div>
       </div>
-      <div class="contact-card">
-        <h2>Instagram</h2>
-        <p>
-          <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">{SITE.instagramHandle}</a>
-        </p>
+    </section>
+
+    <section class="contact-form-band" aria-labelledby="contact-form-heading">
+      <div class="contact-form-band__shell u-container">
+        <div class="contact-form-band__grid">
+          <div class="contact-form-band__intro">
+            <h2 class="contact-form-band__title" id="contact-form-heading">
+              Tell us about your vessel or project
+            </h2>
+            <p class="contact-form-band__lede">
+              The more details you share, the better we can assist you. Whether it’s routine care or a full
+              restoration, we’re here to make it easy.
+            </p>
+            <div class="contact-form-band__aside">
+              <p class="contact-form-band__aside-label">Dockside &amp; emergency</p>
+              <p class="contact-form-band__aside-text">
+                Need immediate assistance? Call or text us directly.
+              </p>
+              <a class="contact-form-band__aside-link" href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contact-page-form" action="#" method="post" novalidate>
+            <div class="contact-form__row contact-form__row--2">
+              <label class="contact-form__field">
+                <span class="contact-form__label">Full name</span>
+                <input
+                  class="contact-form__input"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  placeholder="Your name"
+                />
+              </label>
+              <label class="contact-form__field">
+                <span class="contact-form__label">Phone or email <span class="contact-form__req">(required)</span></span>
+                <input
+                  class="contact-form__input"
+                  name="phone_or_email"
+                  type="text"
+                  required
+                  autocomplete="off"
+                  placeholder="Phone number or email"
+                />
+              </label>
+            </div>
+            <label class="contact-form__field">
+              <span class="contact-form__label">Service type</span>
+              <div class="contact-form__select-wrap">
+                <select class="contact-form__select" name="service_type" required>
+                  <option value="" disabled selected>Select a service type</option>
+                  <option value="Marine">Marine</option>
+                  <option value="Aviation">Aviation</option>
+                  <option value="Automotive">Automotive</option>
+                  <option value="General inquiry">General inquiry</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </label>
+            <div class="contact-form__row contact-form__row--2">
+              <label class="contact-form__field">
+                <span class="contact-form__label">Vessel name / type <span class="contact-form__opt">(optional)</span></span>
+                <input
+                  class="contact-form__input"
+                  name="vessel"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="e.g. Motor yacht, 80′"
+                />
+              </label>
+              <label class="contact-form__field">
+                <span class="contact-form__label">Location <span class="contact-form__opt">(optional)</span></span>
+                <input
+                  class="contact-form__input"
+                  name="location"
+                  type="text"
+                  autocomplete="address-level2"
+                  placeholder="Marina or city"
+                />
+              </label>
+            </div>
+            <label class="contact-form__field">
+              <span class="contact-form__label">Message</span>
+              <textarea
+                class="contact-form__textarea"
+                name="message"
+                rows="5"
+                required
+                placeholder="Tell us what you're looking to have done…"
+              ></textarea>
+            </label>
+            <button class="contact-form__submit" type="submit">Request service</button>
+            <p class="contact-form__footnote">We typically respond within a few hours.</p>
+          </form>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="contact-marina" aria-labelledby="contact-marina-location">
+      <div class="contact-marina__layout">
+        <div class="contact-marina__copy">
+          <div class="contact-marina__copy-inner">
+            <div class="contact-marina__content">
+              <div class="contact-marina__heading-row">
+                <span class="contact-marina__pin-ring" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11z"></path>
+                    <circle cx="12" cy="10" r="2.5"></circle>
+                  </svg>
+                </span>
+                <p class="contact-marina__location" id="contact-marina-location">
+                  Based in {SITE.locality}, {SITE.region}
+                </p>
+              </div>
+              <p class="contact-marina__text">
+                Serving South Florida &amp; beyond.<br />
+                Licensed &amp; insured.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-marina__photo" aria-hidden="true"></div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
-<style>
-  .page-hero {
-    padding-block: var(--space-xl) var(--space-md);
+<script>
+  import { armContactPageForm } from '../scripts/contact-page-form';
+  armContactPageForm();
+</script>
+
+<style define:vars={{ contactMarinaBg }}>
+  .contact-page {
+    --contact-ink: #050a14;
+    --contact-ink-mid: #070f1a;
+    --contact-ink-soft: #0a1524;
+    background: var(--contact-ink);
+    color: rgba(239, 236, 231, 0.92);
+    min-height: 100%;
   }
 
-  .page-hero__lede {
-    max-width: 40rem;
-    font-size: 1.0625rem;
+  .contact-hero {
+    padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 3vw, 2rem);
+    text-align: left;
   }
 
-  .page-body {
-    background: var(--footer-bg);
-  }
-
-  .contact-grid {
+  .contact-hero__grid {
     display: grid;
-    gap: var(--space-md);
     grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
   }
 
-  @media (min-width: 640px) {
-    .contact-grid {
-      grid-template-columns: repeat(3, 1fr);
+  @media (min-width: 768px) {
+    .contact-hero__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr);
+      align-items: center;
     }
   }
 
-  .contact-card {
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(239, 236, 231, 0.08);
-    background: rgba(7, 43, 83, 0.25);
-  }
-
-  .contact-card h2 {
+  .contact-hero__label {
+    margin: 0 0 clamp(0.5rem, 1.2vw, 0.75rem);
     font-family: var(--font-ui);
     font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .contact-hero__title {
+    margin: 0 0 clamp(0.65rem, 1.5vw, 1rem);
+    max-width: min(18ch, 100%);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.15rem);
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+    color: #f2f5fa;
+  }
+
+  .contact-hero__lede {
+    margin: 0;
+    max-width: 32rem;
+    font-family: var(--font-ui);
+    font-size: clamp(1rem, 1.85vw, 1.1rem);
+    line-height: 1.65;
+    color: rgba(186, 200, 224, 0.85);
+  }
+
+  .contact-hero__visual {
+    display: none;
+    justify-content: flex-end;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  @media (min-width: 768px) {
+    .contact-hero__visual {
+      display: flex;
+    }
+  }
+
+  .contact-hero__eagle {
+    width: min(100%, 16rem);
+    color: #fff;
+    line-height: 0;
+    opacity: 0.08;
+  }
+
+  .contact-hero__eagle-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .contact-methods {
+    padding-block: 0 clamp(2rem, 5vw, 3rem);
+  }
+
+  .contact-methods__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(0.75rem, 2vw, 1rem);
+  }
+
+  @media (min-width: 768px) {
+    .contact-methods__row {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 2.5vw, 1.5rem);
+    }
+  }
+
+  .contact-methods__cell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: clamp(1rem, 2.5vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.5rem);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(239, 236, 231, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.18s ease,
+      background-color 0.18s ease;
+  }
+
+  .contact-methods__cell:hover {
+    border-color: rgba(196, 184, 150, 0.35);
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .contact-methods__cell:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .contact-methods__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(196, 184, 150, 0.45);
+    color: rgba(196, 184, 150, 0.95);
+  }
+
+  .contact-methods__icon svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  .contact-methods__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .contact-methods__kicker {
+    font-family: var(--font-ui);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.92;
+  }
+
+  .contact-methods__value {
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #f2f5fa;
+    word-break: break-word;
+  }
+
+  .contact-methods__hint {
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: rgba(186, 200, 224, 0.72);
+  }
+
+  .contact-form-band {
+    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3.5rem, 9vw, 7rem);
+    background: linear-gradient(180deg, var(--contact-ink) 0%, var(--contact-ink-mid) 100%);
+    text-align: left;
+  }
+
+  .contact-form-band__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-form-band__grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(2.5rem, 5vw, 4rem);
+    }
+  }
+
+  .contact-form-band__title {
+    margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.45rem, 2.8vw, 1.95rem);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #f2f5fa;
+  }
+
+  .contact-form-band__lede {
+    margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+    max-width: 36rem;
+    font-family: var(--font-ui);
+    font-size: clamp(0.98rem, 1.75vw, 1.05rem);
+    line-height: 1.65;
+    color: rgba(186, 200, 224, 0.82);
+  }
+
+  .contact-form-band__aside {
+    padding: clamp(1rem, 2.5vw, 1.25rem) 0 0;
+    border-top: 1px solid rgba(239, 236, 231, 0.08);
+    max-width: 28rem;
+  }
+
+  .contact-form-band__aside-label {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-ui);
+    font-size: 0.625rem;
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin: 0 0 var(--space-sm);
+    opacity: 0.9;
   }
 
-  .contact-card p {
-    margin: 0 0 0.35rem;
+  .contact-form-band__aside-text {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(186, 200, 224, 0.78);
   }
 
-  .contact-card a {
-    font-size: 1.125rem;
+  .contact-form-band__aside-link {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f2f5fa;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-form-band__aside-link:hover {
+    color: #fff;
+  }
+
+  .contact-form-band__aside-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.1rem, 2.5vw, 1.35rem);
+    width: 100%;
+    max-width: 40rem;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-form {
+      max-width: none;
+      justify-self: stretch;
+    }
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.25rem);
+  }
+
+  .contact-form__row--2 {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .contact-form__row--2 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  .contact-form__label {
+    font-family: var(--font-ui);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(186, 200, 224, 0.78);
+  }
+
+  .contact-form__req {
     font-weight: 500;
-    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: none;
+    color: rgba(196, 184, 150, 0.85);
+  }
+
+  .contact-form__opt {
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: rgba(186, 200, 224, 0.55);
+  }
+
+  .contact-form__input,
+  .contact-form__textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.65rem 0 0.75rem;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: #f2f5fa;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(239, 236, 231, 0.12);
+    border-radius: 0;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background-color 0.18s ease;
+  }
+
+  .contact-form__input::placeholder,
+  .contact-form__textarea::placeholder {
+    color: rgba(178, 194, 220, 0.38);
+  }
+
+  .contact-form__input:hover,
+  .contact-form__textarea:hover {
+    border-bottom-color: rgba(239, 236, 231, 0.18);
+  }
+
+  .contact-form__input:focus,
+  .contact-form__textarea:focus {
+    outline: none;
+    border-bottom-color: rgba(196, 184, 150, 0.65);
+    box-shadow: 0 1px 0 0 rgba(196, 184, 150, 0.35);
+  }
+
+  .contact-form__textarea {
+    min-height: 8rem;
+    resize: vertical;
+    padding-top: 0.75rem;
+  }
+
+  .contact-form__select-wrap {
+    position: relative;
+  }
+
+  .contact-form__select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 0.15rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1.5px solid rgba(196, 184, 150, 0.7);
+    border-bottom: 1.5px solid rgba(196, 184, 150, 0.7);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .contact-form__select {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.65rem 1.75rem 0.75rem 0;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: #f2f5fa;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(239, 236, 231, 0.12);
+    border-radius: 0;
+    appearance: none;
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .contact-form__select:focus {
+    outline: none;
+    border-bottom-color: rgba(196, 184, 150, 0.65);
+    box-shadow: 0 1px 0 0 rgba(196, 184, 150, 0.35);
+  }
+
+  .contact-form__select option {
+    color: #0a1118;
+    background: #f2f5fa;
+  }
+
+  .contact-form__submit {
+    width: 100%;
+    margin-top: 0.35rem;
+    padding: 0.95rem 1.35rem;
+    font-family: var(--font-ui);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a1118;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, #ebe3d4 0%, #d4c4a8 38%, #b89a6a 72%, #9a7d4f 100%);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    transition:
+      filter 0.2s var(--ease-out),
+      transform 0.2s var(--ease-out);
+  }
+
+  .contact-form__submit:hover {
+    filter: brightness(1.05);
+  }
+
+  .contact-form__submit:active {
+    transform: translateY(1px);
+  }
+
+  .contact-form__submit:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-form__submit {
+      transition: filter 0.2s var(--ease-out);
+    }
+
+    .contact-form__submit:active {
+      transform: none;
+    }
+  }
+
+  .contact-form__footnote {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(186, 200, 224, 0.58);
+  }
+
+  /* Marina strip: solid dark left + copy; photo anchored right with mask fade into page ink */
+  .contact-marina {
+    margin-top: clamp(0.25rem, 1vw, 0.75rem);
+    background-color: var(--contact-ink);
+  }
+
+  .contact-marina__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(17.5rem, 46vw);
+    align-items: stretch;
+    min-height: clamp(20rem, 52vmin, 38rem);
+  }
+
+  @media (min-width: 768px) {
+    .contact-marina__layout {
+      min-height: clamp(24rem, 48vw, 42rem);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .contact-marina__layout {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+      min-height: 0;
+    }
+  }
+
+  .contact-marina__copy {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-block: clamp(2rem, 6vw, 4.5rem);
+    box-sizing: border-box;
+    background-color: var(--contact-ink);
+  }
+
+  .contact-marina__copy-inner {
+    box-sizing: border-box;
+    width: 100%;
+    padding-inline-start: max(var(--space-md), calc((100vw - min(1120px, 100vw - 2 * var(--space-md))) / 2));
+    padding-inline-end: clamp(1rem, 3vw, 2rem);
+  }
+
+  @media (max-width: 767px) {
+    .contact-marina__copy {
+      align-items: flex-start;
+      padding-block: clamp(2rem, 6vw, 3rem);
+    }
+
+    .contact-marina__copy-inner {
+      padding-inline-end: max(var(--space-md), calc((100vw - min(1120px, 100vw - 2 * var(--space-md))) / 2));
+    }
+  }
+
+  .contact-marina__photo {
+    grid-column: 2;
+    grid-row: 1;
+    background-color: var(--contact-ink);
+    background-image: var(--contactMarinaBg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* Anchor scene toward the right; strongest exposure lands on open water / yachts */
+    background-position: 78% center;
+    /*
+      Fade into ink on the LEFT only — mask matches element width (no oversized clip).
+      Photo stays faint near the column seam and ramps gently so full strength arrives toward the right edge.
+    */
+    /* Ramp shifted ~11–12% left (~typical desktop ≈ 1.5–2″ in the photo column) */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.05) 3%,
+      rgba(0, 0, 0, 0.08) 11%,
+      rgba(0, 0, 0, 0.14) 23%,
+      rgba(0, 0, 0, 0.24) 35%,
+      rgba(0, 0, 0, 0.38) 47%,
+      rgba(0, 0, 0, 0.54) 57%,
+      rgba(0, 0, 0, 0.7) 66%,
+      rgba(0, 0, 0, 0.84) 75%,
+      rgba(0, 0, 0, 0.94) 82%,
+      #000000 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.05) 3%,
+      rgba(0, 0, 0, 0.08) 11%,
+      rgba(0, 0, 0, 0.14) 23%,
+      rgba(0, 0, 0, 0.24) 35%,
+      rgba(0, 0, 0, 0.38) 47%,
+      rgba(0, 0, 0, 0.54) 57%,
+      rgba(0, 0, 0, 0.7) 66%,
+      rgba(0, 0, 0, 0.84) 75%,
+      rgba(0, 0, 0, 0.94) 82%,
+      #000000 100%
+    );
+  }
+
+  @media (max-width: 767px) {
+    .contact-marina__photo {
+      grid-column: 1;
+      grid-row: 2;
+      background-position: center 42%;
+      min-height: clamp(13rem, 44vw, 18rem);
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.04) 6%,
+        rgba(0, 0, 0, 0.1) 18%,
+        rgba(0, 0, 0, 0.22) 34%,
+        rgba(0, 0, 0, 0.42) 50%,
+        rgba(0, 0, 0, 0.65) 65%,
+        rgba(0, 0, 0, 0.86) 78%,
+        rgba(0, 0, 0, 0.96) 86%,
+        #000000 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.04) 6%,
+        rgba(0, 0, 0, 0.1) 18%,
+        rgba(0, 0, 0, 0.22) 34%,
+        rgba(0, 0, 0, 0.42) 50%,
+        rgba(0, 0, 0, 0.65) 65%,
+        rgba(0, 0, 0, 0.86) 78%,
+        rgba(0, 0, 0, 0.96) 86%,
+        #000000 100%
+      );
+    }
+  }
+
+  .contact-marina__content {
+    max-width: min(26rem, 100%);
+  }
+
+  .contact-marina__heading-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .contact-marina__pin-ring {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(196, 184, 150, 0.82);
+    color: rgba(212, 196, 158, 0.98);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  }
+
+  .contact-marina__pin-ring svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  .contact-marina__location {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--font-ui);
+    font-size: clamp(0.625rem, 1.35vw, 0.6875rem);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    color: rgba(212, 196, 158, 0.96);
+  }
+
+  .contact-marina__text {
+    margin: 0;
+    padding-left: calc(2.5rem + 0.75rem);
+    font-family: var(--font-ui);
+    font-size: clamp(0.9375rem, 1.85vw, 1.0625rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(245, 246, 248, 0.94);
+  }
+
+  @media (max-width: 420px) {
+    .contact-marina__heading-row {
+      align-items: flex-start;
+    }
   }
 </style>
