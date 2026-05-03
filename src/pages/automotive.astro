@@ -1,60 +1,53 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceEditorialPage from '../components/ServiceEditorialPage.astro';
+import { SERVICE_EDITORIAL_SHELL_COLORS } from '../site';
+
+const automotivePlaceholderRows = [
+  'Placeholder service — exterior wash & preparation',
+  'Placeholder service — paint correction',
+  'Placeholder service — ceramic coating',
+  'Placeholder service — wheels & glass',
+  'Placeholder service — interior detailing',
+  'Placeholder service — maintenance plans',
+];
 ---
 
-<BaseLayout
+<ServiceEditorialPage
   title="Automotive"
-  description="High-end automotive detailing in South Florida — paint correction, ceramic coating, and maintenance for exceptional vehicles."
->
-  <section class="page-hero u-container">
-    <p class="u-eyebrow">Automotive</p>
-    <h1>Exceptional automobiles</h1>
-    <p class="u-muted page-hero__lede">
-      The same finish discipline we apply on water and in the hangar — for collections and daily drivers
-      where clarity, depth, and protection matter.
-    </p>
-  </section>
-  <section class="u-section page-body">
-    <div class="u-container prose">
-      <h2>Services</h2>
-      <ul>
-        <li>Wash and decontamination protocols for sensitive finishes</li>
-        <li>Single- and multi-stage paint correction</li>
-        <li>Ceramic coating and paint protection film (where appropriate)</li>
-        <li>Wheel, caliper, and glass treatments</li>
-        <li>Interior leather and cabin detailing</li>
-        <li>Maintenance plans for frequent-use vehicles</li>
-      </ul>
-      <p><a class="u-btn" href="/contact">Contact</a></p>
-    </div>
-  </section>
-</BaseLayout>
-
-<style>
-  .page-hero {
-    padding-block: var(--space-xl) var(--space-md);
-  }
-
-  .page-hero__lede {
-    max-width: 40rem;
-    font-size: 1.0625rem;
-  }
-
-  .page-body {
-    background: #0a1628;
-  }
-
-  .prose h2 {
-    margin-top: 0;
-  }
-
-  .prose ul {
-    margin: 0 0 var(--space-md);
-    padding-left: 1.25rem;
-    color: var(--color-cream-muted);
-  }
-
-  .prose li {
-    margin-bottom: 0.35rem;
-  }
-</style>
+  description="Placeholder — high-end automotive detailing in South Florida (copy TBD)."
+  themeColor={SERVICE_EDITORIAL_SHELL_COLORS.themeColor}
+  canvasColor={SERVICE_EDITORIAL_SHELL_COLORS.canvasColor}
+  heroEyebrow="Automotive"
+  heroTitle="Placeholder headline — automotive"
+  heroLede="Placeholder supporting copy. Replace with positioning, geography, and finish discipline once photography and final copy are ready."
+  chapterLeftLabelId="automotive-ch-1"
+  chapterLeftLabel="Placeholder chapter label"
+  chapterLeftParagraphs={[
+    'Placeholder paragraph describing condition-based or process-first approach for automotive finishes.',
+    'Placeholder second paragraph — assessment, correction scope, and protection options.',
+  ]}
+  chapterRightLabelId="automotive-ch-2"
+  chapterRightLabel="Placeholder — logistics & discretion"
+  chapterRightParagraphs={[
+    'Placeholder paragraph — scheduling, garage or studio access, collections vs daily drivers, and communication norms.',
+  ]}
+  quoteText="Placeholder client quote — replace when testimonials are approved."
+  servicesEyebrowId="automotive-services-label"
+  servicesHeadlineId="automotive-services-headline"
+  servicesEyebrow="Services we offer"
+  servicesHeadline="Placeholder — meticulous care for exceptional automobiles"
+  servicesLede="Placeholder deck describing the breadth of automotive programs (replace with final positioning)."
+  servicesCtaTitle="Placeholder — need something urgent?"
+  servicesCtaSub="Call or text anytime — we're here to help!"
+  reachHeadingId="automotive-reach-h"
+  reachSubjectPrefix="Automotive"
+  reachTitle="Get in touch"
+  reachLede="Placeholder — invite new clients to use the form; we'll respond when copy is final."
+  reachMessageLabel="Tell us about your vehicle"
+  reachMessageHint="e.g. year, make, model, location, service needed, preferred timing"
+  formFieldPrefix="automotive"
+  carouselId="automotive-featured-carousel"
+  carouselAriaLabel="Featured work — placeholder"
+  carouselSlideAlt="Featured work — placeholder"
+  serviceRows={automotivePlaceholderRows}
+/>

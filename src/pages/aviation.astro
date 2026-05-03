@@ -1,63 +1,52 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceEditorialPage from '../components/ServiceEditorialPage.astro';
+import { SERVICE_EDITORIAL_SHELL_COLORS } from '../site';
+
+const aviationPlaceholderRows = [
+  'Placeholder service — exterior wash & gloss restoration',
+  'Placeholder service — paint refinement (scope per ops)',
+  'Placeholder service — protective coatings where approved',
+  'Placeholder service — brightwork & accents',
+  'Placeholder service — cabin surfaces & leather care',
+];
 ---
 
-<BaseLayout
+<ServiceEditorialPage
   title="Aviation"
-  description="Private aircraft detailing in South Florida — exterior gloss, brightwork, cabin care, and protection with discretion and scheduling rigor."
->
-  <section class="page-hero u-container">
-    <p class="u-eyebrow">Aviation</p>
-    <h1>Private aircraft detailing</h1>
-    <p class="u-muted page-hero__lede">
-      We treat airframe finishes and cabins with the same precision mindset as our marine work — coordinated
-      around your operations, hangar access, and downtime windows.
-    </p>
-  </section>
-  <section class="u-section page-body">
-    <div class="u-container prose">
-      <h2>Services</h2>
-      <ul>
-        <li>Exterior wash, decontamination, and gloss restoration</li>
-        <li>Paint correction and refinement (scope per substrate and ops)</li>
-        <li>Protective coatings where appropriate and approved for your program</li>
-        <li>Brightwork and accent metal care</li>
-        <li>Cabin leather, surfaces, and details</li>
-      </ul>
-      <p class="u-muted">
-        Product and process choices should always align with your maintenance manual and operator policies —
-        we scope conservatively and communicate clearly.
-      </p>
-      <p><a class="u-btn" href="/contact">Contact</a></p>
-    </div>
-  </section>
-</BaseLayout>
-
-<style>
-  .page-hero {
-    padding-block: var(--space-xl) var(--space-md);
-  }
-
-  .page-hero__lede {
-    max-width: 40rem;
-    font-size: 1.0625rem;
-  }
-
-  .page-body {
-    background: #0a1628;
-  }
-
-  .prose h2 {
-    margin-top: 0;
-  }
-
-  .prose ul {
-    margin: 0 0 var(--space-md);
-    padding-left: 1.25rem;
-    color: var(--color-cream-muted);
-  }
-
-  .prose li {
-    margin-bottom: 0.35rem;
-  }
-</style>
+  description="Placeholder — private aircraft detailing in South Florida (copy TBD)."
+  themeColor={SERVICE_EDITORIAL_SHELL_COLORS.themeColor}
+  canvasColor={SERVICE_EDITORIAL_SHELL_COLORS.canvasColor}
+  heroEyebrow="Aviation"
+  heroTitle="Placeholder headline — aviation"
+  heroLede="Placeholder supporting copy. Replace with hangar coordination, downtime windows, and discretion once imagery and approvals land."
+  chapterLeftLabelId="aviation-ch-1"
+  chapterLeftLabel="Placeholder chapter label"
+  chapterLeftParagraphs={[
+    'Placeholder paragraph — airframe finishes and operational constraints.',
+    'Placeholder second paragraph — conservative scoping and manual alignment.',
+  ]}
+  chapterRightLabelId="aviation-ch-2"
+  chapterRightLabel="Placeholder — scheduling & access"
+  chapterRightParagraphs={[
+    'Placeholder paragraph — hangar access, FBO coordination, and quiet professionalism.',
+  ]}
+  quoteText="Placeholder operator quote — replace when testimonials are approved."
+  servicesEyebrowId="aviation-services-label"
+  servicesHeadlineId="aviation-services-headline"
+  servicesEyebrow="Services we offer"
+  servicesHeadline="Placeholder — disciplined care for aircraft finishes"
+  servicesLede="Placeholder summary of aviation programs (replace with approved positioning)."
+  servicesCtaTitle="Placeholder — coordinated around your schedule"
+  servicesCtaSub="Call or text anytime — we're here to help!"
+  reachHeadingId="aviation-reach-h"
+  reachSubjectPrefix="Aviation"
+  reachTitle="Get in touch"
+  reachLede="Placeholder — form intake copy pending final legal and ops review."
+  reachMessageLabel="Tell us about your aircraft"
+  reachMessageHint="e.g. aircraft type, registry or tail, location, service needed, preferred timing"
+  formFieldPrefix="aviation"
+  carouselId="aviation-featured-carousel"
+  carouselAriaLabel="Featured work — placeholder"
+  carouselSlideAlt="Featured work — placeholder"
+  serviceRows={aviationPlaceholderRows}
+/>

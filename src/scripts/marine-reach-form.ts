@@ -13,7 +13,8 @@ function bindMarineReachForm(form: HTMLFormElement): void {
     const message = String(fd.get('message') ?? '').trim();
     if (!name || !email || !message) return;
 
-    const subject = encodeURIComponent(`Marine inquiry — ${name}`);
+    const prefix = (form.dataset.reachSubjectPrefix ?? 'Marine').trim() || 'Marine';
+    const subject = encodeURIComponent(`${prefix} inquiry — ${name}`);
     const body = encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '(not provided)'}\n\n${message}`
     );
@@ -22,8 +23,9 @@ function bindMarineReachForm(form: HTMLFormElement): void {
 }
 
 function initMarineReachForm(): void {
-  const form = document.querySelector<HTMLFormElement>('#marine-reach-form');
-  if (form) bindMarineReachForm(form);
+  document.querySelectorAll<HTMLFormElement>('form[data-eagle-service-reach]').forEach((form) => {
+    bindMarineReachForm(form);
+  });
 }
 
 export function armMarineReachForm(): void {

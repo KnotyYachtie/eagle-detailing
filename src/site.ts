@@ -15,6 +15,12 @@ export const SITE = {
   country: 'US',
 } as const;
 
+/** Shared `theme-color` + `--page-canvas` for `/marine`, `/automotive`, `/aviation` (`ServiceEditorialPage`). */
+export const SERVICE_EDITORIAL_SHELL_COLORS = {
+  themeColor: '#0a1118',
+  canvasColor: '#0a1118',
+} as const;
+
 /** Marine / Aviation / Automotive — grouped under “Services” in the site header. */
 export const NAV_SERVICES = [
   { href: '/marine', label: 'Marine' },
