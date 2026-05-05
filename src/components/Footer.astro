@@ -1,5 +1,6 @@
 ---
 import { NAV_MAIN, NAV_SERVICES, SITE } from '../site';
+import googleMapsImg from '../../assets/google-maps.png';
 import eagleSvgRaw from '../../assets/eagle.svg?raw';
 
 const year = new Date().getFullYear();
@@ -35,6 +36,25 @@ const eagleForFooter = eagleSvgRaw.replace(
                 <circle cx="12" cy="12" r="4.25"></circle>
                 <circle cx="17.25" cy="6.75" r="1.25" fill="currentColor" stroke="none"></circle>
               </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="site-footer__social-link"
+              href={SITE.googleReviewsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Google reviews — leave feedback"
+            >
+              <img
+                class="site-footer__social-img"
+                src={googleMapsImg.src}
+                alt=""
+                width={googleMapsImg.width}
+                height={googleMapsImg.height}
+                loading="lazy"
+                decoding="async"
+              />
             </a>
           </li>
         </ul>
@@ -110,6 +130,8 @@ const eagleForFooter = eagleSvgRaw.replace(
 <style>
   .site-footer {
     position: relative;
+    /* Above fixed marine/aviation/automotive hero stack (38 in `global.css`); below `.site-header` (50). */
+    z-index: 39;
     margin-top: auto;
     padding-top: clamp(2rem, 6vw, 5rem);
     padding-bottom: max(clamp(1.25rem, 4vw, 2rem), env(safe-area-inset-bottom, 0px));
@@ -316,6 +338,13 @@ const eagleForFooter = eagleSvgRaw.replace(
   .site-footer__social-icon {
     width: 1.125rem;
     height: 1.125rem;
+  }
+
+  .site-footer__social-img {
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+    object-fit: contain;
   }
 
   .site-footer__label {

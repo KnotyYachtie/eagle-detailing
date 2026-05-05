@@ -48,6 +48,8 @@ export interface Props {
   chapterRightAlt?: string;
   carouselImages?: ImageMetadata[];
   eagleSvgHtml?: string;
+  /** Vertical-specific layout tweaks (`marine-page--aviation` | `marine-page--automotive`). */
+  editorialVertical?: 'aviation' | 'automotive';
 }
 
 const {
@@ -90,6 +92,7 @@ const {
   chapterRightAlt = '',
   carouselImages,
   eagleSvgHtml,
+  editorialVertical,
 } = Astro.props;
 
 const hasCarousel = Boolean(carouselImages && carouselImages.length > 0);
@@ -104,7 +107,15 @@ const formId = `${formFieldPrefix}-reach-form`;
   themeColor={themeColor}
   canvasColor={canvasColor}
 >
-  <div class="marine-page marine-page--stack" data-marine-page>
+  <div
+    class:list={[
+      'marine-page',
+      'marine-page--stack',
+      editorialVertical === 'aviation' && 'marine-page--aviation',
+      editorialVertical === 'automotive' && 'marine-page--automotive',
+    ]}
+    data-marine-page
+  >
     <!--
       Narrow: intro (solid) → image in flow — nav sits on color, not on photo. Wide: full-bleed fixed stack.
     -->
@@ -537,6 +548,10 @@ const formId = `${formFieldPrefix}-reach-form`;
     max-width: 100vw;
     }
 
+    .marine-page--automotive .marine-page__parallax-img {
+      object-position: 100% 0%;
+    }
+
     .marine-page__canvas {
       display: none;
     }
@@ -594,6 +609,13 @@ const formId = `${formFieldPrefix}-reach-form`;
       will-change: transform;
     }
 
+    /* Automotive: lighter bleed than Marine/Aviation (`-24%`) — nudges hero up slightly; top need not stay flush. */
+    .marine-page--automotive .marine-page__parallax-rellax {
+      top: -10%;
+      bottom: -10%;
+      min-height: 120%;
+    }
+
     .marine-page__parallax-frame {
       position: absolute;
       inset: 0;
@@ -612,9 +634,18 @@ const formId = `${formFieldPrefix}-reach-form`;
       border-radius: inherit;
     }
 
+    .marine-page--automotive .marine-page__parallax-img {
+      object-position: 100% 0%;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .marine-page__parallax-img {
         transform: scale(1.15);
+      }
+
+      /* Keep automotive top-right crop fixed; default center origin lifts the visible top. */
+      .marine-page--automotive .marine-page__parallax-img {
+        transform-origin: top right;
       }
     }
 
@@ -739,6 +770,7 @@ const formId = `${formFieldPrefix}-reach-form`;
     pointer-events: auto;
     box-sizing: border-box;
     text-align: start;
+    --marine-hero-eyebrow-on-photo: rgba(196, 184, 150, 0.92);
   }
 
   @media (min-width: 769px) {
@@ -764,9 +796,22 @@ const formId = `${formFieldPrefix}-reach-form`;
   }
 
   .marine-hero__eyebrow {
-    color: rgba(196, 184, 150, 0.92);
+    color: var(--marine-hero-eyebrow-on-photo);
     letter-spacing: 0.22em;
     margin: 0 0 var(--space-sm);
+  }
+
+  /* Aviation: drop hero copy slightly (padding only — no image scale). */
+  @media (max-width: 768px) {
+    .marine-page--aviation .marine-hero--fixed .marine-hero__content {
+      padding-top: clamp(0.4rem, 1.8vw, 1rem);
+    }
+  }
+
+  @media (min-width: 769px) {
+    .marine-page--aviation .marine-hero__content {
+      padding-top: clamp(0.75rem, 2.2vw, 1.5rem);
+    }
   }
 
   @media (min-width: 769px) {
@@ -824,12 +869,28 @@ const formId = `${formFieldPrefix}-reach-form`;
   }
 
   /*
+    While “Get in touch” is on screen (desktop fixed hero), hide the hero lede so it cannot read through
+    gradients or stack oddly with the footer — toggled by `initMarineHeroLedeConceal` in `marine-page-rellax.ts`.
+  */
+  @media (min-width: 769px) {
+    :global(html[data-home-load-intro])
+      .marine-page
+      .marine-hero__content.marine-hero__content--reach-visible
+      p.hero__lede {
+      opacity: 0 !important;
+      visibility: hidden;
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
+  /*
     Solid system navy down the page (same ramp as narrow) — no editorial glass blur on desktop;
     keeps type legible over the fixed hero and matches mobile art direction.
   */
   .marine-editorial {
     position: relative;
-    /* > fixed hero (z-40 in `global.css`) so editorial scrolls over the full-bleed image */
+    /* > fixed hero (z-index 38 in `global.css`) so editorial scrolls over the full-bleed image */
     z-index: 45;
     background: linear-gradient(
       180deg,
@@ -1114,13 +1175,18 @@ const formId = `${formFieldPrefix}-reach-form`;
     color: rgba(186, 200, 224, 0.82);
   }
 
-  .marine-services__rows {
+  /*
+    `services-rows` slot content is compiled on the page (e.g. `marine.astro`), so it carries that file’s
+    `data-astro-cid` — plain scoped selectors here never match slotted nodes. Anchor under `.marine-services__main`
+    and use `:global()` so icon sizing and row flex apply to both the default `<ul>` and slotted markup.
+  */
+  .marine-services__main :global(.marine-services__rows) {
     list-style: none;
     margin: 0 0 clamp(2rem, 5vw, 3rem);
     padding: 0;
   }
 
-  .marine-services__row {
+  .marine-services__main :global(.marine-services__row) {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
@@ -1136,28 +1202,37 @@ const formId = `${formFieldPrefix}-reach-form`;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .marine-services__row {
+    .marine-services__main :global(.marine-services__row) {
       transition: opacity 0.18s ease;
     }
   }
 
-  .marine-services__row--last {
+  .marine-services__main :global(.marine-services__row--last) {
     border-bottom: none;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .marine-services__row:hover {
+    .marine-services__main :global(.marine-services__row:hover) {
       opacity: 0.92;
     }
 
+    .marine-services__main :global(.marine-services__row--category:hover) {
+      opacity: 1;
+      transform: none;
+    }
+
     @media (prefers-reduced-motion: no-preference) {
-      .marine-services__row:hover {
+      .marine-services__main :global(.marine-services__row:hover) {
         transform: translateX(3px);
+      }
+
+      .marine-services__main :global(.marine-services__row--category:hover) {
+        transform: none;
       }
     }
   }
 
-  .marine-services__row-icon {
+  .marine-services__main :global(.marine-services__row-icon) {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
@@ -1168,15 +1243,41 @@ const formId = `${formFieldPrefix}-reach-form`;
     color: rgba(196, 184, 150, 0.88);
   }
 
-  .marine-services__row-icon svg {
+  .marine-services__main :global(.marine-services__row-icon svg) {
     display: block;
+    flex-shrink: 0;
     width: 1.35rem;
     height: 1.35rem;
+    max-width: 1.35rem;
+    max-height: 1.35rem;
   }
 
-  .marine-services__row-text {
+  .marine-services__main :global(.marine-services__row-text) {
     flex: 1 1 auto;
     min-width: 0;
+  }
+
+  .marine-services__main :global(.marine-services__row--category) {
+    padding-top: clamp(0.85rem, 2vw, 1.15rem);
+    padding-bottom: clamp(0.45rem, 1.2vw, 0.65rem);
+    /* Align heading with service line copy (icon column width + row gap). */
+    padding-left: calc(1.75rem + 0.75rem);
+  }
+
+  .marine-services__main :global(.marine-services__row--category:first-child) {
+    padding-top: 0;
+  }
+
+  .marine-services__main :global(.marine-services__row--category:not(:first-child)) {
+    margin-top: clamp(0.5rem, 1.5vw, 1rem);
+  }
+
+  .marine-services__main :global(.marine-services__row--category .marine-services__row-text) {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(196, 184, 150, 0.95);
   }
 
   .marine-services__cta {
@@ -1302,35 +1403,54 @@ const formId = `${formFieldPrefix}-reach-form`;
     opacity: 0.95;
   }
 
+  /*
+    Services eagle watermark: must show below tablet widths too (narrow Safari / stacked layout).
+    Opacity bumped slightly so currentColor fills read against `--marine-*` ink (was easy to miss at ~0.1).
+  */
   .marine-services__visual {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 0;
+    margin-top: clamp(0.75rem, 3vw, 1.5rem);
+    opacity: 0.18;
+    max-height: 11rem;
+  }
+
+  @media (min-width: 640px) {
+    .marine-services__visual {
+      opacity: 0.2;
+      max-height: 15rem;
+    }
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
     .marine-services__visual {
-      display: flex;
       margin-top: 0.5rem;
-      opacity: 0.1;
-      max-height: 14rem;
+      max-height: 16rem;
     }
   }
 
   @media (min-width: 1024px) {
     .marine-services__visual {
-      display: flex;
-      opacity: 0.12;
+      justify-content: center;
+      align-self: center;
+      opacity: 0.24;
       max-height: none;
       margin-top: 0;
-      align-self: center;
+    }
+
+    /* Automotive services: keep eagle watermark centered against the full services column height. */
+    .marine-page--automotive .marine-services__visual {
+      align-self: stretch;
+      display: flex;
+      align-items: center;
     }
   }
 
   .marine-services__eagle {
-    width: min(100%, 22rem);
-    color: #fff;
+    width: min(100%, 26rem);
+    color: rgba(255, 255, 255, 0.92);
     line-height: 0;
     pointer-events: none;
   }
@@ -1351,15 +1471,20 @@ const formId = `${formFieldPrefix}-reach-form`;
   .marine-reach {
     position: relative;
     z-index: 2;
+    isolation: isolate;
     padding-top: clamp(3rem, 8vw, 5rem);
     /* Air between form disclaimer and global footer (footer has its own top padding). */
     padding-bottom: max(clamp(3rem, 9vw, 6.5rem), env(safe-area-inset-bottom, 0px));
-    /* Ramp from reach content into `var(--footer-bg)` so the footer reads as one surface. */
-    background: linear-gradient(
+    /*
+      Fully opaque stops — semi-transparent scrims composite with the fixed hero layer (z-index 38) and
+      could show the hero lede “through” this section before the footer stack fix.
+    */
+    background-color: var(--marine-ink);
+    background-image: linear-gradient(
       180deg,
-      rgba(5, 10, 18, 0.52) 0%,
-      rgba(4, 8, 16, 0.82) 38%,
-      #070f1c 62%,
+      var(--marine-ink) 0%,
+      #070d16 22%,
+      #070f1c 52%,
       #081420 78%,
       var(--footer-bg) 94%,
       var(--footer-bg) 100%
@@ -1563,6 +1688,14 @@ const formId = `${formFieldPrefix}-reach-form`;
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
+    }
+
+    :global(html[data-home-load-intro])
+      .marine-page
+      .marine-hero__content.marine-hero__content--reach-visible
+      p.hero__lede {
+      opacity: 0 !important;
+      visibility: hidden !important;
     }
   }
 </style>

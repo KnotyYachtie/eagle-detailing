@@ -145,7 +145,7 @@ Use this as a **preflight** before merging lateral timelines, chapter rails, or 
 | | |
 |--|--|
 | **Where we started** | Wrong-domain pairing risk (`yacht5` under “Automotive” in rev. 2 stacks). |
-| **Where we landed** | **Dedicated automotive band** with **`car.1.png` + `car.2.png`** on the homepage drift collage (replaced earlier **`inspo*`** stand-ins). |
+| **Where we landed** | **Dedicated automotive band** with **`assets/automotive/car1.png`** (plate) **`+ car.2.png`** (float) on the homepage drift collage (replaced earlier **`inspo*`** stand-ins). |
 | **Empathy signal** | At minimum, **no yacht labeled automotive** in the primary collage. |
 | **Tension / gap** | Swap when **real automotive** assets exist; confirm `inspo*` brand fit. |
 

@@ -1,47 +1,184 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import projects2 from '../../assets/projects2.png';
+import c1 from '../../assets/automotive/carousel/c1.png';
+import c2 from '../../assets/automotive/carousel/c2.png';
+import c4 from '../../assets/automotive/carousel/c4.png';
+import c5 from '../../assets/automotive/carousel/c5.png';
+import c6 from '../../assets/automotive/carousel/c6.png';
+
+const instagramProjects = [
+  { image: c1, alt: 'Featured detailing project', url: 'https://www.instagram.com/p/DRV0FHkkfXg/' },
+  { image: c2, alt: 'Client review project', url: 'https://www.instagram.com/p/DC5POhvNvvV/' },
+  { image: c4, alt: 'Merc engine makeover project', url: 'https://www.instagram.com/p/DBcZh-qvleu/' },
+  { image: c5, alt: 'Gelcoat restoration project', url: 'https://www.instagram.com/p/DBKE8xTqPYn/' },
+  { image: c6, alt: 'Detailing video project', url: 'https://www.instagram.com/reel/DLQYSVaR3GX/' },
+];
 ---
 
 <BaseLayout
   title="Projects"
   description="Surface-focused results from Eagle Detailing — real work, tight crops, South Florida."
 >
-  <section class="page-hero u-container">
-    <p class="u-eyebrow">Proof</p>
-    <h1>Projects</h1>
-    <p class="u-muted page-hero__lede">
-      We publish <strong style="color: var(--color-cream)">real</strong> project photography — surface-focused,
-      tight crops, no stock masquerading as completed work. This section will grow as new shots are approved
-      for release.
-    </p>
+  <section class="page-hero">
+    <figure class="page-hero__media" aria-hidden="true">
+      <img
+        src={projects2.src}
+        alt=""
+        width={projects2.width}
+        height={projects2.height}
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="page-hero__scrim"></div>
+    </figure>
+    <div class="page-hero__content u-container">
+      <p class="u-eyebrow">Looking back</p>
+      <h1 class="hero__title">Projects</h1>
+      <p class="hero__lede page-hero__lede">
+        We've curated a selection of some of our past work below. Real projects, surface-focused, and true to
+        the finish. For the most up-to-date and ongoing projects, follow along on Instagram.
+      </p>
+    </div>
   </section>
   <section class="u-section page-body">
     <div class="u-container">
-      <p class="u-muted projects-placeholder">
-        Project images coming soon. For references in the meantime, see our work on Instagram or reach out
-        directly.
-      </p>
-      <p><a class="u-btn" href="/contact">Contact</a></p>
+      <div class="projects-collage-grid">
+        {instagramProjects.map((item, index) => (
+          <a class:list={['projects-collage-card', index === 0 && 'projects-collage-card--hero']} href={item.url} target="_blank" rel="noopener noreferrer">
+            <img src={item.image.src} alt={item.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" />
+            <span class="projects-collage-chip">Instagram</span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .page-hero {
-    padding-block: var(--space-xl) var(--space-md);
+    position: relative;
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(239, 236, 231, 0.08);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+    margin-top: calc(-1 * (var(--header-bar) + var(--header-safe-pad)));
+    margin-bottom: 0;
+    z-index: 38;
+  }
+
+  .page-hero__media {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+
+  .page-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .page-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7, 14, 23, 0.22) 4%, rgba(7, 14, 23, 0.74) 72%, rgba(7, 14, 23, 0.86) 100%),
+      linear-gradient(90deg, rgba(7, 14, 23, 0.56) 0%, rgba(7, 14, 23, 0.2) 55%, rgba(7, 14, 23, 0.5) 100%);
+  }
+
+  .page-hero__content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: calc(var(--header-bar) + var(--header-safe-pad) + clamp(1.4rem, 4vw, 2.6rem));
+    padding-bottom: clamp(1.2rem, 3.4vw, 2.3rem);
+    max-width: min(44rem, 100%);
   }
 
   .page-hero__lede {
-    max-width: 42rem;
-    font-size: 1.0625rem;
+    color: rgba(236, 240, 248, 0.92);
   }
 
   .page-body {
+    position: relative;
+    z-index: 45;
     background: #0a1628;
+    padding-top: var(--space-md);
   }
 
-  .projects-placeholder {
-    max-width: 36rem;
-    margin-bottom: var(--space-md);
+  .projects-collage-grid {
+    display: grid;
+    gap: clamp(0.45rem, 1.3vw, 0.8rem);
+    padding: 0;
+    grid-template-columns: 1fr;
+    padding-block: clamp(0.8rem, 2.4vw, 1.35rem);
   }
+
+  @media (min-width: 860px) {
+    .projects-collage-grid {
+      grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      padding-block: clamp(0.7rem, 1.8vw, 1.1rem);
+    }
+  }
+
+  .projects-collage-card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 0.52rem;
+    border: none;
+    background: #d9e4f2;
+    box-shadow:
+      0 6px 18px rgba(3, 8, 15, 0.14),
+      0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    min-height: 12rem;
+  }
+
+  @media (min-width: 860px) {
+    .projects-collage-card--hero {
+      grid-row: 1 / span 2;
+      min-height: 100%;
+    }
+  }
+
+  .projects-collage-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.28s ease;
+  }
+
+  .projects-collage-chip {
+    position: absolute;
+    left: 0.55rem;
+    bottom: 0.55rem;
+    padding: 0.22rem 0.45rem;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(10, 17, 24, 0.72);
+    backdrop-filter: blur(2px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .projects-collage-card:hover img {
+      transform: scale(1.03);
+    }
+  }
+
 </style>

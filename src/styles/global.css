@@ -85,7 +85,7 @@
 
   --type-hero-lede-size: 1.0625rem;
   --type-hero-lede-leading: 1.65;
-  --type-hero-lede-color: var(--color-cream-muted);
+  --type-hero-lede-color: #f2ede6;
   --type-hero-lede-margin: 0 0 var(--space-md);
   --type-hero-lede-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
 
@@ -417,13 +417,17 @@ html[data-home-load-intro] body .page > main.page__main > section.hero {
     Marine: fixed full-viewport hero between page canvas and `.site-header` (z-50); in-flow `main` cannot
     out-rank a sibling `header` without `position: fixed` here.
    */
+  /*
+    Below global footer (`Footer.astro` z-index: 39) so the fixed bleed stack does not paint over the
+    footer when scrolled to the bottom; editorial inside main stays z-index 45 and still reads above this layer.
+  */
   html[data-home-load-intro] body .page > main.page__main > .marine-page > header.marine-hero--fixed {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 40;
+    z-index: 38;
     margin-top: 0 !important;
   }
 

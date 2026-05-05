@@ -1,43 +1,58 @@
 ---
 import ServiceEditorialPage from '../components/ServiceEditorialPage.astro';
 import { SERVICE_EDITORIAL_SHELL_COLORS } from '../site';
+import jet1 from '../../assets/aviation/jethero3.png';
+import prop1 from '../../assets/aviation/prop1.jpg';
+import prop2 from '../../assets/aviation/prop2.jpg';
+import carousel1 from '../../assets/aviation/carousel/carousel1.png';
+import carousel2 from '../../assets/aviation/carousel/carousel2.png';
+import carousel3 from '../../assets/aviation/carousel/carousel3.png';
+import carousel4 from '../../assets/aviation/carousel/carousel4.png';
+import carousel5 from '../../assets/aviation/carousel/carousel5.png';
+import eagleSvgRaw from '../../assets/eagle.svg?raw';
 
-const aviationPlaceholderRows = [
-  'Placeholder service — exterior wash & gloss restoration',
-  'Placeholder service — paint refinement (scope per ops)',
-  'Placeholder service — protective coatings where approved',
-  'Placeholder service — brightwork & accents',
-  'Placeholder service — cabin surfaces & leather care',
-];
+const aviationCarouselImages = [carousel1, carousel2, carousel3, carousel4, carousel5];
+
+const eagleAviationServicesVisual = eagleSvgRaw.replace(
+  /<svg[\s\S]*?>/,
+  '<svg class="marine-services__eagle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503 408" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+);
 ---
 
 <ServiceEditorialPage
   title="Aviation"
-  description="Placeholder — private aircraft detailing in South Florida (copy TBD)."
+  description="Aircraft detailing in South Florida — exterior refinement, protective finishes, and cabin care with an inspection-first, compliance-aware approach."
   themeColor={SERVICE_EDITORIAL_SHELL_COLORS.themeColor}
   canvasColor={SERVICE_EDITORIAL_SHELL_COLORS.canvasColor}
+  editorialVertical="aviation"
   heroEyebrow="Aviation"
-  heroTitle="Placeholder headline — aviation"
-  heroLede="Placeholder supporting copy. Replace with hangar coordination, downtime windows, and discretion once imagery and approvals land."
+  heroTitle="Refined surfaces. Flight-ready finishes."
+  heroLede="From Learjets to C-172s, we restore, refine, protect, and maintain aircraft surfaces with an inspection-first process grounded in precision and compliance awareness."
+  heroParallax={jet1}
   chapterLeftLabelId="aviation-ch-1"
-  chapterLeftLabel="Placeholder chapter label"
+  chapterLeftLabel="Surface-specific methodology"
   chapterLeftParagraphs={[
-    'Placeholder paragraph — airframe finishes and operational constraints.',
-    'Placeholder second paragraph — conservative scoping and manual alignment.',
+    'Aircraft surfaces demand discipline. Painted composites, aluminum skins, polished metal, and transparencies all age differently under UV exposure, heat cycles, and operational use.',
+    'Every surface is assessed before work begins, then matched with correction and protection methods designed to preserve material integrity while restoring clarity, gloss, and uniformity.',
   ]}
+  chapterLeftImage={prop1}
+  chapterLeftAlt="Aircraft exterior — paint, metal, and transparencies"
   chapterRightLabelId="aviation-ch-2"
-  chapterRightLabel="Placeholder — scheduling & access"
+  chapterRightLabel="ALWAYS ON STAND-BY"
   chapterRightParagraphs={[
-    'Placeholder paragraph — hangar access, FBO coordination, and quiet professionalism.',
+    'Whether emergency detail or scheduled maintenance, we work with your schedule, not against it. Timing, access, and coordination are handled before work begins, so the aircraft is never left waiting on the detail.',
+    'Precision is the standard. One system, consistent results every time. Delivered with discretion, professionalism, and efficiency that counts.',
   ]}
-  quoteText="Placeholder operator quote — replace when testimonials are approved."
+  chapterRightImage={prop2}
+  chapterRightAlt="Aircraft in hangar or on the ramp — scheduling and access"
+  quoteText="We never have to worry about the aircraft's condition."
   servicesEyebrowId="aviation-services-label"
   servicesHeadlineId="aviation-services-headline"
   servicesEyebrow="Services we offer"
-  servicesHeadline="Placeholder — disciplined care for aircraft finishes"
-  servicesLede="Placeholder summary of aviation programs (replace with approved positioning)."
-  servicesCtaTitle="Placeholder — coordinated around your schedule"
-  servicesCtaSub="Call or text anytime — we're here to help!"
+  servicesHeadline="Disciplined process. Consistent results."
+  servicesLede="Surface care tailored to aircraft materials, finishes, and operational schedules — delivered with precision, consistency, and minimal disruption."
+  servicesCtaTitle="Need immediate airside support?"
+  servicesCtaSub="Reach out by phone for the fastest service."
   reachHeadingId="aviation-reach-h"
   reachSubjectPrefix="Aviation"
   reachTitle="Get in touch"
@@ -46,7 +61,86 @@ const aviationPlaceholderRows = [
   reachMessageHint="e.g. aircraft type, registry or tail, location, service needed, preferred timing"
   formFieldPrefix="aviation"
   carouselId="aviation-featured-carousel"
-  carouselAriaLabel="Featured work — placeholder"
-  carouselSlideAlt="Featured work — placeholder"
-  serviceRows={aviationPlaceholderRows}
-/>
+  carouselAriaLabel="Featured aviation work"
+  carouselSlideAlt="Aircraft detailing — South Florida"
+  carouselImages={aviationCarouselImages}
+  eagleSvgHtml={eagleAviationServicesVisual}
+>
+  <ul slot="services-rows" class="marine-services__rows" role="list">
+    <li class="marine-services__row marine-services__row--category">
+      <span class="marine-services__row-text">Exterior</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Dry wash, wet wash &amp; maintenance programs</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Paint correction &amp; surface refinement</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 3l1.8 5.5h5.7l-4.6 3.3 1.8 5.5-4.7-3.4-4.7 3.4 1.8-5.5-4.6-3.3h5.7z"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Brightwork polishing &amp; metal finishing</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Ceramic coatings &amp; protective systems</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 14c1.5 0 2-2 3.5-2s2 2 3.5 2 2-2 3.5-2 2 2 3.5 2"></path>
+          <path d="M4 10c1.5 0 2-2 3.5-2s2 2 3.5 2 2-2 3.5-2 2 2 3.5 2"></path>
+          <path d="M4 18c1.5 0 2-2 3.5-2s2 2 3.5 2 2-2 3.5-2 2 2 3.5 2"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Exhaust, grease &amp; fluid contamination removal</span>
+    </li>
+    <li class="marine-services__row marine-services__row--category">
+      <span class="marine-services__row-text">Interior</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 11V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"></path>
+          <path d="M5 11h14v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-8zM9 15h6"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Upholstery deep cleaning &amp; extraction</span>
+    </li>
+    <li class="marine-services__row">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 3v2M12 19v2M5 12h2M17 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"></path>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Sanitization, deodorizing &amp; cabin reset</span>
+    </li>
+    <li class="marine-services__row marine-services__row--last">
+      <span class="marine-services__row-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"></path>
+        </svg>
+      </span>
+      <span class="marine-services__row-text">Interior ceramic coatings &amp; surface protection</span>
+    </li>
+  </ul>
+</ServiceEditorialPage>
