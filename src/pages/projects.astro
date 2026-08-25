@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
 import projects2 from '../../assets/projects2.png';
 import c1 from '../../assets/automotive/carousel/c1.png';
 import c2 from '../../assets/automotive/carousel/c2.png';
@@ -18,7 +19,7 @@ const instagramProjects = [
 
 <BaseLayout
   title="Projects"
-  description="Surface-focused results from Eagle Detailing — real work, tight crops, South Florida."
+  description={`Surface-focused results from ${SITE.shortName} — real work, tight crops, South Florida.`}
 >
   <section class="page-hero">
     <figure class="page-hero__media" aria-hidden="true">

@@ -1,15 +1,11 @@
 ---
 import { NAV_MAIN, NAV_SERVICES, SITE } from '../site';
 import googleMapsImg from '../../assets/google-maps.png';
-import eagleSvgRaw from '../../assets/eagle.svg?raw';
+import logoEagle from '../../assets/branding/logo-eagle-transparent.png';
+import logoText from '../../assets/branding/logo-text-transparent.png';
 
 const year = new Date().getFullYear();
 const exploreLinks = [...NAV_SERVICES, ...NAV_MAIN];
-
-const eagleForFooter = eagleSvgRaw.replace(
-  /<svg[\s\S]*?>/,
-  '<svg class="site-footer__eagle-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503 408" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
-);
 ---
 
 <footer class="site-footer">
@@ -17,11 +13,25 @@ const eagleForFooter = eagleSvgRaw.replace(
     <div class="site-footer__grid">
       <div class="site-footer__col site-footer__col--brand">
         <a class="site-footer__brand" href="/" aria-label={`${SITE.shortName} home`}>
-          <span class="site-footer__logo" set:html={eagleForFooter} />
-          <span class="site-footer__wordmark">{SITE.shortName}</span>
+          <img
+            class="site-footer__logo site-footer__logo--eagle"
+            src={logoEagle.src}
+            width={logoEagle.width}
+            height={logoEagle.height}
+            alt=""
+            decoding="async"
+          />
+          <img
+            class="site-footer__logo site-footer__logo--text"
+            src={logoText.src}
+            width={logoText.width}
+            height={logoText.height}
+            alt=""
+            decoding="async"
+          />
         </a>
         <span class="site-footer__brand-dash" aria-hidden="true"></span>
-        <p class="site-footer__tagline">Premium Marine, Aviation &amp; Automotive Detailing</p>
+        <p class="site-footer__tagline">{SITE.tagline}</p>
         <ul class="site-footer__social" aria-label="Social">
           <li>
             <a
@@ -263,24 +273,16 @@ const eagleForFooter = eagleSvgRaw.replace(
   .site-footer__logo {
     display: block;
     flex: 0 0 auto;
-    width: 2.65rem;
-    color: #fff;
-    line-height: 0;
-  }
-
-  .site-footer__eagle-svg {
-    display: block;
-    width: 100%;
     height: auto;
   }
 
-  .site-footer__wordmark {
-    font-family: var(--font-display);
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    line-height: 1.1;
+  .site-footer__logo--eagle {
+    width: 2.65rem;
+  }
+
+  .site-footer__logo--text {
+    width: clamp(7.5rem, 18vw, 9.5rem);
+    margin-top: 0.08rem;
   }
 
   .site-footer__brand-dash {
