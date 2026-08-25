@@ -11,8 +11,8 @@ export const SITE = {
   email: 'info@eagledetailing.com',
   instagramUrl: 'https://www.instagram.com/eagledetailingfl/',
   instagramHandle: '@eagledetailingfl',
-  /** Google Business Profile review link (share URL). */
-  googleReviewsUrl: 'https://share.google/0ImaO11Qlq2jtknKq',
+  /** Bust browser favicon cache when icons change. */
+  faviconVersion: '20260825b',
   owner: 'Brayan Contreras',
   locality: 'Fort Lauderdale',
   region: 'FL',
