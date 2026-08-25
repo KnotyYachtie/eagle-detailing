@@ -233,10 +233,13 @@ const aboutOpen =
     position: sticky;
     top: 0;
     z-index: 50;
-    height: var(--header-h);
+    height: auto;
+    min-height: var(--header-h);
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     box-sizing: border-box;
+    padding-top: max(0.45rem, env(safe-area-inset-top, 0px));
+    padding-bottom: 0.35rem;
     /* Flat ink bar when routes opt out of transparent chrome (e.g. `/contact`) — no lighter glass slab */
     background: #050a14;
     backdrop-filter: none;
@@ -273,13 +276,11 @@ const aboutOpen =
 
   .site-header__inner {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: var(--space-md);
     width: 100%;
     /* Extra inset so logo + wordmark aren’t flush to the container edge */
     padding-inline: clamp(1.25rem, 4vw, 2.25rem);
-    /* Sit above vertical center — full `--header-h` on mobile reads “low” under the island */
-    transform: translateY(-0.38rem);
   }
 
   .site-header__brand {
@@ -287,7 +288,6 @@ const aboutOpen =
     align-items: center;
     text-decoration: none;
     margin-right: auto;
-    transform: translateY(-0.12rem);
     opacity: 0.92;
     transition: opacity 0.2s var(--ease-out);
   }
@@ -311,7 +311,6 @@ const aboutOpen =
     justify-content: flex-end;
     flex: 0 0 auto;
     margin-left: auto;
-    transform: translateY(-0.14rem);
   }
 
   .site-header__list {
@@ -498,8 +497,8 @@ const aboutOpen =
       height: auto;
       min-height: var(--header-h);
       align-items: flex-start;
-      /* Land logo/type below the notch; `--header-h` already included safe in its math but did not offset content */
-      padding-top: var(--header-safe-pad);
+      /* Safe area + extra inset so the taller lockup clears the notch */
+      padding-top: calc(var(--header-safe-pad) + 0.35rem);
       padding-bottom: 0.2rem;
     }
 
@@ -511,16 +510,14 @@ const aboutOpen =
       flex-direction: column;
       align-items: stretch;
       gap: 0.1rem 0;
-      padding-block: 0.1rem 0.08rem;
-      /* No upward transform — that was pushing the mark + wordmark under the status bar. */
-      transform: none;
+      padding-block: 0.15rem 0.08rem;
     }
 
     .site-header__brand {
       margin-right: 0;
       width: 100%;
-      transform: translateY(0);
       justify-content: flex-start;
+      padding-top: 0.1rem;
     }
 
     .site-header__nav {
