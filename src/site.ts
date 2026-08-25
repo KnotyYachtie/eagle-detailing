@@ -12,7 +12,7 @@ export const SITE = {
   instagramUrl: 'https://www.instagram.com/eagledetailingfl/',
   instagramHandle: '@eagledetailingfl',
   /** Bust browser favicon cache when icons change. */
-  faviconVersion: '20260825b',
+  faviconVersion: '20260825c',
   owner: 'Brayan Contreras',
   locality: 'Fort Lauderdale',
   region: 'FL',
