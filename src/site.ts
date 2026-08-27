@@ -8,7 +8,7 @@ export const SITE = {
   tagline: 'Plus exceptional automotive detailing across South Florida',
   phoneDisplay: '(561) 324-9405',
   phoneTel: '+15613249405',
-  email: 'info@eagledetailing.com',
+  email: 'info@eagledetailingcorp.com',
   instagramUrl: 'https://www.instagram.com/eagledetailingfl/',
   instagramHandle: '@eagledetailingfl',
   /** Bust browser favicon cache when icons change. */

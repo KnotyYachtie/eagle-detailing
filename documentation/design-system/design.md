@@ -168,7 +168,7 @@ Full-bleed, minimal, cinematic.
 **Also site-wide (header/footer — not stacked on the hero):**
 - Phone (click-to-call)
 - Instagram (`@eagledetailingfl`)
-- Email: `info@eagledetailing.com` (footer + Contact page)
+- Email: `info@eagledetailingcorp.com` (footer + Contact page)
 
 **Rules:**
 - No clutter on the hero
@@ -233,11 +233,11 @@ No long paragraphs.
 ### Section 5 — Contact
 
 **v1 (current):**
-- Phone-first + Instagram + **`info@eagledetailing.com`** (`mailto` / visible address)
-- **No form submission backend** yet (no Formspree / API wiring) — add in a later pass when delivery is chosen
+- Phone-first + Instagram + **`info@eagledetailingcorp.com`** (`mailto` / visible address; `SITE.email`)
+- Contact page + Marine / Aviation / Automotive **reach forms POST to Web3Forms** (`PUBLIC_WEB3FORMS_ACCESS_KEY`); delivery inbox is the same `SITE.email`.
 
 **Later:**
-- Short quote form + provider (env-based endpoint)
+- AI chat may replace the static form; keep the provider thin until then.
 
 Frictionless.
 
@@ -383,7 +383,7 @@ Real = Authority
 
 1. Hero (core identity; photo-first, minimal motion)
 2. Domain entry + pages: **Marine**, **Aviation**, **Automotive**
-3. Contact surfaces (phone, IG, email) — **no form POST in v1**
+3. Contact surfaces (phone, IG, email) + Web3Forms inquiry POST to `SITE.email`
 4. Basic gallery (real images when available)
 
 Everything else can come later.

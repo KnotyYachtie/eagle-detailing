@@ -1,24 +1,30 @@
 import { SITE } from '../site';
+import { submitInquiryToWeb3Forms } from './web3forms-submit';
 
 function bindMarineReachForm(form: HTMLFormElement): void {
   if (form.dataset.marineReachBound === '1') return;
   form.dataset.marineReachBound = '1';
+
+  const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const statusEl = form.querySelector<HTMLElement>('[data-form-status]');
+  if (!submitBtn) return;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const fd = new FormData(form);
     const name = String(fd.get('name') ?? '').trim();
     const email = String(fd.get('email') ?? '').trim();
-    const phone = String(fd.get('phone') ?? '').trim();
     const message = String(fd.get('message') ?? '').trim();
     if (!name || !email || !message) return;
 
     const prefix = (form.dataset.reachSubjectPrefix ?? 'Marine').trim() || 'Marine';
-    const subject = encodeURIComponent(`${prefix} inquiry — ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '(not provided)'}\n\n${message}`
-    );
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
+    void submitInquiryToWeb3Forms({
+      form,
+      submitBtn,
+      statusEl,
+      subject: `${prefix} inquiry — ${name}`,
+      fromName: SITE.shortName,
+    });
   });
 }
 

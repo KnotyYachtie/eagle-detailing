@@ -64,5 +64,5 @@
 ## F. Contact strategy (v1)
 
 1. **Need structured lead capture?**  
-   - **Not yet** → **Phone + email + Instagram** only; say so in copy.  
-   - **Yes later** → Add provider + env endpoint; do not block v1 ship on form UX.
+   - **Yes (current)** → Web3Forms POST from `/contact` + service reach forms; inbox is `SITE.email`; key is `PUBLIC_WEB3FORMS_ACCESS_KEY`.  
+   - **Chat later** → Keep this provider thin; do not add a custom mail backend.

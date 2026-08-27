@@ -162,7 +162,18 @@ const contactMarinaBg = `url(${marina1.src})`;
                 placeholder="Tell us what you're looking to have done…"
               ></textarea>
             </label>
-            <button class="contact-form__submit" type="submit">Request service</button>
+            <input
+              class="contact-form__honeypot"
+              type="checkbox"
+              name="botcheck"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+            <button class="contact-form__submit" type="submit">
+              <span data-submit-label>Request service</span>
+            </button>
+            <p class="contact-form__status" data-form-status aria-live="polite"></p>
             <p class="contact-form__footnote">We typically respond within a few hours.</p>
           </form>
         </div>
@@ -467,6 +478,7 @@ const contactMarinaBg = `url(${marina1.src})`;
   }
 
   .contact-form {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: clamp(1.1rem, 2.5vw, 1.35rem);
@@ -648,6 +660,42 @@ const contactMarinaBg = `url(${marina1.src})`;
   .contact-form__submit:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
+  }
+
+  .contact-form__submit:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    filter: none;
+    transform: none;
+  }
+
+  .contact-form__honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .contact-form__status {
+    margin: 0;
+    min-height: 1.25em;
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(186, 200, 224, 0.58);
+  }
+
+  .contact-form__status[data-tone='ok'] {
+    color: rgba(196, 184, 150, 0.95);
+  }
+
+  .contact-form__status[data-tone='err'] {
+    color: rgba(232, 176, 176, 0.92);
   }
 
   @media (prefers-reduced-motion: reduce) {

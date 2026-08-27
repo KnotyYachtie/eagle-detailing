@@ -1,8 +1,13 @@
 import { SITE } from '../site';
+import { submitInquiryToWeb3Forms } from './web3forms-submit';
 
 function bindContactPageForm(form: HTMLFormElement): void {
   if (form.dataset.contactPageBound === '1') return;
   form.dataset.contactPageBound = '1';
+
+  const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const statusEl = form.querySelector<HTMLElement>('[data-form-status]');
+  if (!submitBtn) return;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -10,24 +15,20 @@ function bindContactPageForm(form: HTMLFormElement): void {
     const name = String(fd.get('name') ?? '').trim();
     const phoneOrEmail = String(fd.get('phone_or_email') ?? '').trim();
     const serviceType = String(fd.get('service_type') ?? '').trim();
-    const vessel = String(fd.get('vessel') ?? '').trim();
-    const location = String(fd.get('location') ?? '').trim();
     const message = String(fd.get('message') ?? '').trim();
     if (!name || !phoneOrEmail || !serviceType || !message) return;
 
-    const subject = encodeURIComponent(`Contact — ${name} (${serviceType})`);
-    const body = encodeURIComponent(
-      [
-        `Name: ${name}`,
-        `Phone or email: ${phoneOrEmail}`,
-        `Service type: ${serviceType}`,
-        `Vessel / type: ${vessel || '(not provided)'}`,
-        `Location: ${location || '(not provided)'}`,
-        '',
-        message,
-      ].join('\n')
-    );
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
+    const extra: Record<string, string> = {};
+    if (phoneOrEmail.includes('@')) extra.email = phoneOrEmail;
+
+    void submitInquiryToWeb3Forms({
+      form,
+      submitBtn,
+      statusEl,
+      subject: `Contact — ${name} (${serviceType})`,
+      fromName: SITE.shortName,
+      extra,
+    });
   });
 }
 

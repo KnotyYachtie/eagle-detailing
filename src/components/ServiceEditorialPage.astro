@@ -392,10 +392,19 @@ const formId = `${formFieldPrefix}-reach-form`;
                 ></textarea>
               </div>
             </div>
+            <input
+              class="marine-reach__honeypot"
+              type="checkbox"
+              name="botcheck"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
             <button class="marine-reach__submit" type="submit">
               <span class="marine-reach__submit-arrow" aria-hidden="true">→</span>
-              Send message
+              <span data-submit-label>Send message</span>
             </button>
+            <p class="marine-reach__status" data-form-status aria-live="polite"></p>
             <p class="marine-services__note marine-reach__form-disclaimer u-muted">
               Existing clients, emergency or overnight service please call or text{' '}
               <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>
@@ -1533,6 +1542,7 @@ const formId = `${formFieldPrefix}-reach-form`;
   }
 
   .marine-reach__form {
+    position: relative;
     width: 100%;
     max-width: 36rem;
     margin-inline: auto;
@@ -1661,6 +1671,42 @@ const formId = `${formFieldPrefix}-reach-form`;
   .marine-reach__submit:focus-visible {
     outline: 2px solid rgba(196, 184, 150, 0.85);
     outline-offset: 3px;
+  }
+
+  .marine-reach__submit:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    filter: none;
+    transform: none;
+  }
+
+  .marine-reach__honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .marine-reach__status {
+    margin: 0;
+    min-height: 1.25em;
+    font-family: var(--font-ui);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(186, 200, 224, 0.58);
+  }
+
+  .marine-reach__status[data-tone='ok'] {
+    color: rgba(196, 184, 150, 0.95);
+  }
+
+  .marine-reach__status[data-tone='err'] {
+    color: rgba(232, 176, 176, 0.92);
   }
 
   .marine-reach__submit-arrow {

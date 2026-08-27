@@ -27,6 +27,6 @@ npm run preview
 
 Connect the repo, framework preset **Astro**, build `npm run build`, output `dist`. Set production domain / DNS when ready.
 
-## Contact (v1)
+## Contact
 
-No form POST — phone, Instagram, and `info@eagledetailing.com` only. Wire a form provider later if needed.
+Visible address and `mailto` target: `info@eagledetailingcorp.com` (`SITE.email` in `src/site.ts`). Inquiry forms on `/contact` and the service pages POST to [Web3Forms](https://web3forms.com). Set `PUBLIC_WEB3FORMS_ACCESS_KEY` in local `.env` and in the host (Vercel) env — never commit the key.
