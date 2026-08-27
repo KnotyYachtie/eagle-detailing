@@ -40,8 +40,11 @@
   --space-xl: 4rem;
   --radius-sm: 6px;
   --radius-md: 12px;
-  /* Chrome row (logo + nav); safe-area is padding on the header, folded into `--header-h` on narrow screens. */
-  --header-bar: 4.25rem;
+  /* Chrome row (logo + nav); lockup height drives hero underlap on desktop. */
+  --header-lockup-w: clamp(104px, 13.6vw, 136px);
+  --header-lockup-h: calc(var(--header-lockup-w) * 935 / 1024);
+  --header-chrome-pad-block: 0.8rem;
+  --header-bar: calc(var(--header-lockup-h) + var(--header-chrome-pad-block));
   --header-safe-pad: 0px;
   --header-h: var(--header-bar);
   /* Homepage mobile prescroll (px); head script + `home-prescroll.ts` set on load. */
@@ -102,6 +105,7 @@
       `constant(safe-area-inset-top, 0px)` is invalid and poisons `--header-safe-pad`, which then
       breaks every `calc(... + var(--header-safe-pad) + ...)` hero min-height in WebKit/Blink.
     */
+    --header-lockup-w: clamp(88px, 20vw, 112px);
     --header-safe-pad: 0px;
     --header-safe-pad: max(0px, constant(safe-area-inset-top));
     --header-safe-pad: max(0px, env(safe-area-inset-top, 0px));
