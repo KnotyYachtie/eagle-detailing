@@ -39,7 +39,7 @@ const criticalCanvas = canvasColor ?? '#050505';
  * Routes with `dataHomeLoadIntro`: first paint sets `--hero-inner-vh`; mobile-only `--home-prescroll-y` + scroll (desktop stays 0).
  */
 const homeHeroViewportHeadScript = dataHomeLoadIntro
-  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(132,Math.max(52,ih*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(148,Math.max(58,ih*0.102)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
   : '';
 
 /** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */

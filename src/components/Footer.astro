@@ -1,6 +1,5 @@
 ---
 import { NAV_MAIN, NAV_SERVICES, SITE } from '../site';
-import googleMapsImg from '../../assets/google-maps.png';
 import logoEagle from '../../assets/branding/logo-eagle-transparent.png';
 import logoText from '../../assets/branding/logo-text-transparent.png';
 
@@ -46,25 +45,6 @@ const exploreLinks = [...NAV_SERVICES, ...NAV_MAIN];
                 <circle cx="12" cy="12" r="4.25"></circle>
                 <circle cx="17.25" cy="6.75" r="1.25" fill="currentColor" stroke="none"></circle>
               </svg>
-            </a>
-          </li>
-          <li>
-            <a
-              class="site-footer__social-link"
-              href={SITE.googleReviewsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Google reviews — leave feedback"
-            >
-              <img
-                class="site-footer__social-img"
-                src={googleMapsImg.src}
-                alt=""
-                width={googleMapsImg.width}
-                height={googleMapsImg.height}
-                loading="lazy"
-                decoding="async"
-              />
             </a>
           </li>
         </ul>

@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
-// MVP: https://eagle.knotynetwork.com — update when production domain is live
+// Production: https://www.eagledetailingcorp.com (apex 308s to www)
 // Static sitemap: public/sitemap.xml (@astrojs/sitemap v3.7+ hooks differ from Astro 4.16)
 export default defineConfig({
-  site: 'https://eagle.knotynetwork.com',
+  site: 'https://www.eagledetailingcorp.com',
 });

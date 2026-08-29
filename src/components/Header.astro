@@ -146,10 +146,14 @@ const aboutOpen =
     }
   }
 
-  function collapseSubmenusIfMobile() {
-    if (!mql.matches) return;
+  function collapseSubmenus() {
     setServicesExpanded(false);
     setAboutExpanded(false);
+  }
+
+  function collapseSubmenusIfMobile() {
+    if (!mql.matches) return;
+    collapseSubmenus();
   }
 
   function eventTargetToElement(t: EventTarget | null): Element | null {
@@ -176,7 +180,6 @@ const aboutOpen =
 
         const servicesBtn = t.closest('[data-services-toggle]');
         if (servicesBtn) {
-          if (!mql.matches) return;
           e.preventDefault();
           const g = servicesBtn.closest('[data-nav-group="services"]');
           if (!g) return;
@@ -187,7 +190,6 @@ const aboutOpen =
 
         const aboutBtn = t.closest('[data-about-toggle]');
         if (aboutBtn) {
-          if (!mql.matches) return;
           e.preventDefault();
           const g = aboutBtn.closest('[data-nav-group="about"]');
           if (!g) return;
@@ -207,11 +209,10 @@ const aboutOpen =
     document.addEventListener(
       'pointerdown',
       (e) => {
-        if (!mql.matches) return;
         const t = eventTargetToElement(e.target);
         if (!t) return;
         if (t.closest('header.site-header')) return;
-        collapseSubmenusIfMobile();
+        collapseSubmenus();
       },
       true
     );
@@ -410,7 +411,9 @@ const aboutOpen =
     }
 
     .site-header__group:hover .site-header__sublist,
-    .site-header__group:focus-within .site-header__sublist {
+    .site-header__group:focus-within .site-header__sublist,
+    .site-header__group.is-services-open .site-header__sublist,
+    .site-header__group.is-about-open .site-header__sublist {
       visibility: visible;
       pointer-events: auto;
       transition: visibility 0s;
@@ -428,36 +431,43 @@ const aboutOpen =
 
     /* Enter: top → bottom */
     .site-header__group:hover .site-header__sublist > li,
-    .site-header__group:focus-within .site-header__sublist > li {
+    .site-header__group:focus-within .site-header__sublist > li,
+    .site-header__group.is-services-open .site-header__sublist > li,
+    .site-header__group.is-about-open .site-header__sublist > li {
       opacity: 1;
       transform: translateY(0);
     }
 
     .site-header__group:hover .site-header__sublist > li:nth-child(1),
-    .site-header__group:focus-within .site-header__sublist > li:nth-child(1) {
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(1),
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(1),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(1) {
       transition-delay: 0.04s;
     }
 
     .site-header__group:hover .site-header__sublist > li:nth-child(2),
-    .site-header__group:focus-within .site-header__sublist > li:nth-child(2) {
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(2),
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(2),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(2) {
       transition-delay: 0.1s;
     }
 
     .site-header__group:hover .site-header__sublist > li:nth-child(3),
-    .site-header__group:focus-within .site-header__sublist > li:nth-child(3) {
+    .site-header__group:focus-within .site-header__sublist > li:nth-child(3),
+    .site-header__group.is-services-open .site-header__sublist > li:nth-child(3),
+    .site-header__group.is-about-open .site-header__sublist > li:nth-child(3) {
       transition-delay: 0.16s;
     }
 
-    /* Exit: bottom → top (reverse stagger) */
-    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(1) {
+    .site-header__group:not(:hover):not(:focus-within):not(.is-services-open):not(.is-about-open) .site-header__sublist > li:nth-child(1) {
       transition-delay: 0.16s;
     }
 
-    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(2) {
+    .site-header__group:not(:hover):not(:focus-within):not(.is-services-open):not(.is-about-open) .site-header__sublist > li:nth-child(2) {
       transition-delay: 0.08s;
     }
 
-    .site-header__group:not(:hover):not(:focus-within) .site-header__sublist > li:nth-child(3) {
+    .site-header__group:not(:hover):not(:focus-within):not(.is-services-open):not(.is-about-open) .site-header__sublist > li:nth-child(3) {
       transition-delay: 0s;
     }
 
@@ -497,10 +507,9 @@ const aboutOpen =
     .site-header {
       height: auto;
       min-height: var(--header-h);
-      align-items: flex-start;
-      /* Safe area + extra inset so the taller lockup clears the notch */
-      padding-top: calc(var(--header-safe-pad) + 0.35rem);
-      padding-bottom: 0.2rem;
+      align-items: center;
+      padding-top: calc(var(--header-safe-pad) + 0.2rem);
+      padding-bottom: 0.15rem;
     }
 
     .site-header__logo--lockup {
@@ -508,30 +517,30 @@ const aboutOpen =
     }
 
     .site-header__inner {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.1rem 0;
-      padding-block: 0.15rem 0.08rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.35rem;
+      padding-block: 0.1rem;
     }
 
     .site-header__brand {
-      margin-right: 0;
-      width: 100%;
+      margin-right: auto;
+      width: auto;
       justify-content: flex-start;
-      padding-top: 0.1rem;
+      padding-top: 0;
+      flex-shrink: 0;
     }
 
     .site-header__nav {
       position: static;
       inset: auto;
-      flex: none;
-      width: 100%;
+      flex: 0 1 auto;
+      width: auto;
       min-width: 0;
-      /* Pull the link stack up toward the brand only (doesn’t move the wordmark into the safe area) */
-      margin: -0.4rem 0 0 0;
+      margin: 0;
       display: flex;
-      justify-content: stretch;
-      align-items: stretch;
+      justify-content: flex-end;
+      align-items: center;
       opacity: 1;
       transform: none;
       pointer-events: auto;
@@ -541,41 +550,40 @@ const aboutOpen =
     }
 
     .site-header__list {
-      flex-direction: column;
+      flex-direction: row;
       flex-wrap: nowrap;
-      justify-content: flex-start;
-      align-items: stretch;
-      gap: 0.12rem 0;
-      width: 100%;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.15rem 0.55rem;
+      width: auto;
       max-width: 100%;
     }
 
     .site-header__list > li {
-      width: 100%;
+      width: auto;
       min-width: 0;
-      max-width: 100%;
+      max-width: none;
     }
 
     .site-header__group {
-      width: 100%;
+      width: auto;
       min-width: 0;
-      max-width: 100%;
+      max-width: none;
     }
 
     .site-header__link,
     .site-header__subtrigger.site-header__link {
       font-size: var(--header-nav-link-size-mobile);
       letter-spacing: var(--header-nav-link-tracking-mobile);
-      padding: 0.14rem 0;
+      padding: 0.1rem 0;
       text-align: right;
-      width: 100%;
-      display: block;
+      width: auto;
+      display: inline-block;
       box-sizing: border-box;
     }
 
     /*
-      In-flow row of sublinks; items ease in horizontally (stagger).
-      `--header-bar` on mobile reserves vertical space for hero bleed.
+      Dropdown sublinks open in a row beneath the trigger; absolute so the bar stays one row tall.
     */
     .site-header__sublist {
       display: flex;
@@ -583,11 +591,14 @@ const aboutOpen =
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-end;
-      gap: 0.35rem 0.85rem;
-      position: static;
-      width: 100%;
+      gap: 0.35rem 0.65rem;
+      position: absolute;
+      top: calc(100% + 0.15rem);
+      right: 0;
+      left: auto;
+      width: max-content;
       min-width: 0;
-      max-width: 100%;
+      max-width: min(100vw - 2rem, 20rem);
       max-height: 0;
       opacity: 0;
       visibility: hidden;
@@ -602,15 +613,16 @@ const aboutOpen =
         max-height 0.3s var(--ease-out),
         opacity 0.22s var(--ease-out),
         visibility 0s linear 0.3s;
+      z-index: 60;
     }
 
     .site-header__group.is-services-open .site-header__sublist,
     .site-header__group.is-about-open .site-header__sublist {
-      max-height: 3.5rem;
+      max-height: 4rem;
       opacity: 1;
       visibility: visible;
-      margin-top: 0.12rem;
-      padding-bottom: 0.12rem;
+      margin-top: 0;
+      padding-bottom: 0.1rem;
       transition:
         max-height 0.3s var(--ease-out),
         opacity 0.22s var(--ease-out),

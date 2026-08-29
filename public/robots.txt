@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://eagle.knotynetwork.com/sitemap.xml
+Sitemap: https://www.eagledetailingcorp.com/sitemap.xml

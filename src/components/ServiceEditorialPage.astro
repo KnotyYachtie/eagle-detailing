@@ -22,7 +22,7 @@ export interface Props {
   chapterRightLabelId: string;
   chapterRightLabel: string;
   chapterRightParagraphs: string[];
-  quoteText: string;
+  quoteText?: string;
   servicesEyebrowId: string;
   servicesHeadlineId: string;
   servicesEyebrow: string;
@@ -220,11 +220,15 @@ const formId = `${formFieldPrefix}-reach-form`;
         </div>
       </section>
 
-      <section class="marine-quote u-container" aria-label="Editorial note">
-        <blockquote class="marine-quote__inner">
-          <p>{quoteText}</p>
-        </blockquote>
-      </section>
+      {
+        quoteText && (
+          <section class="marine-quote u-container" aria-label="Editorial note">
+            <blockquote class="marine-quote__inner">
+              <p>{quoteText}</p>
+            </blockquote>
+          </section>
+        )
+      }
 
       <section class="marine-chapter marine-chapter--split marine-chapter--flip" aria-labelledby={chapterRightLabelId}>
         <div class="marine-chapter__inner u-container">
@@ -475,7 +479,7 @@ const formId = `${formFieldPrefix}-reach-form`;
 
     /* Slight tuck under the sticky site header — keep overlap minimal. */
     .marine-page--stack .marine-hero--fixed {
-      margin-top: clamp(-0.5rem, -1.1vw, -0.22rem);
+      margin-top: 0;
     }
 
     .marine-hero__intro {
@@ -490,11 +494,8 @@ const formId = `${formFieldPrefix}-reach-form`;
     }
 
     .marine-hero--fixed .marine-hero__content {
-      /*
-        Stacked mobile: `main` already sits under the sticky site header — do not add `var(--header-bar)` again
-        (that reserve is for the home hero where copy overlaps the same viewport as the nav).
-      */
-      padding-top: 0;
+      /* Clear the sticky site header so eyebrow + H1 are fully visible on narrow viewports. */
+      padding-top: calc(var(--header-h) + clamp(0.35rem, 2.2vw, 0.85rem));
     }
 
     .marine-hero--fixed .marine-hero__content {
