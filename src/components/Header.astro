@@ -532,7 +532,7 @@ const aboutOpen =
     }
 
     .site-header__nav {
-      position: static;
+      position: relative;
       inset: auto;
       flex: 0 1 auto;
       width: auto;
@@ -569,6 +569,8 @@ const aboutOpen =
       width: auto;
       min-width: 0;
       max-width: none;
+      /* Let open sublists position against `.site-header__nav` (right edge), not this trigger. */
+      position: static;
     }
 
     .site-header__link,
@@ -583,7 +585,8 @@ const aboutOpen =
     }
 
     /*
-      Dropdown sublinks open in a row beneath the trigger; absolute so the bar stays one row tall.
+      Dropdown sublinks open in a row beneath the nav cluster; absolute to `.site-header__nav`
+      so items stay right-aligned under Services / About, not under the logo lockup.
     */
     .site-header__sublist {
       display: flex;
@@ -597,13 +600,15 @@ const aboutOpen =
       right: 0;
       left: auto;
       width: max-content;
-      min-width: 0;
       max-width: min(100vw - 2rem, 20rem);
+      margin-left: auto;
       max-height: 0;
       opacity: 0;
       visibility: hidden;
       overflow: hidden;
-      margin: 0;
+      margin-top: 0;
+      margin-right: 0;
+      margin-bottom: 0;
       padding: 0;
       background: none;
       border: none;

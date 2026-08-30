@@ -811,13 +811,7 @@ const formId = `${formFieldPrefix}-reach-form`;
     margin: 0 0 var(--space-sm);
   }
 
-  /* Aviation: drop hero copy slightly (padding only — no image scale). */
-  @media (max-width: 768px) {
-    .marine-page--aviation .marine-hero--fixed .marine-hero__content {
-      padding-top: clamp(0.4rem, 1.8vw, 1rem);
-    }
-  }
-
+  /* Aviation: drop hero copy slightly on desktop (padding only — no image scale). */
   @media (min-width: 769px) {
     .marine-page--aviation .marine-hero__content {
       padding-top: clamp(0.75rem, 2.2vw, 1.5rem);
