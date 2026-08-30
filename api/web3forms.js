@@ -22,24 +22,47 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  const formData = new FormData();
-  formData.append('access_key', accessKey);
+  const upstreamBody = { access_key: accessKey };
 
   for (const [key, value] of Object.entries(payload)) {
     if (key === 'botcheck' || key === 'access_key') continue;
     if (value == null) continue;
     const text = String(value).trim();
-    if (text) formData.append(key, text);
+    if (text) upstreamBody[key] = text;
   }
 
   try {
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(upstreamBody),
     });
-    const data = await response.json();
+
+    const raw = await response.text();
+    let data;
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      console.error('Web3Forms upstream returned non-JSON response', {
+        status: response.status,
+        contentType: response.headers.get('content-type'),
+        bodyPreview: raw.slice(0, 200),
+      });
+      return res.status(502).json({
+        success: false,
+        message: 'Upstream returned an invalid response',
+      });
+    }
+
     return res.status(response.status).json(data);
-  } catch {
+  } catch (error) {
+    console.error('Web3Forms upstream request failed', {
+      name: error?.name,
+      message: error?.message,
+    });
     return res.status(502).json({ success: false, message: 'Upstream error' });
   }
 }
