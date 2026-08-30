@@ -42,6 +42,8 @@ export interface Props {
   carouselSlideAlt: string;
   serviceRows?: string[];
   heroParallax?: ImageMetadata;
+  /** Open Graph / Twitter image; defaults to hero parallax when set. */
+  ogImage?: ImageMetadata;
   chapterLeftImage?: ImageMetadata;
   chapterLeftAlt?: string;
   chapterRightImage?: ImageMetadata;
@@ -86,6 +88,7 @@ const {
   carouselSlideAlt,
   serviceRows = [],
   heroParallax,
+  ogImage: ogImageProp,
   chapterLeftImage,
   chapterLeftAlt = '',
   chapterRightImage,
@@ -97,11 +100,13 @@ const {
 
 const hasCarousel = Boolean(carouselImages && carouselImages.length > 0);
 const formId = `${formFieldPrefix}-reach-form`;
+const ogImage = ogImageProp ?? heroParallax;
 ---
 
 <BaseLayout
   title={title}
   description={description}
+  ogImage={ogImage}
   transparentHeader={true}
   dataHomeLoadIntro={true}
   themeColor={themeColor}

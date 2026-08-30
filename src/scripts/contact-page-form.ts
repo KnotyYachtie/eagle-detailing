@@ -1,5 +1,5 @@
 import { SITE } from '../site';
-import { submitInquiryToWeb3Forms } from './web3forms-submit';
+import { setFormStatus, submitInquiryToWeb3Forms } from './web3forms-submit';
 
 function bindContactPageForm(form: HTMLFormElement): void {
   if (form.dataset.contactPageBound === '1') return;
@@ -10,16 +10,28 @@ function bindContactPageForm(form: HTMLFormElement): void {
   if (!submitBtn) return;
 
   form.addEventListener('submit', (e) => {
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      setFormStatus(statusEl, 'Please fill in all required fields.', 'err');
+      return;
+    }
+
     e.preventDefault();
+
     const fd = new FormData(form);
     const name = String(fd.get('name') ?? '').trim();
-    const phoneOrEmail = String(fd.get('phone_or_email') ?? '').trim();
+    const email = String(fd.get('email') ?? '').trim();
+    const phone = String(fd.get('phone') ?? '').trim();
     const serviceType = String(fd.get('service_type') ?? '').trim();
     const message = String(fd.get('message') ?? '').trim();
-    if (!name || !phoneOrEmail || !serviceType || !message) return;
 
-    const extra: Record<string, string> = {};
-    if (phoneOrEmail.includes('@')) extra.email = phoneOrEmail;
+    if (!name || !email || !serviceType || !message) {
+      setFormStatus(statusEl, 'Please fill in all required fields.', 'err');
+      return;
+    }
+
+    const extra: Record<string, string> = { email };
+    if (phone) extra.phone = phone;
 
     void submitInquiryToWeb3Forms({
       form,

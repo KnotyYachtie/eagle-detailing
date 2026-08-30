@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/services",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/services/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "eagle.knotynetwork.com" }],
+      "destination": "https://www.eagledetailingcorp.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.eagle.knotynetwork.com" }],
+      "destination": "https://www.eagledetailingcorp.com/:path*",
+      "permanent": true
+    }
+  ]
+}

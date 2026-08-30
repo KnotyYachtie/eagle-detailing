@@ -15,6 +15,7 @@ const contactMarinaBg = `url(${marina1.src})`;
 <BaseLayout
   title="Contact"
   description={`Contact ${SITE.shortName} — call, email, or request yacht, aircraft, and automotive service across South Florida.`}
+  ogImage={marina1}
   transparentHeader={false}
   dataHomeLoadIntro={false}
   themeColor="#050a14"
@@ -92,7 +93,7 @@ const contactMarinaBg = `url(${marina1.src})`;
             </div>
           </div>
 
-          <form class="contact-form" id="contact-page-form" action="#" method="post" novalidate>
+          <form class="contact-form" id="contact-page-form" action="#" method="post">
             <div class="contact-form__row contact-form__row--2">
               <label class="contact-form__field">
                 <span class="contact-form__label">Full name</span>
@@ -106,17 +107,29 @@ const contactMarinaBg = `url(${marina1.src})`;
                 />
               </label>
               <label class="contact-form__field">
-                <span class="contact-form__label">Phone or email <span class="contact-form__req">(required)</span></span>
+                <span class="contact-form__label">Email address</span>
                 <input
                   class="contact-form__input"
-                  name="phone_or_email"
-                  type="text"
+                  name="email"
+                  type="email"
                   required
-                  autocomplete="off"
-                  placeholder="Phone number or email"
+                  autocomplete="email"
+                  inputmode="email"
+                  placeholder="you@example.com"
                 />
               </label>
             </div>
+            <label class="contact-form__field">
+              <span class="contact-form__label">Phone <span class="contact-form__opt">(optional)</span></span>
+              <input
+                class="contact-form__input"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                inputmode="tel"
+                placeholder="+1 (555) 000-0000"
+              />
+            </label>
             <label class="contact-form__field">
               <span class="contact-form__label">Service type</span>
               <div class="contact-form__select-wrap">

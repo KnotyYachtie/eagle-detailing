@@ -1,8 +1,4 @@
-const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
-export function web3formsAccessKey(): string {
-  return String(import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '').trim();
-}
+const WEB3FORMS_PROXY = '/api/web3forms';
 
 type StatusTone = 'ok' | 'err' | '';
 
@@ -23,6 +19,23 @@ type SubmitInquiryOptions = {
   sendingLabel?: string;
 };
 
+function payloadFromForm(form: HTMLFormElement, extra?: Record<string, string>): Record<string, string> {
+  const payload: Record<string, string> = {};
+  const formData = new FormData(form);
+  for (const [key, value] of formData.entries()) {
+    if (key === 'access_key') continue;
+    const text = String(value).trim();
+    if (text) payload[key] = text;
+  }
+  if (extra) {
+    for (const [key, value] of Object.entries(extra)) {
+      const text = value.trim();
+      if (text) payload[key] = text;
+    }
+  }
+  return payload;
+}
+
 export async function submitInquiryToWeb3Forms({
   form,
   submitBtn,
@@ -32,23 +45,13 @@ export async function submitInquiryToWeb3Forms({
   extra,
   sendingLabel = 'Sending…',
 }: SubmitInquiryOptions): Promise<boolean> {
-  const accessKey = web3formsAccessKey();
-  if (!accessKey) {
-    setFormStatus(statusEl, 'Form is not configured. Please call or email us.', 'err');
-    return false;
-  }
-
   const labelEl = submitBtn.querySelector<HTMLElement>('[data-submit-label]');
   const originalLabel = (labelEl?.textContent ?? submitBtn.textContent ?? '').trim();
-  const formData = new FormData(form);
-  formData.append('access_key', accessKey);
-  formData.append('subject', subject);
-  formData.append('from_name', fromName);
-  if (extra) {
-    for (const [key, value] of Object.entries(extra)) {
-      formData.set(key, value);
-    }
-  }
+  const payload = payloadFromForm(form, {
+    subject,
+    from_name: fromName,
+    ...extra,
+  });
 
   submitBtn.disabled = true;
   submitBtn.setAttribute('aria-busy', 'true');
@@ -57,12 +60,20 @@ export async function submitInquiryToWeb3Forms({
   setFormStatus(statusEl, '', '');
 
   try {
-    const response = await fetch(WEB3FORMS_ENDPOINT, { method: 'POST', body: formData });
-    const data = (await response.json()) as { success?: boolean };
+    const response = await fetch(WEB3FORMS_PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = (await response.json()) as { success?: boolean; message?: string };
     if (response.ok && data.success) {
       setFormStatus(statusEl, 'Thank you — we’ll be in touch shortly.', 'ok');
       form.reset();
       return true;
+    }
+    if (response.status === 503) {
+      setFormStatus(statusEl, 'Form is not configured. Please call or email us.', 'err');
+      return false;
     }
     setFormStatus(statusEl, 'We couldn’t send that. Please call or email us.', 'err');
     return false;

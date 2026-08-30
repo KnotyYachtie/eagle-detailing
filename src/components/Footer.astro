@@ -17,7 +17,7 @@ const exploreLinks = [...NAV_SERVICES, ...NAV_MAIN];
             src={logoEagle.src}
             width={logoEagle.width}
             height={logoEagle.height}
-            alt=""
+            alt={SITE.shortName}
             decoding="async"
           />
           <img
@@ -111,6 +111,8 @@ const exploreLinks = [...NAV_SERVICES, ...NAV_MAIN];
         © {year} {SITE.name}. All rights reserved.
       </p>
       <p class="site-footer__legal site-footer__legal--meta">
+        <a class="site-footer__legal-link" href="/privacy">Privacy</a>
+        <span aria-hidden="true"> · </span>
         Based in {SITE.locality}, {SITE.region}. Licensed &amp; insured.
       </p>
     </div>
@@ -538,5 +540,21 @@ const exploreLinks = [...NAV_SERVICES, ...NAV_MAIN];
     font-size: 0.8125rem;
     color: rgba(239, 236, 231, 0.52);
     line-height: 1.45;
+  }
+
+  .site-footer__legal-link {
+    color: rgba(239, 236, 231, 0.72);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .site-footer__legal-link:hover {
+    color: #fff;
+  }
+
+  .site-footer__legal-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 </style>
