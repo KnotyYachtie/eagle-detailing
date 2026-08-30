@@ -105,12 +105,13 @@
       `constant(safe-area-inset-top, 0px)` is invalid and poisons `--header-safe-pad`, which then
       breaks every `calc(... + var(--header-safe-pad) + ...)` hero min-height in WebKit/Blink.
     */
-    --header-lockup-w: clamp(88px, 20vw, 112px);
+    --header-lockup-w: clamp(72px, 18vw, 96px);
+    --header-chrome-pad-block: 0.55rem;
     --header-safe-pad: 0px;
     --header-safe-pad: max(0px, constant(safe-area-inset-top));
     --header-safe-pad: max(0px, env(safe-area-inset-top, 0px));
-    /* Stacked brand + vertical nav — keep in sync with `Header.astro` mobile chrome height */
-    --header-bar: 8.75rem;
+    /* Single-row logo + nav — keep in sync with `Header.astro` mobile chrome height */
+    --header-bar: calc(var(--header-lockup-h) + var(--header-chrome-pad-block));
     --header-h: calc(var(--header-bar) + var(--header-safe-pad));
   }
 }

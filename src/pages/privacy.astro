@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+import marina1 from '../../assets/marina1.png';
+---
+
+<BaseLayout
+  title="Privacy"
+  description={`How ${SITE.shortName} collects and uses inquiry information submitted through this website.`}
+  transparentHeader={false}
+  dataHomeLoadIntro={false}
+  ogImage={marina1}
+>
+  <section class="page-hero u-container">
+    <p class="u-eyebrow">Privacy</p>
+    <h1>Your information</h1>
+    <p class="u-muted page-hero__lede">
+      A short summary of what we collect when you use our contact and service inquiry forms, and how to
+      reach us about your data.
+    </p>
+  </section>
+  <section class="u-section page-body">
+    <div class="u-container prose">
+      <h2>What we collect</h2>
+      <p>
+        When you submit a form on this site, we ask for information needed to respond to your request —
+        typically your name, email address, an optional phone number, service type, and your message. Contact
+        forms may also include optional details such as vessel or vehicle information and location.
+      </p>
+      <h2>How inquiries are delivered</h2>
+      <p>
+        Form submissions are sent securely to our team through
+        <a href="https://web3forms.com" rel="noopener noreferrer">Web3Forms</a> and delivered to
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. We use this information only to review your
+        request and follow up about detailing services.
+      </p>
+      <h2>Where we operate</h2>
+      <p>
+        {SITE.name} is based in {SITE.locality}, {SITE.region}, and provides mobile detailing across South
+        Florida.
+      </p>
+      <h2>Retention and deletion</h2>
+      <p>
+        We keep inquiry messages only as long as needed to respond and maintain our client records. To
+        request deletion of information you submitted through this site, email
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> from the address you used on the form and
+        describe your request.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        For privacy questions, contact us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call
+        <a href={`tel:${SITE.phoneTel}`}>{SITE.phoneDisplay}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .page-hero__lede {
+    max-width: 40rem;
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .prose h2 {
+    margin: 2rem 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--color-cream);
+  }
+
+  .prose h2:first-child {
+    margin-top: 0;
+  }
+
+  .prose p {
+    margin: 0 0 1rem;
+    line-height: 1.7;
+    color: rgba(239, 236, 231, 0.88);
+  }
+
+  .prose a {
+    color: var(--color-accent);
+    text-underline-offset: 0.15em;
+  }
+
+  .prose a:hover {
+    color: #fff;
+  }
+</style>

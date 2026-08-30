@@ -11,7 +11,11 @@ import yacht1 from '../../assets/yacht1.png';
 import yacht2 from '../../assets/yacht2.png';
 ---
 
-<BaseLayout title={SITE.shortName}>
+<BaseLayout
+  title="South Florida Yacht, Aircraft & Auto Detailing"
+  description="Mobile yacht, aircraft, and automotive detailing in Fort Lauderdale and across South Florida — correction, protection, and maintenance for discerning owners."
+  ogImage={heroImage}
+>
   <section class="hero">
     <div class="hero__media">
       <img
@@ -477,7 +481,7 @@ import yacht2 from '../../assets/yacht2.png';
   }
 
   html[data-home-load-intro] .hero__img {
-    opacity: 0;
+    opacity: 0.25;
     filter: blur(5px) brightness(0.55);
     animation: homeHeroImgIntro 2.1s cubic-bezier(0.25, 0.1, 0.25, 1) 0s forwards;
   }
@@ -510,7 +514,7 @@ import yacht2 from '../../assets/yacht2.png';
 
   html[data-home-load-intro] .site-header--transparent {
     opacity: 0;
-    animation: homeFadeOnly 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s forwards;
+    animation: homeFadeOnly 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s forwards;
   }
 
   .hero__metric {

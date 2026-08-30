@@ -4,11 +4,12 @@
  * - All viewports: `--hero-inner-vh` from `visualViewport` / `innerHeight` (Safari URL bar).
  */
 
-const MIN_PX = 52;
-const MAX_PX = 132;
+const MIN_PX = 58;
+const MAX_PX = 148;
+const PRESCROLL_RATIO = 0.102;
 
 function offsetPx(): number {
-  return Math.round(Math.min(MAX_PX, Math.max(MIN_PX, window.innerHeight * 0.092)));
+  return Math.round(Math.min(MAX_PX, Math.max(MIN_PX, window.innerHeight * PRESCROLL_RATIO)));
 }
 
 function readVisualHeight(): number {

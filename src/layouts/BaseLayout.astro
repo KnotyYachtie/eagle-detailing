@@ -1,13 +1,17 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../site';
+import { absoluteImageUrl, buildLocalBusinessJsonLd } from '../seo';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
+  /** Open Graph / Twitter card image (page-relevant asset import). */
+  ogImage?: ImageMetadata;
   transparentHeader?: boolean;
   /**
    * When true (default), `<html>` gets `data-home-load-intro`: live `visualViewport` height (`--hero-inner-vh`),
@@ -27,6 +31,7 @@ interface Props {
 const {
   title,
   description = SITE.description,
+  ogImage,
   transparentHeader = true,
   dataHomeLoadIntro = true,
   themeColor = '#050505',
@@ -39,7 +44,7 @@ const criticalCanvas = canvasColor ?? '#050505';
  * Routes with `dataHomeLoadIntro`: first paint sets `--hero-inner-vh`; mobile-only `--home-prescroll-y` + scroll (desktop stays 0).
  */
 const homeHeroViewportHeadScript = dataHomeLoadIntro
-  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(132,Math.max(52,ih*0.092)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
+  ? `(function(){try{var d=document.documentElement;if(!d.hasAttribute('data-home-load-intro'))return;var vv=window.visualViewport;var ih=Math.round((vv&&vv.height)||window.innerHeight||0);if(ih)d.style.setProperty('--hero-inner-vh',ih+'px');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.matchMedia('(max-width:960px)').matches){d.style.setProperty('--home-prescroll-y','0px');return;}var y=Math.round(Math.min(148,Math.max(58,ih*0.102)));d.style.setProperty('--home-prescroll-y',y+'px');try{if('scrollRestoration'in history)history.scrollRestoration='manual';}catch(e){}window.scrollTo(0,y);}catch(e){}})();`
   : '';
 
 /** First-paint scroll + canvas; values injected so `canvasColor` affects Safari before `global.css`. */
@@ -73,25 +78,8 @@ const criticalInlineCss = `
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const pageTitle = title === SITE.shortName ? title : `${title} · ${SITE.shortName}`;
 const faviconQuery = `?v=${SITE.faviconVersion}`;
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: SITE.name,
-  image: `${SITE.url}/logo-blue-on-white.png`,
-  '@id': SITE.url,
-  url: SITE.url,
-  telephone: SITE.phoneTel,
-  email: SITE.email,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: SITE.locality,
-    addressRegion: SITE.region,
-    addressCountry: SITE.country,
-  },
-  areaServed: 'South Florida',
-  description: SITE.description,
-};
+const socialImageUrl = ogImage ? absoluteImageUrl(ogImage) : absoluteImageUrl('/logo-blue-on-white.png');
+const jsonLd = buildLocalBusinessJsonLd();
 ---
 
 <!doctype html>
@@ -133,10 +121,11 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={SITE.shortName} />
-    <meta property="og:image" content={`${SITE.url}/jet-2.png`} />
+    <meta property="og:image" content={socialImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
@@ -155,4 +144,3 @@ const jsonLd = {
     </script>
   </body>
 </html>
-

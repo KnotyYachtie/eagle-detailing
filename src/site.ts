@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'Eagle Detailing Yacht & Aircraft Care LLC',
   shortName: 'Eagle Detailing Yacht & Aircraft Care',
-  url: 'https://eagle.knotynetwork.com',
+  url: 'https://www.eagledetailingcorp.com',
   description:
     'Yacht and aircraft care for discerning owners across South Florida — plus exceptional automotive detailing. Mobile service based in Fort Lauderdale.',
   /** Footer / secondary line — automotive stays on-site without competing with the primary name. */
@@ -32,8 +32,11 @@ export const NAV_SERVICES = [
   { href: '/automotive', label: 'Automotive' },
 ] as const;
 
-/** Contact — grouped under “About” in the site header. */
-export const NAV_ABOUT_CHILDREN = [{ href: '/contact', label: 'Contact' }] as const;
+/** About + Contact — grouped under “About” in the site header. */
+export const NAV_ABOUT_CHILDREN = [
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+] as const;
 
 export const NAV_MAIN = [{ href: '/projects', label: 'Projects' }] as const;
 
