@@ -1,4 +1,8 @@
-const WEB3FORMS_PROXY = '/api/web3forms';
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+
+export function web3formsAccessKey(): string {
+  return String(import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '').trim();
+}
 
 type StatusTone = 'ok' | 'err' | '';
 
@@ -45,6 +49,12 @@ export async function submitInquiryToWeb3Forms({
   extra,
   sendingLabel = 'Sending…',
 }: SubmitInquiryOptions): Promise<boolean> {
+  const accessKey = web3formsAccessKey();
+  if (!accessKey) {
+    setFormStatus(statusEl, 'Form is not configured. Please call or email us.', 'err');
+    return false;
+  }
+
   const labelEl = submitBtn.querySelector<HTMLElement>('[data-submit-label]');
   const originalLabel = (labelEl?.textContent ?? submitBtn.textContent ?? '').trim();
   const payload = payloadFromForm(form, {
@@ -52,6 +62,7 @@ export async function submitInquiryToWeb3Forms({
     from_name: fromName,
     ...extra,
   });
+  payload.access_key = accessKey;
 
   submitBtn.disabled = true;
   submitBtn.setAttribute('aria-busy', 'true');
@@ -60,20 +71,16 @@ export async function submitInquiryToWeb3Forms({
   setFormStatus(statusEl, '', '');
 
   try {
-    const response = await fetch(WEB3FORMS_PROXY, {
+    const response = await fetch(WEB3FORMS_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(payload),
     });
-    const data = (await response.json()) as { success?: boolean; message?: string };
+    const data = (await response.json()) as { success?: boolean };
     if (response.ok && data.success) {
       setFormStatus(statusEl, 'Thank you — we’ll be in touch shortly.', 'ok');
       form.reset();
       return true;
-    }
-    if (response.status === 503) {
-      setFormStatus(statusEl, 'Form is not configured. Please call or email us.', 'err');
-      return false;
     }
     setFormStatus(statusEl, 'We couldn’t send that. Please call or email us.', 'err');
     return false;
