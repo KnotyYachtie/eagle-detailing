@@ -28,6 +28,8 @@
   --color-accent: #c4b896;
   /* Footer + seamless handoff from dark page endings (e.g. marine reach). */
   --footer-bg: #0a1628;
+  /* Homepage process → footer floor (single closing canvas). */
+  --page-close-floor: #0a1628;
   /* Vertical rhythm: divider → Contact, Contact → Explore, Explore → legal strip (marine + site footer). */
   --footer-cta-section-gap: clamp(1.65rem, 4.5vw, 2.05rem);
   --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
@@ -123,6 +125,7 @@
 }
 
 html {
+  scroll-padding-top: calc(var(--header-h, 4.5rem) + 0.5rem);
   /* Stable vertical scrollbox + hidden bar; matches critical `<style>` in `BaseLayout.astro`. */
   overflow-y: scroll;
   overflow-x: hidden;
@@ -318,6 +321,21 @@ p:last-child {
 
 .u-section--tight {
   padding-block: var(--space-lg);
+}
+
+/*
+  Shared closing rhythm: main content hands off to footer without extra banding.
+  Home wraps Process in `.page-close--home`; footer uses `.site-footer--home-close`.
+*/
+.page-close--home {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  padding-top: calc(var(--header-h, 4.5rem) + clamp(0.5rem, 2vw, 1rem));
+  padding-bottom: clamp(0.5rem, 2vw, 0.85rem);
+  background:
+    radial-gradient(ellipse 85% 48% at 16% 8%, rgba(52, 88, 138, 0.1) 0%, transparent 50%),
+    linear-gradient(180deg, #0a121f 0%, var(--page-close-floor) 72%, var(--page-close-floor) 100%);
 }
 
 .u-muted {
