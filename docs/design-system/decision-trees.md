@@ -57,7 +57,7 @@
    - **Yes** → **Still** balance **grid weight** and **copy** so all three remain co-equal; do not “fix” with unequal column spans.
 
 2. **Need richer story than a link?**  
-   - **Yes, on home only** → Overlay expand is allowed; **default** remains navigable pages for Marine / Aviation / Automotive.
+   - **Yes, on home only** → Overlay expand is allowed; **default** remains navigable pages for Marine / Aviation.
 
 ---
 

@@ -1,10 +1,10 @@
-# Marine page — text inventory (for Automotive / Aviation parity)
+# Marine page — text inventory (Aviation parity)
 
-Reference for generating **`src/pages/automotive.astro`** and **`src/pages/aviation.astro`** props so they mirror **`src/pages/marine.astro`** + **`ServiceEditorialPage.astro`**.
+Reference for generating `src/pages/aviation.astro` props so they mirror `src/pages/marine.astro` + `ServiceEditorialPage.astro`.
 
-**Shell:** All three routes use `ServiceEditorialPage.astro`. Copy is passed as **props** (and optionally a **`services-rows` slot** on Marine). The **site header and footer** come from `BaseLayout` and are **not** listed below—they are global chrome.
+**Shell:** Marine and Aviation routes use `ServiceEditorialPage.astro`. Copy is passed as **props** (and optionally a **`services-rows` slot** on Marine). The **site header and footer** come from `BaseLayout` and are **not** listed below—they are global chrome.
 
-**IDs:** Each vertical needs **unique** `chapterLeftLabelId`, `chapterRightLabelId`, `servicesEyebrowId`, `servicesHeadlineId`, `reachHeadingId`, and **`formFieldPrefix`** (drives form field `id`s). Marine uses `marine-*`; automotive uses `automotive-*`; aviation uses `aviation-*`.
+**IDs:** Each vertical needs **unique** `chapterLeftLabelId`, `chapterRightLabelId`, `servicesEyebrowId`, `servicesHeadlineId`, `reachHeadingId`, and **`formFieldPrefix`**. Marine uses `marine-*`; aviation uses `aviation-*`.
 
 ---
 
@@ -25,7 +25,7 @@ Reference for generating **`src/pages/automotive.astro`** and **`src/pages/aviat
 | Headline | `heroTitle` | Primary H1 | `Gelcoat to brightwork` |
 | Supporting line | `heroLede` | Hero body / value proposition (user-visible paragraph under H1) | `Luxury center consoles to superyachts; we correct, protect, and maintain finishes in salt-air environments with a disciplined, inspection-first process.` |
 
-**Images (not prose):** Parallax hero uses `heroParallax` image; auto/aviation omit it (gradient placeholder).
+**Images (not prose):** Parallax hero uses `heroParallax` image on Marine and Aviation.
 
 ---
 
@@ -87,7 +87,7 @@ Reference for generating **`src/pages/automotive.astro`** and **`src/pages/aviat
 
 ### Service rows
 
-On **Marine**, rows are passed via the **`services-rows` slot** (custom icons + text). On **Automotive / Aviation**, rows come from the **`serviceRows`** prop (same strings rendered with a generic icon).
+On **Marine**, rows are passed via the **`services-rows` slot** (custom icons + text). On **Aviation**, rows come from the **`serviceRows`** prop (same strings rendered with a generic icon).
 
 **Marine row labels (7 rows), top to bottom:**
 
@@ -108,7 +108,7 @@ On **Marine**, rows are passed via the **`services-rows` slot** (custom icons + 
 
 **Hardcoded in `ServiceEditorialPage` (same on all verticals):** phone button shows **`SITE.phoneDisplay`** and label **`Call or text`**; `aria-label` is `Call or text {phone}`.
 
-**Visual:** Marine passes **`eagleSvgHtml`** (inline eagle SVG). Auto/Aviation omit → dashed **placeholder** silhouette (no copy).
+**Visual:** Marine and Aviation pass **`eagleSvgHtml`** (inline eagle SVG watermark in services column).
 
 ---
 
@@ -138,7 +138,7 @@ On **Marine**, rows are passed via the **`services-rows` slot** (custom icons + 
 
 ### Form labels / placeholders **shared across verticals** (hardcoded in `ServiceEditorialPage`)
 
-These are **not** props—same English on Marine / Auto / Aviation unless you later refactor:
+These are **not** props—same English on Marine / Aviation unless you later refactor:
 
 | UI | Text |
 |----|------|
@@ -156,34 +156,32 @@ These are **not** props—same English on Marine / Auto / Aviation unless you la
 
 ---
 
-## 9. Placeholder pages — prop checklist (Automotive / Aviation)
+## 9. Aviation page — prop checklist
 
 Every item below should be filled with **domain-appropriate** copy; structure stays the same.
 
-| Prop | Automotive / Aviation notes |
-|------|-----------------------------|
-| `title` | Page name only (`Automotive`, `Aviation`) |
+| Prop | Aviation notes |
+|------|----------------|
+| `title` | Page name only (`Aviation`) |
 | `description` | Meta description TBD |
-| `heroEyebrow` | `Automotive` / `Aviation` |
+| `heroEyebrow` | `Aviation` |
 | `heroTitle`, `heroLede` | Full headline + supporting paragraph |
 | `chapterLeftLabelId`, `chapterRightLabelId`, … | Unique IDs per route (already patterned in `.astro` files) |
 | `chapterLeftLabel`, `chapterLeftParagraphs` | Process / philosophy chapter |
 | `chapterRightLabel`, `chapterRightParagraphs` | Logistics / service-area chapter |
 | `quoteText` | Approved testimonial-style quote |
 | `servicesEyebrow`, `servicesHeadline`, `servicesLede` | Services section intro |
-| `serviceRows` **or** slot | Same count/style as marine (marine uses 7 rows); auto/aviation use string array |
+| `serviceRows` **or** slot | Same count/style as marine (marine uses 7 rows); aviation uses string array |
 | `servicesCtaTitle`, `servicesCtaSub` | Urgent-contact framing for that vertical |
 | `reachTitle`, `reachLede` | Usually keep “Get in touch” + vertical-specific lede |
-| `reachSubjectPrefix` | `Automotive` / `Aviation` |
-| `reachMessageLabel`, `reachMessageHint` | Vehicle- or aircraft-specific prompts |
-| `formFieldPrefix` | `automotive` / `aviation` |
+| `reachSubjectPrefix` | `Aviation` |
+| `reachMessageLabel`, `reachMessageHint` | Aircraft-specific prompts |
+| `formFieldPrefix` | `aviation` |
 | `carouselId`, `carouselAriaLabel`, `carouselSlideAlt` | Until real carousel assets exist, placeholders are fine |
 
 ---
 
 ## 10. Current placeholder snapshots (for diffing)
-
-**Automotive** (`serviceRows` length 6): exterior wash, paint correction, ceramic coating, wheels & glass, interior detailing, maintenance plans.
 
 **Aviation** (`serviceRows` length 5): exterior wash & gloss, paint refinement, protective coatings, brightwork & accents, cabin surfaces & leather.
 

@@ -14,7 +14,7 @@ const contactMarinaBg = `url(${marina1.src})`;
 
 <BaseLayout
   title="Contact"
-  description={`Contact ${SITE.shortName} — call, email, or request yacht, aircraft, and automotive service across South Florida.`}
+  description={`Contact ${SITE.shortName} — call, email, or request yacht or aircraft service across South Florida.`}
   ogImage={marina1}
   transparentHeader={false}
   dataHomeLoadIntro={false}
@@ -137,7 +137,6 @@ const contactMarinaBg = `url(${marina1.src})`;
                   <option value="" disabled selected>Select a service type</option>
                   <option value="Marine">Marine</option>
                   <option value="Aviation">Aviation</option>
-                  <option value="Automotive">Automotive</option>
                   <option value="General inquiry">General inquiry</option>
                   <option value="Other">Other</option>
                 </select>
@@ -145,13 +144,13 @@ const contactMarinaBg = `url(${marina1.src})`;
             </label>
             <div class="contact-form__row contact-form__row--2">
               <label class="contact-form__field">
-                <span class="contact-form__label">Vessel name / type <span class="contact-form__opt">(optional)</span></span>
+                <span class="contact-form__label">Yacht / aircraft <span class="contact-form__opt">(optional)</span></span>
                 <input
                   class="contact-form__input"
                   name="vessel"
                   type="text"
                   autocomplete="off"
-                  placeholder="e.g. Motor yacht, 80′"
+                  placeholder="e.g. Motor yacht 80′ or Citation"
                 />
               </label>
               <label class="contact-form__field">

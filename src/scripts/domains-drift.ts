@@ -45,7 +45,7 @@ function pickSpineArticle(articles: HTMLElement[]): string | null {
 }
 
 function createSpineSync(root: HTMLElement): { tick: () => void; dispose: () => void } {
-  const ids = ['marine', 'aviation', 'automotive'] as const;
+  const ids = ['marine', 'aviation'] as const;
   const articles = ids.map((id) => document.getElementById(id)).filter((n): n is HTMLElement => !!n);
   if (!articles.length) {
     return { tick: () => {}, dispose: () => {} };
@@ -81,7 +81,7 @@ function applyHashScroll(): void {
   const pth = window.location.pathname;
   if (pth !== '/' && pth !== '/index.html') return;
   const hash = window.location.hash.replace('#', '');
-  if (hash !== 'marine' && hash !== 'aviation' && hash !== 'automotive') return;
+  if (hash !== 'marine' && hash !== 'aviation') return;
   const el = document.getElementById(hash);
   if (!el) return;
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });

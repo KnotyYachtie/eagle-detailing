@@ -25,9 +25,10 @@ Primary signal:
 - Consistent spacing
 - Controlled motion
 
-**Three Domains (Marine · Aviation · Automotive)**
-- One brand, one visual system — not three different microsites
+**Two Domains (Marine · Aviation)**
+- One brand, one visual system — not separate microsites
 - Same composition rules across imagery for every domain
+- Hero / footer brand line: **“One standard. Multiple domains.”**
 
 ---
 
@@ -42,8 +43,6 @@ Primary signal:
 Subjects:
 - Jet fuselage (reflection + curvature)
 - Yacht hull (gloss + waterline)
-- Automotive paint (gloss, curvature, tight crop)
-
 Avoid:
 - lifestyle scenes
 - cluttered marinas
@@ -131,7 +130,7 @@ Tone:
 - Specific
 
 Examples:
-- "Precision Detailing for Yachts, Aircraft & Exceptional Automobiles"
+- "One standard. Multiple domains."
 - "Correction · Protection · Maintenance"
 
 Avoid:
@@ -154,8 +153,8 @@ Avoid:
 Full-bleed, minimal, cinematic.
 
 **Visual:**
-- Surface-based imagery across domains (jet · yacht · automobile) — same grading, framing, and crop language when multiple shots exist
-- Subtle transition (slow lateral or crossfade) when using a sequence; **v1 may use a single static hero** if copy still names all three domains
+- Surface-based imagery across domains (jet · yacht) — same grading, framing, and crop language when multiple shots exist
+- Subtle transition (slow lateral or crossfade) when using a sequence; **v1 may use a single static hero** if copy still names both domains
 
 **Content:**
 - Headline (serif)
@@ -180,12 +179,11 @@ Full-bleed, minimal, cinematic.
 
 ### Section 1 — Domain Entry
 
-Three **co-equal** entry points (Home + top-level nav):
+Two **co-equal** entry points (Home + top-level nav):
 - Marine
 - Aviation
-- Automotive
 
-Each entry should feel **balanced** across Marine / Aviation / Automotive (copy must signal all three even if one photograph leads visually). **IA (exploring):** may stay **multi-route** or move toward **one-page** nav → **in-page sections** (`#marine` / `#aviation` / `#automotive`) — decide before locking nav behavior.
+Each entry should feel **balanced** across Marine and Aviation (copy must signal both even if one photograph leads visually). **IA:** **multi-route** pages (`/marine`, `/aviation`) plus **in-page** sections (`#marine` / `#aviation`) on home.
 
 **Glass / depth:** **Glassmorphism is not banned** — when it reads **high-end** (legibility, restraint, token-bound blur/rim), it is in play. Domains are the **next** surface to prove that recipe; avoid gratuitous frosted “app chrome” that fights photography.
 
@@ -234,7 +232,7 @@ No long paragraphs.
 
 **v1 (current):**
 - Phone-first + Instagram + **`info@eagledetailingcorp.com`** (`mailto` / visible address; `SITE.email`)
-- Contact page + Marine / Aviation / Automotive **reach forms POST to Web3Forms** (`PUBLIC_WEB3FORMS_ACCESS_KEY`); delivery inbox is the same `SITE.email`.
+- Contact page + Marine / Aviation **reach forms POST to Web3Forms** (`PUBLIC_WEB3FORMS_ACCESS_KEY`); delivery inbox is the same `SITE.email`.
 
 **Later:**
 - AI chat may replace the static form; keep the provider thin until then.
@@ -382,7 +380,7 @@ Real = Authority
 ## MVP Build Priorities
 
 1. Hero (core identity; photo-first, minimal motion)
-2. Domain entry + pages: **Marine**, **Aviation**, **Automotive**
+2. Domain entry + pages: **Marine**, **Aviation**
 3. Contact surfaces (phone, IG, email) + Web3Forms inquiry POST to `SITE.email`
 4. Basic gallery (real images when available)
 

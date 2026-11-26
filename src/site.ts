@@ -3,9 +3,9 @@ export const SITE = {
   shortName: 'Eagle Detailing Yacht & Aircraft Care',
   url: 'https://www.eagledetailingcorp.com',
   description:
-    'Yacht and aircraft care for discerning owners across South Florida — plus exceptional automotive detailing. Mobile service based in Fort Lauderdale.',
-  /** Footer / secondary line — automotive stays on-site without competing with the primary name. */
-  tagline: 'Plus exceptional automotive detailing across South Florida',
+    'Yacht and aircraft care for discerning owners across South Florida. Mobile service based in Fort Lauderdale — one standard of precision across marine and aviation.',
+  /** Footer / secondary line under the logo lockup. */
+  tagline: 'One standard. Multiple domains.',
   phoneDisplay: '(561) 324-9405',
   phoneTel: '+15613249405',
   email: 'info@eagledetailingcorp.com',
@@ -19,17 +19,16 @@ export const SITE = {
   country: 'US',
 } as const;
 
-/** Shared `theme-color` + `--page-canvas` for `/marine`, `/automotive`, `/aviation` (`ServiceEditorialPage`). */
+/** Shared `theme-color` + `--page-canvas` for `/marine` and `/aviation` (`ServiceEditorialPage`). */
 export const SERVICE_EDITORIAL_SHELL_COLORS = {
   themeColor: '#0a1118',
   canvasColor: '#0a1118',
 } as const;
 
-/** Marine / Aviation / Automotive — grouped under “Services” in the site header. */
+/** Marine / Aviation — grouped under “Services” in the site header. */
 export const NAV_SERVICES = [
   { href: '/marine', label: 'Marine' },
   { href: '/aviation', label: 'Aviation' },
-  { href: '/automotive', label: 'Automotive' },
 ] as const;
 
 /** About + Contact — grouped under “About” in the site header. */
