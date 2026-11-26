@@ -40,6 +40,18 @@ When a row documents a **mistake path**, prefer an explicit **“Should have bee
 
 ---
 
+## Polish — two-band vertical rhythm (Nov 2026 UI pass)
+
+| | |
+|--|--|
+| **Where we started** | Chapter **`min-height: min(76vh, 42rem)`** and generous **`--domains-*` tokens** tuned when **three** bands stacked; on **two** bands the homepage read as excess dead scroll (especially mobile). |
+| **Where we landed** | Tighter **`--domains-chapter-pad-y`** / **`--domains-row-gap`**; band **`min-height: min(58vh, 34rem)`** desktop, **`min-height: 0`** mobile; mobile **`domains-band__lede`** hidden (mini explore carries copy); **`#aviation`** hairline + pad on **`≤719px`**; Process + CTA use **`u-section--tight`**. |
+| **Empathy signal** | Continuous read, no “empty runway” between hero and Process. |
+| **Design system tie** | Same canvas / spine / motion; spacing only — no backbone promotion. |
+| **Tension / gap** | If a third domain returns, re-tune tokens as a set; do not restore old per-band vh floors without another IA pass. |
+
+---
+
 ## Current — long scroll drift on canvas (Apr 2026, rev. 3)
 
 | | |

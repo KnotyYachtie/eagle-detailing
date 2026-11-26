@@ -360,6 +360,19 @@ p:last-child {
   min-width: 7.5rem;
 }
 
+@media (max-width: 767px) {
+  .process-list li {
+    align-items: flex-start;
+    gap: 0.65rem;
+    line-height: 1.55;
+  }
+
+  .process-list strong {
+    min-width: 6.25rem;
+    flex-shrink: 0;
+  }
+}
+
 /* --- Page shell (was BaseLayout `<style is:global>`; single source for Safari + flex) --- */
 .page {
   min-height: 100vh;
@@ -378,6 +391,12 @@ p:last-child {
 
 .page__main:has(.contact-page) {
   background-color: #050a14;
+}
+
+.page__main:has(.about-page) {
+  display: flex;
+  flex-direction: column;
+  background-color: #0a1628;
 }
 
 /*

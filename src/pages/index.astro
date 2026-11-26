@@ -216,7 +216,7 @@ import yacht2 from '../../assets/yacht2.png';
     </article>
     </div>
   </section>
-  <section class="u-section process-preview index-atmos">
+  <section class="u-section u-section--tight process-preview index-atmos">
     <div class="u-container process-preview__grid">
       <div>
         <p class="u-eyebrow">Process</p>
@@ -234,7 +234,7 @@ import yacht2 from '../../assets/yacht2.png';
       </ul>
     </div>
   </section>
-  <section class="u-section cta-band index-atmos">
+  <section class="u-section u-section--tight cta-band index-atmos">
     <div class="u-container cta-band__inner">
       <div>
         <h2>Discuss your vessel or aircraft</h2>
@@ -1048,9 +1048,8 @@ import yacht2 from '../../assets/yacht2.png';
       linear-gradient(172deg, #03050a 0%, #060b14 32%, #0a121f 68%, #05080e 100%);
     /* Hairline tuck under hero bottom */
     margin-top: -6px;
-    padding-top: calc(var(--space-xl) + 6px);
-    /* Extra floor space so bottom flares read before Trust */
-    padding-bottom: calc(var(--space-xl) + clamp(1.75rem, 4vw, 2.75rem));
+    padding-top: calc(var(--space-lg) + 6px);
+  padding-bottom: calc(var(--space-lg) + clamp(1rem, 2.5vw, 1.65rem));
     z-index: 3;
   }
 
@@ -1132,9 +1131,10 @@ import yacht2 from '../../assets/yacht2.png';
     --spine-gap: clamp(0.62rem, 1.55vw, 0.85rem);
     --spine-node: 0.44rem;
     /* Band vertical padding token (spine links are row-centered; bands still use this for padding-block). */
-    --domains-chapter-pad-y: clamp(1.9rem, 5.25vw, 3.35rem);
+    /* Tighter chapters after repositioning to two bands (was tuned for three full-viewport beats). */
+    --domains-chapter-pad-y: clamp(1.55rem, 4.1vw, 2.65rem);
     /* Equal vertical gutter between Marine / Aviation rows (desktop grid). */
-    --domains-row-gap: clamp(1.35rem, 3.25vw, 2.35rem);
+    --domains-row-gap: clamp(1.1rem, 2.75vw, 1.85rem);
     grid-template-columns: var(--spine-col) minmax(0, 1fr);
     column-gap: clamp(0.55rem, 1.85vw, 1.35rem);
     row-gap: var(--domains-row-gap);
@@ -1291,15 +1291,33 @@ import yacht2 from '../../assets/yacht2.png';
 
     /* Match desktop `row-gap` when the grid collapses to block flow. */
     #aviation.domains-band {
-      margin-top: var(--domains-row-gap, clamp(1.35rem, 3.25vw, 2.35rem));
+      margin-top: var(--domains-row-gap, clamp(1.1rem, 2.75vw, 1.85rem));
+      padding-top: clamp(1.5rem, 4.5vw, 2.1rem);
+      border-top: 1px solid rgba(239, 236, 231, 0.07);
     }
   }
 
   .domains-band {
     scroll-margin-top: calc(var(--header-h, 4.25rem) + 0.75rem);
     /* Slightly shorter beats + consistent vertical rhythm = one continuous read, not three full-viewport islands. */
-    padding-block: var(--domains-chapter-pad-y, clamp(1.9rem, 5.25vw, 3.35rem));
-    min-height: min(76vh, 42rem);
+    padding-block: var(--domains-chapter-pad-y, clamp(1.55rem, 4.1vw, 2.65rem));
+    min-height: min(58vh, 34rem);
+  }
+
+  @media (max-width: 719px) {
+    .domains-band {
+      min-height: 0;
+      padding-block: clamp(1.35rem, 5vw, 2rem);
+    }
+
+    /* Mini explore card carries the lede on narrow viewports — drop duplicate paragraph. */
+    .domains-band__lede {
+      display: none;
+    }
+
+    .domains-band__title {
+      margin-bottom: 0.85rem;
+    }
   }
 
   .domains-band__stage {
@@ -1682,6 +1700,8 @@ import yacht2 from '../../assets/yacht2.png';
   @media (min-width: 768px) {
     .process-preview__grid {
       grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 3.25rem);
     }
   }
 
@@ -1725,6 +1745,15 @@ import yacht2 from '../../assets/yacht2.png';
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
+    width: 100%;
+  }
+
+  @media (max-width: 719px) {
+    .cta-band__actions .u-btn {
+      flex: 1 1 calc(50% - var(--space-xs));
+      justify-content: center;
+      min-width: min(100%, 9.5rem);
+    }
   }
 </style>
 
