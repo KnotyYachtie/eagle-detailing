@@ -3,8 +3,8 @@
 1. **Luxury is subtraction**  
    If the fix is “add another layer,” first ask what can be **removed**. Restraint beats decoration.
 
-2. **One brand, three domains**  
-   Marine · Aviation · Automotive share **one visual system** — not three micro-aesthetics. Parity in nav, cards, and copy weight matters more than any single hero photo.
+2. **One brand, two domains**  
+   Marine · Aviation share **one visual system** — not separate micro-aesthetics. Parity in nav, cards, and copy weight matters more than any single hero photo.
 
 3. **Surface leads, chrome follows**  
    Photography carries authority; UI exists to **frame** and **read**, not to compete with the image.

@@ -1,6 +1,16 @@
 {
   "redirects": [
     {
+      "source": "/automotive",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/automotive/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/services",
       "destination": "/",
       "permanent": true

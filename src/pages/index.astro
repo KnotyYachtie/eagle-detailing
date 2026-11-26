@@ -4,16 +4,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site';
 import aviationTn from '../../assets/aviation/jethero3.png';
 import heroImage from '../../assets/yacht6.png';
-import car1 from '../../assets/automotive/car1.png';
-import car2 from '../../assets/car.2.png';
 import jet2 from '../../assets/jet-2.png';
 import yacht1 from '../../assets/yacht1.png';
 import yacht2 from '../../assets/yacht2.png';
 ---
 
 <BaseLayout
-  title="South Florida Yacht, Aircraft & Auto Detailing"
-  description="Mobile yacht, aircraft, and automotive detailing in Fort Lauderdale and across South Florida — correction, protection, and maintenance for discerning owners."
+  title="South Florida Yacht & Aircraft Detailing"
+  description="Mobile yacht and aircraft detailing in Fort Lauderdale and across South Florida — correction, protection, and maintenance for discerning owners."
   ogImage={heroImage}
 >
   <section class="hero">
@@ -56,14 +54,12 @@ import yacht2 from '../../assets/yacht2.png';
     <div class="hero__content u-container">
       <h1 class="hero__title">
         <span class="hero-load-headline__part hero-load-headline__part--1">One standard.</span>
-        <span class="hero-load-headline__part hero-load-headline__part--2"> Three domains.</span>
+        <span class="hero-load-headline__part hero-load-headline__part--2"> Multiple domains.</span>
       </h1>
       <p class="hero__domain-links" aria-label="Service domains">
         <a href="/#marine">Marine</a>
         <span aria-hidden="true">•</span>
         <a href="/#aviation">Aviation</a>
-        <span aria-hidden="true">•</span>
-        <a href="/#automotive">Automotive</a>
       </p>
       <!--
       <div class="hero__actions">
@@ -218,72 +214,6 @@ import yacht2 from '../../assets/yacht2.png';
         </div>
       </div>
     </article>
-      <a class="domains-spine__link" href="#automotive" data-spine="automotive">
-        <span class="domains-spine__label">Automotive</span>
-        <span class="domains-spine__bar" aria-hidden="true"></span>
-        <span class="domains-spine__node" aria-hidden="true"></span>
-      </a>
-    <article id="automotive" class="domains-band" aria-label="Automotive detailing">
-      <div class="domains-band__stage" data-drift-scrub style="--drift-exit: 0;">
-        <div class="domains-band__inner u-container" data-drifts-in>
-        <div class="domains-band__layout">
-          <figure class="domains-band__fig" aria-hidden="true">
-            <div class="domains-band__plate rellax" data-rellax-speed="-0.38">
-              <img
-                src={car1.src}
-                alt=""
-                width={car1.width}
-                height={car1.height}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="domains-band__float rellax" data-rellax-speed="0.22">
-              <img
-                src={car2.src}
-                alt=""
-                width={car2.width}
-                height={car2.height}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </figure>
-          <div class="domains-band__text">
-            <p class="domains-band__eyebrow">Automotive</p>
-            <h3 class="domains-band__title">Paint systems that stay exceptional</h3>
-            <p class="domains-band__lede">
-              High-end paint correction, ceramic coating, and maintenance for exceptional road cars.
-            </p>
-            <a
-              class="domains-drift__explore card-domain card-domain--automotive card-domain--mini"
-              href="/automotive"
-              data-domain-card
-            >
-              <span class="card-domain__content">
-                <span class="card-domain__title">Automotive</span>
-                <div class="card-domain__body">
-                  <p>High-end paint correction, ceramic coating, and maintenance for exceptional road cars.</p>
-                </div>
-                <span class="card-domain__cta">A closer look</span>
-                <span class="card-domain__visual card-domain__visual--automotive">
-                  <img
-                    class="card-domain__img"
-                    src={car1.src}
-                    alt=""
-                    width={car1.width}
-                    height={car1.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </span>
-              </span>
-            </a>
-          </div>
-        </div>
-        </div>
-      </div>
-    </article>
     </div>
   </section>
   <section class="u-section process-preview index-atmos">
@@ -307,7 +237,7 @@ import yacht2 from '../../assets/yacht2.png';
   <section class="u-section cta-band index-atmos">
     <div class="u-container cta-band__inner">
       <div>
-        <h2>Discuss your vessel, aircraft, or collection</h2>
+        <h2>Discuss your vessel or aircraft</h2>
         <p class="u-muted">Call, email, or message — we respond promptly.</p>
       </div>
       <div class="cta-band__actions">
@@ -1203,12 +1133,12 @@ import yacht2 from '../../assets/yacht2.png';
     --spine-node: 0.44rem;
     /* Band vertical padding token (spine links are row-centered; bands still use this for padding-block). */
     --domains-chapter-pad-y: clamp(1.9rem, 5.25vw, 3.35rem);
-    /* Equal vertical gutter between Marine / Aviation / Automotive rows (desktop grid). */
+    /* Equal vertical gutter between Marine / Aviation rows (desktop grid). */
     --domains-row-gap: clamp(1.35rem, 3.25vw, 2.35rem);
     grid-template-columns: var(--spine-col) minmax(0, 1fr);
     column-gap: clamp(0.55rem, 1.85vw, 1.35rem);
     row-gap: var(--domains-row-gap);
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
   }
 
   /* Full-height line between label and node (node sits to the right of the spine). */
@@ -1310,15 +1240,13 @@ import yacht2 from '../../assets/yacht2.png';
   }
 
   .domains-drift[data-spine-active='marine'] .domains-spine__link[data-spine='marine'],
-  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'],
-  .domains-drift[data-spine-active='automotive'] .domains-spine__link[data-spine='automotive'] {
+  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'] {
     color: var(--color-accent);
     text-shadow: 0 0 22px rgba(196, 184, 150, 0.22);
   }
 
   .domains-drift[data-spine-active='marine'] .domains-spine__link[data-spine='marine'] .domains-spine__node,
-  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'] .domains-spine__node,
-  .domains-drift[data-spine-active='automotive'] .domains-spine__link[data-spine='automotive'] .domains-spine__node {
+  .domains-drift[data-spine-active='aviation'] .domains-spine__link[data-spine='aviation'] .domains-spine__node {
     background: var(--color-accent);
     border-color: rgba(154, 142, 112, 0.95);
     box-shadow:
@@ -1334,10 +1262,6 @@ import yacht2 from '../../assets/yacht2.png';
     grid-row: 2;
   }
 
-  .domains-spine__link[data-spine='automotive'] {
-    grid-row: 3;
-  }
-
   #marine.domains-band {
     grid-column: 2;
     grid-row: 1;
@@ -1346,11 +1270,6 @@ import yacht2 from '../../assets/yacht2.png';
   #aviation.domains-band {
     grid-column: 2;
     grid-row: 2;
-  }
-
-  #automotive.domains-band {
-    grid-column: 2;
-    grid-row: 3;
   }
 
   @media (max-width: 719px) {
@@ -1365,15 +1284,13 @@ import yacht2 from '../../assets/yacht2.png';
     }
 
     #marine.domains-band,
-    #aviation.domains-band,
-    #automotive.domains-band {
+    #aviation.domains-band {
       grid-column: unset;
       grid-row: unset;
     }
 
     /* Match desktop `row-gap` when the grid collapses to block flow. */
-    #aviation.domains-band,
-    #automotive.domains-band {
+    #aviation.domains-band {
       margin-top: var(--domains-row-gap, clamp(1.35rem, 3.25vw, 2.35rem));
     }
   }
@@ -1431,7 +1348,7 @@ import yacht2 from '../../assets/yacht2.png';
   }
 
   @media (min-width: 860px) {
-    /* Staggered drift: Marine + Automotive = collage | copy; Aviation = copy | collage via RTL swap (same DOM as others). */
+    /* Staggered drift: Marine = collage | copy; Aviation = copy | collage via RTL swap (same DOM as Marine). */
     .domains-band__layout {
       grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
       direction: ltr;
@@ -1879,37 +1796,6 @@ import yacht2 from '../../assets/yacht2.png';
     border-color: rgba(175, 230, 200, 0.28);
   }
 
-  .domain-expand__panel--automotive {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 252, 248, 0.34) 0%,
-      rgba(242, 232, 222, 0.28) 55%,
-      rgba(228, 216, 200, 0.32) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.45);
-    backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.25));
-    -webkit-backdrop-filter: var(--glass-blur-modal, blur(52px) saturate(1.25));
-  }
-
-  .domain-expand__panel--automotive .domain-expand__close {
-    border-color: rgba(16, 33, 53, 0.18);
-    background: rgba(16, 33, 53, 0.06);
-    color: var(--color-navy, #102135);
-  }
-
-  .domain-expand__panel--automotive .domain-expand__close:hover {
-    background: rgba(16, 33, 53, 0.1);
-    border-color: rgba(16, 33, 53, 0.28);
-  }
-
-  .domain-expand__panel--automotive .domain-expand__title {
-    color: var(--color-navy, #102135);
-  }
-
-  .domain-expand__panel--automotive .domain-expand__desc {
-    color: rgba(16, 33, 53, 0.72);
-  }
-
   .domain-expand__close {
     position: absolute;
     top: 0.75rem;
@@ -1970,10 +1856,6 @@ import yacht2 from '../../assets/yacht2.png';
     text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
   }
 
-  .domain-expand__panel--automotive .domain-expand__title {
-    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.45);
-  }
-
   .domain-expand__visual {
     width: 100%;
     height: min(30vh, 13rem);
@@ -2026,30 +1908,12 @@ import yacht2 from '../../assets/yacht2.png';
     );
   }
 
-  .domain-expand__visual--automotive {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.4) 0%,
-      rgba(200, 208, 220, 0.35) 48%,
-      rgba(140, 150, 168, 0.42) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -14px 32px rgba(16, 33, 53, 0.12);
-  }
-
   .domain-expand__desc {
     margin: 0 0 1.75rem;
     font-size: 1.0625rem;
     line-height: 1.65;
     color: rgba(239, 236, 231, 0.9);
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .domain-expand__panel--automotive .domain-expand__desc {
-    color: rgba(16, 33, 53, 0.78);
-    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.35);
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -2070,10 +1934,6 @@ import yacht2 from '../../assets/yacht2.png';
 
     .domain-expand__panel--aviation {
       background: rgba(16, 34, 30, 0.98);
-    }
-
-    .domain-expand__panel--automotive {
-      background: rgba(250, 246, 240, 0.98);
     }
 
     .domain-expand__visual:not(.domain-expand__visual--photo) {

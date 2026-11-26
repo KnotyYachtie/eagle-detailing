@@ -6,7 +6,6 @@ const INDEXABLE_PATHS = [
   '/',
   '/marine',
   '/aviation',
-  '/automotive',
   '/about',
   '/contact',
   '/projects',
@@ -16,7 +15,7 @@ const INDEXABLE_PATHS = [
 export const GET: APIRoute = () => {
   const urls = INDEXABLE_PATHS.map((path) => {
     const loc = new URL(path, SITE.url).href;
-    const priority = path === '/' ? '1' : path === '/privacy' ? '0.5' : path.match(/^\/(marine|aviation|automotive|contact)$/) ? '0.9' : '0.7';
+    const priority = path === '/' ? '1' : path === '/privacy' ? '0.5' : path.match(/^\/(marine|aviation|contact)$/) ? '0.9' : '0.7';
     const changefreq = path === '/' ? 'weekly' : 'monthly';
     return `  <url><loc>${loc}</loc><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
   }).join('\n');

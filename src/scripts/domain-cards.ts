@@ -33,7 +33,6 @@ function prefersReducedMotion(): boolean {
 function getThemeClass(card: HTMLElement): string {
   if (card.classList.contains('card-domain--marine')) return 'domain-expand__panel--marine';
   if (card.classList.contains('card-domain--aviation')) return 'domain-expand__panel--aviation';
-  if (card.classList.contains('card-domain--automotive')) return 'domain-expand__panel--automotive';
   return 'domain-expand__panel--marine';
 }
 
@@ -95,11 +94,7 @@ export function initDomainCards(): void {
     const ctaLabel = card.querySelector('.card-domain__cta')?.textContent?.trim() || 'Explore';
     ctaEl.textContent = ctaLabel;
 
-    panel.classList.remove(
-      'domain-expand__panel--marine',
-      'domain-expand__panel--aviation',
-      'domain-expand__panel--automotive',
-    );
+    panel.classList.remove('domain-expand__panel--marine', 'domain-expand__panel--aviation');
     panel.classList.add(getThemeClass(card));
 
     visualEl.className = 'domain-expand__visual';
@@ -119,8 +114,6 @@ export function initDomainCards(): void {
       visualEl.classList.add('domain-expand__visual--marine');
     } else if (card.classList.contains('card-domain--aviation')) {
       visualEl.classList.add('domain-expand__visual--aviation');
-    } else if (card.classList.contains('card-domain--automotive')) {
-      visualEl.classList.add('domain-expand__visual--automotive');
     }
   }
 

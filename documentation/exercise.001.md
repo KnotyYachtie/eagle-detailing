@@ -28,6 +28,18 @@ When a row documents a **mistake path**, prefer an explicit **“Should have bee
 
 ---
 
+## Current — marine + aviation only (Nov 2026 repositioning)
+
+| | |
+|--|--|
+| **Where we started** | Three scroll chapters (**Marine · Aviation · Automotive**), **`/automotive`** route, automotive assets and nav, hero **“One standard. Three domains.”** |
+| **Where we landed** | **Two** homepage chapters (`#marine` · `#aviation`); **two-row** spine grid; hero **“One standard. Multiple domains.”**; **`NAV_SERVICES`** = Marine + Aviation; **`/automotive`** **301** → **`/`**; automotive chapter markup, expand theming, and **`assets/automotive/`** removed. **`tests/spine-layout.spec.ts`** compares **two** spine rows. |
+| **Empathy signal** | One uncompromising standard across yacht and aircraft care — premium, concise, no third column dead weight. |
+| **Design system tie** | `assumptions.md` Canonical #5–6; `src/site.ts` tagline + description. |
+| **Tension / gap** | Historical rows below still mention three domains for prior beats — read as archive, not current IA. |
+
+---
+
 ## Current — long scroll drift on canvas (Apr 2026, rev. 3)
 
 | | |

@@ -106,7 +106,7 @@ Key decisions:
 Sequence is controlled with `html[data-home-load-intro]` selectors:
 
 ```css
-/* Headline parts: “One standard.” / “Three domains.” */
+/* Headline parts: “One standard.” / “Multiple domains.” */
 html[data-home-load-intro] .hero-load-headline__part {
   display: inline-block;
   opacity: 0;

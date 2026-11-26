@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site';
 import FlowbiteCarousel from './FlowbiteCarousel.astro';
 
-/** Fallback icon when parent omits `services-rows` slot (automotive / aviation placeholders). */
+/** Fallback icon when parent omits `services-rows` slot (aviation placeholders). */
 const GENERIC_ROW_ICON =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg>';
 
@@ -50,8 +50,8 @@ export interface Props {
   chapterRightAlt?: string;
   carouselImages?: ImageMetadata[];
   eagleSvgHtml?: string;
-  /** Vertical-specific layout tweaks (`marine-page--aviation` | `marine-page--automotive`). */
-  editorialVertical?: 'aviation' | 'automotive';
+  /** Vertical-specific layout tweaks (`marine-page--aviation`). */
+  editorialVertical?: 'aviation';
 }
 
 const {
@@ -117,7 +117,6 @@ const ogImage = ogImageProp ?? heroParallax;
       'marine-page',
       'marine-page--stack',
       editorialVertical === 'aviation' && 'marine-page--aviation',
-      editorialVertical === 'automotive' && 'marine-page--automotive',
     ]}
     data-marine-page
   >
@@ -563,10 +562,6 @@ const ogImage = ogImageProp ?? heroParallax;
     max-width: 100vw;
     }
 
-    .marine-page--automotive .marine-page__parallax-img {
-      object-position: 100% 0%;
-    }
-
     .marine-page__canvas {
       display: none;
     }
@@ -624,13 +619,6 @@ const ogImage = ogImageProp ?? heroParallax;
       will-change: transform;
     }
 
-    /* Automotive: lighter bleed than Marine/Aviation (`-24%`) — nudges hero up slightly; top need not stay flush. */
-    .marine-page--automotive .marine-page__parallax-rellax {
-      top: -10%;
-      bottom: -10%;
-      min-height: 120%;
-    }
-
     .marine-page__parallax-frame {
       position: absolute;
       inset: 0;
@@ -649,18 +637,9 @@ const ogImage = ogImageProp ?? heroParallax;
       border-radius: inherit;
     }
 
-    .marine-page--automotive .marine-page__parallax-img {
-      object-position: 100% 0%;
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .marine-page__parallax-img {
         transform: scale(1.15);
-      }
-
-      /* Keep automotive top-right crop fixed; default center origin lifts the visible top. */
-      .marine-page--automotive .marine-page__parallax-img {
-        transform-origin: top right;
       }
     }
 
@@ -1449,12 +1428,6 @@ const ogImage = ogImageProp ?? heroParallax;
       margin-top: 0;
     }
 
-    /* Automotive services: keep eagle watermark centered against the full services column height. */
-    .marine-page--automotive .marine-services__visual {
-      align-self: stretch;
-      display: flex;
-      align-items: center;
-    }
   }
 
   .marine-services__eagle {
