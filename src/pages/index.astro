@@ -13,6 +13,7 @@ import yacht2 from '../../assets/yacht2.png';
   title="South Florida Yacht & Aircraft Detailing"
   description="Mobile yacht and aircraft detailing in Fort Lauderdale and across South Florida — correction, protection, and maintenance for discerning owners."
   ogImage={heroImage}
+  closingPromo
 >
   <section class="hero">
     <div class="hero__media">
@@ -216,38 +217,26 @@ import yacht2 from '../../assets/yacht2.png';
     </article>
     </div>
   </section>
-  <section class="u-section process-preview index-atmos">
-    <div class="u-container process-preview__grid">
-      <div>
-        <p class="u-eyebrow">Process</p>
-        <h2>Inspection to longevity</h2>
-        <p class="u-muted">
-          Every engagement begins with surfaces, environment, and how you use the asset — then we build a
-          clear scope.
-        </p>
+  <div class="page-close page-close--home" aria-label="Process and next steps">
+    <section class="page-close__process process-preview">
+      <div class="u-container process-preview__grid">
+        <div>
+          <p class="u-eyebrow">Process</p>
+          <h2>Inspection to longevity</h2>
+          <p class="u-muted">
+            Every engagement begins with surfaces, environment, and how you use the asset — then we build a
+            clear scope.
+          </p>
+        </div>
+        <ul class="process-list">
+          <li><strong>Inspect</strong> condition, defects, risks</li>
+          <li><strong>Correct</strong> paint, gelcoat, defects</li>
+          <li><strong>Protect</strong> ceramic &amp; film where appropriate</li>
+          <li><strong>Maintain</strong> programs you can schedule</li>
+        </ul>
       </div>
-      <ul class="process-list">
-        <li><strong>Inspect</strong> condition, defects, risks</li>
-        <li><strong>Correct</strong> paint, gelcoat, defects</li>
-        <li><strong>Protect</strong> ceramic &amp; film where appropriate</li>
-        <li><strong>Maintain</strong> programs you can schedule</li>
-      </ul>
-    </div>
-  </section>
-  <section class="u-section cta-band index-atmos">
-    <div class="u-container cta-band__inner">
-      <div>
-        <h2>Discuss your vessel or aircraft</h2>
-        <p class="u-muted">Call, email, or message — we respond promptly.</p>
-      </div>
-      <div class="cta-band__actions">
-        <a class="u-btn" href="/contact">Contact</a>
-        <a class="u-btn u-btn--ghost" href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer">
-          Instagram
-        </a>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -1048,10 +1037,10 @@ import yacht2 from '../../assets/yacht2.png';
       linear-gradient(172deg, #03050a 0%, #060b14 32%, #0a121f 68%, #05080e 100%);
     /* Hairline tuck under hero bottom */
     margin-top: -6px;
-    padding-top: calc(var(--space-xl) + 6px);
-    /* Extra floor space so bottom flares read before Trust */
-    padding-bottom: calc(var(--space-xl) + clamp(1.75rem, 4vw, 2.75rem));
+    padding-top: calc(var(--space-lg) + 6px);
+    padding-bottom: calc(var(--space-lg) + clamp(1rem, 2.5vw, 1.65rem));
     z-index: 3;
+    overflow: clip;
   }
 
   /* Grain above section backdrop; content above grain */
@@ -1132,9 +1121,10 @@ import yacht2 from '../../assets/yacht2.png';
     --spine-gap: clamp(0.62rem, 1.55vw, 0.85rem);
     --spine-node: 0.44rem;
     /* Band vertical padding token (spine links are row-centered; bands still use this for padding-block). */
-    --domains-chapter-pad-y: clamp(1.9rem, 5.25vw, 3.35rem);
+    /* Tighter chapters after repositioning to two bands (was tuned for three full-viewport beats). */
+    --domains-chapter-pad-y: clamp(1.55rem, 4.1vw, 2.65rem);
     /* Equal vertical gutter between Marine / Aviation rows (desktop grid). */
-    --domains-row-gap: clamp(1.35rem, 3.25vw, 2.35rem);
+    --domains-row-gap: clamp(1.1rem, 2.75vw, 1.85rem);
     grid-template-columns: var(--spine-col) minmax(0, 1fr);
     column-gap: clamp(0.55rem, 1.85vw, 1.35rem);
     row-gap: var(--domains-row-gap);
@@ -1291,15 +1281,33 @@ import yacht2 from '../../assets/yacht2.png';
 
     /* Match desktop `row-gap` when the grid collapses to block flow. */
     #aviation.domains-band {
-      margin-top: var(--domains-row-gap, clamp(1.35rem, 3.25vw, 2.35rem));
+      margin-top: var(--domains-row-gap, clamp(1.1rem, 2.75vw, 1.85rem));
+      padding-top: clamp(1.5rem, 4.5vw, 2.1rem);
+      border-top: 1px solid rgba(239, 236, 231, 0.07);
     }
   }
 
   .domains-band {
     scroll-margin-top: calc(var(--header-h, 4.25rem) + 0.75rem);
     /* Slightly shorter beats + consistent vertical rhythm = one continuous read, not three full-viewport islands. */
-    padding-block: var(--domains-chapter-pad-y, clamp(1.9rem, 5.25vw, 3.35rem));
-    min-height: min(76vh, 42rem);
+    padding-block: var(--domains-chapter-pad-y, clamp(1.55rem, 4.1vw, 2.65rem));
+    min-height: min(58vh, 34rem);
+  }
+
+  @media (max-width: 719px) {
+    .domains-band {
+      min-height: 0;
+      padding-block: clamp(1.35rem, 5vw, 2rem);
+    }
+
+    /* Mini explore card carries the lede on narrow viewports — drop duplicate paragraph. */
+    .domains-band__lede {
+      display: none;
+    }
+
+    .domains-band__title {
+      margin-bottom: 0.85rem;
+    }
   }
 
   .domains-band__stage {
@@ -1637,20 +1645,17 @@ import yacht2 from '../../assets/yacht2.png';
     }
   }
 
-  .process-preview.index-atmos {
-    background:
-      radial-gradient(ellipse 90% 55% at 18% 12%, rgba(52, 88, 138, 0.12) 0%, transparent 48%),
-      radial-gradient(ellipse 80% 60% at 88% 88%, rgba(38, 72, 62, 0.08) 0%, transparent 45%),
-      radial-gradient(ellipse 100% 85% at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.32) 100%),
-      linear-gradient(178deg, #05080e 0%, #08121c 42%, #0a1828 100%);
+  .page-close__process {
+    padding-block: clamp(1.25rem, 3.5vw, 2.25rem) clamp(1rem, 3vw, 1.75rem);
+    background: transparent;
   }
 
-  .process-preview.index-atmos .u-eyebrow {
+  .page-close__process .u-eyebrow {
     color: rgba(232, 236, 245, 0.48);
     letter-spacing: 0.26em;
   }
 
-  .process-preview.index-atmos > .u-container > div > h2 {
+  .page-close__process > .u-container > div > h2 {
     color: #f2f5fa;
     font-weight: 500;
     font-size: clamp(1.85rem, 3.6vw, 2.55rem);
@@ -1660,16 +1665,16 @@ import yacht2 from '../../assets/yacht2.png';
       0 0 64px rgba(88, 128, 188, 0.1);
   }
 
-  .process-preview.index-atmos > .u-container > div > .u-muted {
+  .page-close__process > .u-container > div > .u-muted {
     color: rgba(168, 186, 214, 0.78);
     line-height: 1.65;
   }
 
-  .process-preview.index-atmos .process-list li {
+  .page-close__process .process-list li {
     color: rgba(168, 186, 214, 0.72);
   }
 
-  .process-preview.index-atmos .process-list strong {
+  .page-close__process .process-list strong {
     color: rgba(236, 240, 248, 0.92);
   }
 
@@ -1682,50 +1687,11 @@ import yacht2 from '../../assets/yacht2.png';
   @media (min-width: 768px) {
     .process-preview__grid {
       grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .cta-band.index-atmos {
-    background:
-      radial-gradient(ellipse 95% 70% at 50% -10%, rgba(72, 108, 158, 0.12) 0%, transparent 46%),
-      radial-gradient(ellipse 100% 90% at 50% 120%, rgba(32, 52, 88, 0.2) 0%, transparent 42%),
-      radial-gradient(ellipse 98% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.45) 100%),
-      linear-gradient(172deg, #04060c 0%, #070d16 55%, #050810 100%);
-    border-top: 1px solid rgba(239, 236, 231, 0.05);
-  }
-
-  .cta-band.index-atmos > .u-container > div > h2 {
-    color: #f2f5fa;
-    font-weight: 500;
-    font-size: clamp(1.65rem, 3.2vw, 2.15rem);
-    letter-spacing: -0.02em;
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
-  }
-
-  .cta-band.index-atmos > .u-container > div > .u-muted {
-    color: rgba(168, 186, 214, 0.76);
-  }
-
-  .cta-band__inner {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    align-items: flex-start;
-  }
-
-  @media (min-width: 720px) {
-    .cta-band__inner {
-      flex-direction: row;
       align-items: center;
-      justify-content: space-between;
+      gap: clamp(2rem, 4vw, 3.25rem);
     }
   }
 
-  .cta-band__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-  }
 </style>
 
 <style is:global>

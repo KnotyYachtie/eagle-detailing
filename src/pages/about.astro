@@ -8,47 +8,90 @@ import yacht3 from '../../assets/yacht3.png';
   title="About"
   description={`${SITE.name} — yacht and aircraft care across South Florida.`}
   ogImage={yacht3}
+  themeColor="#0a1628"
+  canvasColor="#0a1628"
 >
-  <section class="page-hero u-container">
-    <p class="u-eyebrow">Craft</p>
-    <h1>About {SITE.shortName}</h1>
-    <p class="u-muted page-hero__lede">
-      We are built for owners and operators who notice the small things — where finish quality signals care,
-      discipline, and respect for the asset.
-    </p>
-  </section>
-  <section class="u-section page-body">
-    <div class="u-container prose">
-      <p>
-        {SITE.name} is led by <strong style="color: var(--color-cream)">{SITE.owner}</strong>. We are not a
-        volume shop aesthetic: we carry one standard across <strong style="color: var(--color-cream)">marine</strong>
-        and <strong style="color: var(--color-cream)">aviation</strong> — correction, protection, and maintenance
-        programs you can schedule with confidence.
+  <div class="about-page">
+    <section class="about-hero u-container" aria-labelledby="about-heading">
+      <p class="u-eyebrow">Craft</p>
+      <h1 id="about-heading">About {SITE.shortName}</h1>
+      <p class="about-hero__lede">
+        We are built for owners and operators who notice the small things — where finish quality signals care,
+        discipline, and respect for the asset.
       </p>
-      <p class="u-muted">
-        Based in {SITE.locality}, we operate mobile throughout South Florida — licensed & insured, focused on
-        private clients who expect prompt communication and uncompromising execution.
-      </p>
-      <p><a class="u-btn" href="/contact">Contact</a></p>
-    </div>
-  </section>
+    </section>
+    <section class="about-body">
+      <div class="u-container about-body__inner prose">
+        <p>
+          {SITE.name} is led by <strong class="about-body__emph">{SITE.owner}</strong>. We are not a volume shop
+          aesthetic: we carry one standard across <strong class="about-body__emph">marine</strong>
+          and <strong class="about-body__emph">aviation</strong> — correction, protection, and maintenance programs
+          you can schedule with confidence.
+        </p>
+        <p class="u-muted">
+          Based in {SITE.locality}, we operate mobile throughout South Florida — licensed & insured, focused on
+          private clients who expect prompt communication and uncompromising execution.
+        </p>
+        <p class="about-body__actions"><a class="u-btn" href="/contact">Contact</a></p>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding-block: var(--space-xl) var(--space-md);
+  .about-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 12% 0%, rgba(52, 88, 138, 0.14) 0%, transparent 52%),
+      radial-gradient(ellipse 70% 50% at 88% 18%, rgba(38, 62, 88, 0.1) 0%, transparent 48%),
+      linear-gradient(180deg, #102135 0%, #0a1628 38%, #0a1628 100%);
   }
 
-  .page-hero__lede {
+  .about-hero {
+    padding-block: clamp(2.5rem, 7vw, var(--space-xl)) clamp(1.25rem, 3.5vw, var(--space-md));
+    max-width: min(1120px, 100%);
+  }
+
+  .about-hero h1 {
+    margin-bottom: clamp(0.65rem, 2vw, var(--space-sm));
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    color: #f2f5fa;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .about-hero__lede {
     max-width: 40rem;
-    font-size: 1.0625rem;
+    margin: 0;
+    font-size: clamp(1rem, 1.85vw, 1.0625rem);
+    line-height: 1.65;
+    color: rgba(186, 200, 224, 0.88);
   }
 
-  .page-body {
+  .about-body {
+    flex: 1 0 auto;
+    padding-block: clamp(1.5rem, 4vw, var(--space-lg)) clamp(2.5rem, 6vw, var(--space-xl));
+    border-top: 1px solid rgba(239, 236, 231, 0.06);
     background: #0a1628;
+  }
+
+  .about-body__inner {
+    max-width: 40rem;
+  }
+
+  .about-body__emph {
+    color: var(--color-cream);
+    font-weight: 600;
   }
 
   .prose p {
     max-width: 40rem;
+    line-height: 1.68;
+  }
+
+  .about-body__actions {
+    margin: clamp(1.25rem, 3vw, var(--space-md)) 0 0;
   }
 </style>

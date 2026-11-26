@@ -343,12 +343,20 @@ const contactMarinaBg = `url(${marina1.src})`;
     color: inherit;
     transition:
       border-color 0.18s ease,
-      background-color 0.18s ease;
+      background-color 0.18s ease,
+      transform 0.18s var(--ease-out);
   }
 
   .contact-methods__cell:hover {
     border-color: rgba(196, 184, 150, 0.35);
     background: rgba(255, 255, 255, 0.045);
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-methods__cell:hover {
+      transform: none;
+    }
   }
 
   .contact-methods__cell:focus-visible {
@@ -587,6 +595,14 @@ const contactMarinaBg = `url(${marina1.src})`;
     box-shadow: 0 1px 0 0 rgba(196, 184, 150, 0.35);
   }
 
+  .contact-form__input:focus-visible,
+  .contact-form__textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+    border-bottom-color: rgba(196, 184, 150, 0.65);
+  }
+
   .contact-form__textarea {
     min-height: 8rem;
     resize: vertical;
@@ -636,6 +652,12 @@ const contactMarinaBg = `url(${marina1.src})`;
     box-shadow: 0 1px 0 0 rgba(196, 184, 150, 0.35);
   }
 
+  .contact-form__select:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
   .contact-form__select option {
     color: #0a1118;
     background: #f2f5fa;
@@ -654,8 +676,10 @@ const contactMarinaBg = `url(${marina1.src})`;
     cursor: pointer;
     border: none;
     border-radius: var(--radius-sm);
-    background: linear-gradient(90deg, #ebe3d4 0%, #d4c4a8 38%, #b89a6a 72%, #9a7d4f 100%);
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    background: linear-gradient(92deg, #ebe3d4 0%, #d9cdb8 45%, #c4b896 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.12) inset,
+      0 2px 12px rgba(0, 0, 0, 0.28);
     transition:
       filter 0.2s var(--ease-out),
       transform 0.2s var(--ease-out);
